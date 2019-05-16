@@ -1,0 +1,15 @@
+{% extends 'student/base.html' %}
+{% block content %}
+
+<div class="container w-50">
+    <div class="row">
+    {% if question_list %}
+    {% for question in question_list %}
+        <button type="button" class="btn btn-light" onclick="window.location.href = '{%  url "poll" question.id %}'">{{ question.question_text }}</button>
+    {% endfor %}
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

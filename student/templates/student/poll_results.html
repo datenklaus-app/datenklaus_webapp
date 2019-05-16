@@ -1,0 +1,38 @@
+{% extends 'student/base.html' %}
+
+{% block scripts %}
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels: {{ choice_labels|safe }},
+                datasets: [{
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: {{ choice_votes }}
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {display: false},
+                scales: {
+                    yAxes: [{
+                        ticks: {min:0}
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container w-50">
+        <h1>Eure Antworten auf die Frage:</h1><br/>
+        <h2 class="text-info">{{ question }}</h2><br/>
+        <canvas id="myChart"></canvas>
+    </div>
+{% endblock %}
