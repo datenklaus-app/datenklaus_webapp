@@ -1,11 +1,11 @@
-{% extends "teaching_module/base.html" %}
+{% extends "teacher/base.html" %}
 {% block content %}
     {% load static %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h4>Datenklaus</h4>
-                <img class="image-fluid rounded mx-auto d-block" src="{% static 'teaching_module/images/splash.jpg' %}"
+                <img class="image-fluid rounded mx-auto d-block" src="{% static 'teacher/images/splash.jpg' %}"
                      alt="" width="100%">
             </div>
         </div>
@@ -25,7 +25,7 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script src="{% static "teaching_module/js/rango-jquery.js" %}"></script>
+    <script src="{% static "teacher/js/rango-jquery.js" %}"></script>
 {% endblock %}
 </body>
 </html>
