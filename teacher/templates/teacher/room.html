@@ -1,0 +1,39 @@
+{% extends "teacher/base.html" %}
+{% block content %}
+    {% load static %}
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Raum <span style="color:blue">{{ room_name }}</span></h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="row justify-content-center">
+                    {% if clients %}
+                        <div class="list-group">
+                            {% for client in clients %}
+                                <a href="#"
+                                   class="list-group-item list-group-item-action flex-column align-items-start active">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ client.name }}</h5>
+                                        <small> {{ client.last_activity }}</small>
+                                    </div>
+                                    <p class="mb-1"></p>
+                                    <small>client.session</small>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Noch niemand verbunden</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static "teacher/js/rango-jquery.js" %}"></script>
+{% endblock %}
+</body>
+</html>
