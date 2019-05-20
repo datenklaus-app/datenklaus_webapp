@@ -1,15 +1,33 @@
 {% extends 'student/base.html' %}
 {% block content %}
+    {% load widget_tweaks %}
+    <div class="container w-50">
+        <form action="{% url 'join' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <h4>Name:</h4>
+            </div>
+            <div class="row">
+                {% render_field form.username class+="form-control form-control-lg" type="text" %}
+            </div>
+            <div class="row">
+                <h4>Raum:</h4>
+            </div>
+            <div class="row">
+                {% render_field form.room class+="form-control form-control-lg" %}
+            </div>
+            <div class="row">
+                <button type="submit" class="btn-success btn-lg container-fluid">Los geht's!</button>
+            </div>
+        </form>
 
-<div class="container w-50">
-    <div class="row">
-    {% if question_list %}
-    {% for question in question_list %}
-        <button type="button" class="btn btn-light" onclick="window.location.href = '{%  url "poll" question.id %}'">{{ question.question_text }}</button>
-    {% endfor %}
-    {% else %}
-        <p>No polls are available.</p>
-    {% endif %}
+        {#    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+        {#        Wähle hier einen Klassenraum#}
+        {#    </button>#}
+        {#    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
+        {#        {% for rname in room_names %}#}
+        {#        <a class="dropdown-item" href="{% url "join" rname %}">{{ rname }}</a>#}
+        {#        {% endfor %}#}
+        {#    </div>#}
     </div>
-</div>
 {% endblock %}
