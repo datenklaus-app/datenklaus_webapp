@@ -31,6 +31,9 @@
 {% endblock %}
 {% block content %}
     <div class="container w-50">
+        {% if illegal_vote %}
+            <h1 class="text-warning"> Du hast bereits abgestimmt!</h1>
+        {% endif %}
         <h1>Eure Antworten auf die Frage:</h1><br/>
         <h2 class="text-info">{{ question }}</h2><br/>
         <canvas id="myChart"></canvas>
