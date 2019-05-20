@@ -10,17 +10,17 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="row justify-content-center">
-                    {% if clients %}
+                    {% if clients_info %}
                         <div class="list-group">
-                            {% for client in clients %}
+                            {% for client in clients_info %}
                                 <a href="#"
                                    class="list-group-item list-group-item-action flex-column align-items-start active">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ client.name }}</h5>
-                                        <small> {{ client.last_activity }}</small>
+                                        <h5 class="mb-1">{{ client.0 }}</h5>
+                                        <small> {{ client.2 }}</small>
                                     </div>
                                     <p class="mb-1"></p>
-                                    <small>client.session</small>
+                                    <small>{{ client.1 }}</small>
                                 </a>
                             {% endfor %}
                         </div>

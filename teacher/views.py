@@ -15,11 +15,10 @@ def room(request, room_name):
         request.session["room"] = room_name
     created = Room.objects.get_or_create(room_name=room_name)[1]
     clients = {} if created else Client.objects.filter(room=room_name)
-    data = {}
+    clients_info = []
     for client in clients:
-        data["name"] = client.user_name
-        s = Session.objects.get(client.session)
-        data["session"] = s.session_key
-        data["last_activity"] = s.expire_date
-    context = {'room_name': room_name, 'clients': data}
+        s = Session.objects.get(session_key=client.session)
+        clients_info.append((client.user_name, s.session_key, s.expire_date))
+    context = {'room_name': room_name,
+               'clients_info': clients_info}
     return render(request, 'teacher/room.html', context=context)
