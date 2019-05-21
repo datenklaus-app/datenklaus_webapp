@@ -1,11 +1,19 @@
 from django.contrib.sessions.models import Session
+from django.http import JsonResponse
 from django.shortcuts import render
 
-from teacher.models import Client
+from teacher.models import Client,Room
 from .forms import JoinRoomForm
 
 
 def index(request):
+    if request.is_ajax():
+        rooms = Room.objects.all()
+        room_names=[]
+        for r in rooms:
+            room_names.append(r.room_name)
+        return JsonResponse({'rooms': room_names})
+
     form = JoinRoomForm()
     context = {'form': form}
 

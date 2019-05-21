@@ -1,4 +1,21 @@
 {% extends 'student/base.html' %}
+{% block scripts %}
+    <script>
+        function update() {
+            $.ajax({
+                {% csrf_token %}
+                method: "POST",
+                url: "/student/",
+                dataType: 'json',
+                contentType:'json',
+                headers:{},
+                success: function (data) {
+                    console.log(data) // check out how data is structured
+                }
+            })
+        };
+    </script>
+{% endblock %}
 {% block content %}
     {% load widget_tweaks %}
     <div class="container w-50">
