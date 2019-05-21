@@ -1,6 +1,7 @@
 {% extends "teacher/base.html" %}
 {% block content %}
     {% load static %}
+    {% include "teacher/client-refresh.html" %}
     <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -10,32 +11,41 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="row justify-content-center">
-                    {% if clients_info %}
-                        <div class="list-group">
-                            {% for client in clients_info %}
-                                <a href="#"
-                                   class="list-group-item list-group-item-action flex-column align-items-start active">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ client.0 }}</h5>
-                                        <small> {{ client.3 }}</small>
-                                    </div>
-                                    <p class="mb-1"></p>
-                                    <h6 class="mb-1">{{ client.2 }}</h6>
-                                    <p class="mb-1"></p>
-                                    <small>ID: {{ client.1 }}</small>
-                                </a>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p>Noch niemand verbunden</p>
-                    {% endif %}
+                    <div class="list-group" id="clients">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
+    <script src="https://www.jsviews.com/download/jsrender.min.js"></script>
     <script src="{% static "teacher/js/rango-jquery.js" %}"></script>
+    <script>
+        function update() {
+            $.ajax({
+                method: "POST",
+                url: "",
+                dataType: 'json',
+                contentType: 'json',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    const $el = $("#clients");
+                    $el.empty(); // remove old options
+                    console.log(data)
+                    const template = $.templates("#itemTemplate");
+                    $.each(data.clients, function (index, value) {
+                        const htmlOutput = template.render(value);
+                        $el.append(htmlOutput)
+                    });
+                }
+            })
+        };
+        setInterval(update, 15000)
+    </script>
 {% endblock %}
+
 </body>
 </html>
