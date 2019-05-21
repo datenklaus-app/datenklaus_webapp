@@ -28,7 +28,6 @@ def join_room(request):
     if not form.is_valid():
         raise KeyError() #TODO FIX ME
 
-
     Client.objects.get_or_create(
         user_name=form.cleaned_data['username'],
         room=form.cleaned_data['room'],
@@ -37,6 +36,13 @@ def join_room(request):
 
     context = {'sname': form.cleaned_data['username'],'rname': form.cleaned_data['room']}
     return render(request, 'student/join_room.html', context)
+
+def leave_room(request):
+    client = Client.objects.filter(session=request.session.session_key)
+    for c in client:
+        c.delete()
+
+    return index(request)
 
 # def poll(request, question_id):
 #     q = Question.objects.get(id=question_id)

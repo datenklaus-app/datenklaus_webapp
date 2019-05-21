@@ -3,17 +3,24 @@
     <script>
         function update() {
             $.ajax({
-                {% csrf_token %}
                 method: "POST",
                 url: "/student/",
                 dataType: 'json',
-                contentType:'json',
-                headers:{},
+                contentType: 'json',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
                 success: function (data) {
-                    console.log(data) // check out how data is structured
+                    var $el = $("#rooms");
+                    $el.empty(); // remove old options
+                    $.each(data.rooms, function (index, value) {
+                        $el.append($("<option></option>")
+                            .attr("value", value).text(value));
+                    });
                 }
             })
         };
+        setInterval(update, 5000)
     </script>
 {% endblock %}
 {% block content %}
@@ -24,14 +31,14 @@
             <div class="row">
                 <h4>Name:</h4>
             </div>
-            <div class="row">
+            <div class="row pb-4">
                 {% render_field form.username class+="form-control form-control-lg" type="text" %}
             </div>
             <div class="row">
                 <h4>Raum:</h4>
             </div>
-            <div class="row">
-                {% render_field form.room class+="form-control form-control-lg" %}
+            <div class="row pb-4">
+                {% render_field form.room id='rooms' class+="form-control form-control-lg" %}
             </div>
             <div class="row">
                 <button type="submit" class="btn-success btn-lg container-fluid">Los geht's!</button>
