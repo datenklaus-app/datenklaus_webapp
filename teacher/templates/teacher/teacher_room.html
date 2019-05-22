@@ -19,10 +19,23 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script src="https://www.jsviews.com/download/jsrender.min.js"></script>
-    <script src="{% static "teacher/js/rango-jquery.js" %}"></script>
+    {% verbatim %}
+    <script id="client-status-template" type="text/x-handlebars-template">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ name }}</h5>
+                <small> {{ expiry }}</small>
+            </div>
+            <p class="mb-1"></p>
+            <h6 class="mb-1">{{progress}}</h6>
+            <p class="mb-1"></p>
+            <small>ID: {{ session }}</small>
+        </a>
+    </script>
+    {% endverbatim %}
     <script>
         function update() {
+
             $.ajax({
                 method: "POST",
                 url: "",
@@ -35,9 +48,11 @@
                     const $el = $("#clients");
                     $el.empty(); // remove old options
                     console.log(data)
-                    const template = $.templates("#itemTemplate");
+                    const source = document.getElementById("client-status-template").innerHTML;
+                    const template = Handlebars.compile(source);
+
                     $.each(data.clients, function (index, value) {
-                        const htmlOutput = template.render(value);
+                        const htmlOutput = template(value);
                         $el.append(htmlOutput)
                     });
                 }
