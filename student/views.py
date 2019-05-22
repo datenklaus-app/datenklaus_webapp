@@ -2,14 +2,14 @@ from django.contrib.sessions.models import Session
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from teacher.models import Client,Room
+from teacher.models import Client, Room
 from .forms import JoinRoomForm
 
 
 def index(request):
     if request.is_ajax():
         rooms = Room.objects.all()
-        room_names=[]
+        room_names = []
         for r in rooms:
             room_names.append(r.room_name)
         return JsonResponse({'rooms': room_names})
@@ -26,7 +26,11 @@ def join_room(request):
     form = JoinRoomForm(request.POST)
 
     if not form.is_valid():
-        raise KeyError() #TODO FIX ME
+        raise KeyError()  # TODO FIX ME
+
+    # Make sure we only have one existing client per session
+    for client in Client.objects.filter(session=request.session.session_key):
+        client.delete()
 
     Client.objects.get_or_create(
         user_name=form.cleaned_data['username'],
@@ -34,12 +38,13 @@ def join_room(request):
         session=Session.objects.get(session_key=request.session.session_key),
     )
 
-    context = {'sname': form.cleaned_data['username'],'rname': form.cleaned_data['room']}
+    context = {'sname': form.cleaned_data['username'], 'rname': form.cleaned_data['room']}
     return render(request, 'student/join_room.html', context)
 
+
 def leave_room(request):
-    client = Client.objects.filter(session=request.session.session_key)
-    for c in client:
+
+    for c in Client.objects.filter(session=request.session.session_key):
         c.delete()
 
     return index(request)

@@ -12,10 +12,14 @@
                 },
                 success: function (data) {
                     var $el = $("#rooms");
+                    var $selected = $el.val()
                     $el.empty(); // remove old options
                     $.each(data.rooms, function (index, value) {
                         $el.append($("<option></option>")
                             .attr("value", value).text(value));
+                        if (value == $selected){
+                            $el.val($selected)
+                        }
                     });
                 }
             })

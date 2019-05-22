@@ -2,16 +2,16 @@
 {% block content %}
 
     <div class="container w-50">
-        <div class="row pb-2">
+        <div class="row pb-4">
             <h1 class="text-info"><span class="text-danger">{{ sname }}</span>, du bist dem Klassenraum <span
                     class="text-warning">{{ rname }}</span> beigetreten! Gleich geht es los...</h1>
         </div>
-        <div class="row pb-2 justify-content-center">
+        <div class="row pb-4 justify-content-center">
             <div class="spinner-border text-dark" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div class="row pb-2 justify-content-center">
+        <div class="row pb-4 justify-content-center">
             <input type=button class='btn-info btn-lg' value="Raum verlassen" onClick="window.location.href = '{% url 'leave' %}'">
         </div>
     </div>
