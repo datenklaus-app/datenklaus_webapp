@@ -13,14 +13,24 @@
 
     <title>Datenklaus</title>
 </head>
+
 <body class="text-center">
 {% block content %}{% endblock %}
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<!-- JavaScript Includes-->
 <script src="{% static "js/jquery-3.4.1.js" %}"></script>
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="{% static "js/handlebars.js" %}"></script>
 <script src="{% static "bootstrap-4.3.1-dist/js/bootstrap.min.js" %}"></script>
+<!-- Optional Handlebars templates-->
+
+<script id="client-status-template" type="text/x-handlebars-template">
+        {% block handlebars-template %}
+        {% endblock %}
+</script>
+<!-- Optional JavaScript -->
 {% block scripts %}{% endblock %}
+
 </body>
 </html>
+
