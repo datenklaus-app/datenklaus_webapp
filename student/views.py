@@ -13,18 +13,13 @@ def index(request):
         for r in rooms:
             room_names.append(r.room_name)
         return JsonResponse({'rooms': room_names})
-
     form = JoinRoomForm()
     context = {'form': form}
-
     return render(request, 'student/index.html', context)
-    #
-    # return render(request, 'student/index.html', context)
 
 
 def join_room(request):
     form = JoinRoomForm(request.POST)
-
     if not form.is_valid():
         raise KeyError()  # TODO FIX ME
 
@@ -43,7 +38,6 @@ def join_room(request):
 
 
 def leave_room(request):
-
     for c in Client.objects.filter(session=request.session.session_key):
         c.delete()
 
