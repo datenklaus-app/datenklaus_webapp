@@ -2,7 +2,8 @@ from django.contrib.sessions.models import Session
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from teacher.models import Client, Room
+from student.models import Student
+from teacher.models import Room
 from .forms import JoinRoomForm
 
 
@@ -24,10 +25,10 @@ def join_room(request):
         raise KeyError()  # TODO FIX ME
 
     # Make sure we only have one existing client per session
-    for client in Client.objects.filter(session=request.session.session_key):
+    for client in Student.objects.filter(session=request.session.session_key):
         client.delete()
 
-    Client.objects.get_or_create(
+    Student.objects.get_or_create(
         user_name=form.cleaned_data['username'],
         room=form.cleaned_data['room'],
         session=Session.objects.get(session_key=request.session.session_key),

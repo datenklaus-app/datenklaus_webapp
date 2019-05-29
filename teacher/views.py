@@ -2,8 +2,9 @@ from django.contrib.sessions.models import Session
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from student.models import Student
 from teacher import constants
-from teacher.models import Client, Room
+from teacher.models import Room
 
 
 def index(request):
@@ -19,7 +20,7 @@ def room(request, room_name):
     if created or not request.is_ajax():
         context = {'room_name': room_name}
         return render(request, 'teacher/teacher_room.html', context=context)
-    clients = Client.objects.filter(room=room_name)
+    clients = Student.objects.filter(room=room_name)
     clients_info = []
     for client in clients:
         s = Session.objects.get(session_key=client.session)

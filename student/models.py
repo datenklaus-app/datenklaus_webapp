@@ -1,17 +1,11 @@
+from django.contrib.sessions.models import Session
 from django.db import models
+from django.db.models import CharField, ForeignKey, CASCADE
 
-# Create your models here.
-class Question(models.Model):
-    question_text = models.CharField(max_length=4096)
-
-    def __str__(self):
-        return self.question_text
+from teacher.models import Room
 
 
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=4096)
-    votes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.choice_text
+class Student(models.Model):
+    user_name = CharField(max_length=4)
+    session = ForeignKey(Session, on_delete=CASCADE)
+    room = ForeignKey(Room, on_delete=CASCADE)
