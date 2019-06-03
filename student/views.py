@@ -39,8 +39,8 @@ def join_room(request):
 
 
 def leave_room(request):
-    for c in Client.objects.filter(session=request.session.session_key):
-        c.delete()
+    for s in Student.objects.filter(session=request.session.session_key):
+        s.delete()
 
     return index(request)
 
