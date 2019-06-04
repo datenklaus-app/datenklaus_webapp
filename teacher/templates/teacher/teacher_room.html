@@ -9,8 +9,23 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-6">
+                <h3>Aktives Modul</h3>
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                    <div class="d-flex w-100 justify-content-center">
+                        <h5 class="mb-1">{% if active_module %} {{ active_module }} {% else %} Kein Modul
+                            ausgewählt{% endif %}
+                        </h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <h3>Verbundene Schüler*innen</h3>
                 <div class="row justify-content-center">
-                    <div class="list-group" id="clients">
+                    <div class="col-md-6">
+                        <div class="row justify-content-center">
+                            <div class="list-group overflow-auto" id="students">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,13 +58,13 @@
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    const $el = $("#clients");
+                    const $el = $("#students");
                     $el.empty(); // remove old options
                     console.log(data)
-                    const source = document.getElementById("client-status-template").innerHTML;
+                    const source = document.getElementById("student-status-template").innerHTML;
                     const template = Handlebars.compile(source);
 
-                    $.each(data.clients, function (index, value) {
+                    $.each(data.students, function (index, value) {
                         const htmlOutput = template(value);
                         $el.append(htmlOutput)
                     });

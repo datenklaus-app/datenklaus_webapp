@@ -4,7 +4,7 @@ class TeachingModule:
         raise NotImplementedError()
 
     @staticmethod
-    def get_short_descripton():
+    def get_short_description():
         raise NotImplementedError()
 
     @staticmethod
@@ -18,5 +18,6 @@ class TeachingModule:
     @staticmethod
     def next(current_state, arguments):
         raise NotImplementedError()
+
 
 STATE_INITIAL = 0

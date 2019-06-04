@@ -18,4 +18,4 @@ nouns = [
     "Radio", "Rakete", "Reifen", "Rettungswagen", "Ritter", "Sand", "Scanner", "Schloss", "Stein", "Strauch", "Tasche",
     "Taschenrechner", "Tastatur", "Taste", "Tiger", "Tisch", "Turnschuh", "Uhr", "Ulme", "Umschlagplatz", "Umwelt",
     "Unwetter", "Vanille", "Vater", "Verdauung", "Verkehr", "Versicherung", "Vogel", "Waage", "Waggon", "Waschzeug",
-    "Wasser", "Wort", "Xylophon", "Yogalehrer", "Zahn", "Zeichen", "Zeitung", "Zentrum" ]
+    "Wasser", "Wort", "Xylophon", "Yogalehrer", "Zahn", "Zeichen", "Zeitung", "Zentrum"]
