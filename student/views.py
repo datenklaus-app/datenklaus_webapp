@@ -1,7 +1,10 @@
 from django.contrib.sessions.models import Session
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
 
+import lessons
+from lessons.teaching_modules.teaching_module import STATE_INITIAL
+from lessons.views import get_content
 from student.models import Student
 from teacher.models import Room
 from .forms import JoinRoomForm
@@ -20,13 +23,20 @@ def index(request):
 
 
 def join_room(request):
+    if request.is_ajax():
+        student = Student.objects.get(session=request.session.session_key)
+        if student is None:
+            return HttpResponseNotFound("Student has not joined a room yet")
+        else:
+            return JsonResponse({'lesson': student.room.room_name})
+
     form = JoinRoomForm(request.POST)
     if not form.is_valid():
         raise KeyError()  # TODO FIX ME
 
-    # Make sure we only have one existing client per session
-    for client in Student.objects.filter(session=request.session.session_key):
-        client.delete()
+    # Make sure we only have one existing student per session
+    for student in Student.objects.filter(session=request.session.session_key):
+        student.delete()
 
     Student.objects.get_or_create(
         user_name=form.cleaned_data['username'],
@@ -43,6 +53,15 @@ def leave_room(request):
         s.delete()
 
     return index(request)
+
+
+def lesson(request, lesson):
+    card = get_content("INTERNET", STATE_INITIAL, None)
+    context = {"lname": lesson, "state": card}
+    return render(request, 'student/lesson.html', context)
+
+def lesson_update(request):
+    pass
 
 # def poll(request, question_id):
 #     q = Question.objects.get(id=question_id)

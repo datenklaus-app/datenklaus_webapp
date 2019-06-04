@@ -12,7 +12,31 @@
             </div>
         </div>
         <div class="row pb-4 justify-content-center">
-            <input type=button class='btn-info btn-lg' value="Raum verlassen" onClick="window.location.href = '{% url 'leave' %}'">
+            <input type=button class='btn-info btn-lg' value="Raum verlassen"
+                   onClick="window.location.href = '{% url 'leave' %}'">
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function check_for_active_lesson() {
+            $.ajax({
+                method: "POST",
+                url: '/student/join/',
+                dataType: 'json',
+                contentType: 'json',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    if (data.lesson == null)
+                        return;
+
+                    window.location.replace('/student/lesson/' + data.lesson);
+                }
+            })
+        };
+        setInterval(check_for_active_lesson, 5000)
+    </script>
 {% endblock %}

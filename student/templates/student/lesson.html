@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container w-75">
+    <div class="row pb-4"><h5 class="text-warning">Raum: {{ lname }}</h5></div>
+    <div class="row justify-content-center">
+    {{ state|safe }}
+    </div>
+    </div>
+{% endblock %}
+

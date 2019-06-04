@@ -1,14 +1,14 @@
 # Create your views here.
-from lessons.teaching_modules import internet
+from lessons.teaching_modules.internet import Internet
 from lessons.teaching_modules.teaching_module import STATE_INITIAL
 
 
 def get_content(lesson, state, arguments):
     if lesson == "INTERNET":
         if state == STATE_INITIAL:
-            return internet.initial()
+            return Internet.initial()
         else:
-            return internet.next(state, arguments)
+            return Internet.next(state, arguments)
 
 
 def get_lessons_list():
