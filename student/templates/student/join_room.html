@@ -30,9 +30,8 @@
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    if (data.lesson == null)
+                    if (data.lesson === "")
                         return;
-
                     window.location.replace('/student/lesson/' + data.lesson);
                 }
             })

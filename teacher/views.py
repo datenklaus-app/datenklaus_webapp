@@ -37,4 +37,5 @@ def room(request, room_name):
             return JsonResponse({"error": "module not found"})
         else:
             r.module = module
+            r.save()
             return JsonResponse({"error": "none"})
