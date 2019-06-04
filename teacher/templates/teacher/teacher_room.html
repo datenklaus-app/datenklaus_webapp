@@ -10,13 +10,17 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h3>Aktives Modul</h3>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                    <div class="d-flex w-100 justify-content-center">
-                        <h5 class="mb-1">{% if active_module %} {{ active_module }} {% else %} Kein Modul
-                            ausgewählt{% endif %}
-                        </h5>
-                    </div>
-                </a>
+                <div id="active_module">
+                    {% if active_module %}
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                            <div class="d-flex w-100 justify-content-center">
+                                <h5 class="mb-1">{{ active_module }}</h5>
+                            </div>
+                        </a>
+                    {% else %}
+                        <h5>Kein Modul ausgewählt</h5>
+                    {% endif %}
+                </div>
             </div>
             <div class="col-md-6">
                 <h3>Verbundene Schüler*innen</h3>
@@ -30,30 +34,32 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-start">
             <div class="col-md-6">
                 <h3>Verfügbare Module</h3>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                    <div class="d-flex w-100 justify-content-center">
-                        <h5 class="mb-1">{% if active_module %} {{ active_module }} {% else %} Kein Modul
-                            ausgewählt{% endif %}
-                        </h5>
-                    </div>
-                </a>
-                <div class="row justify-content-center">
-                    <div class="list-group overflow-auto" id="modules">
-                        {% for m in modules %}
-                            <a href="#"
-                               class="list-group-item list-group-item-action flex-column align-items-start active">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">{{ name }}</h5>
-                                </div>
-                                <p class="mb-1"></p>
-                                <h6 class="mb-1">{{ description }}</h6>
-                                <p class="mb-1"></p>
-                            </a>
-                        {% endfor %}
-                    </div>
+            </div>
+        </div>
+        <div class="row justify-content-start">
+            <div class="col-md-6">
+                <div class="list-group overflow-auto" id="modules">
+                    {% for m in modules %}
+                        <button onclick="module_selected('{{ m.name }}')"
+                                class="list-group-item list-group-item-action flex-column align-items-start active">
+                            <div class="d-flex w-100 justify-content-center">
+                                <h5 class="mb-1">{{ m.name|lower|capfirst }}</h5>
+                            </div>
+                            <p class="mb-1"></p>
+                            <h6 class="mb-1">{{ m.description }}</h6>
+                            <p class="mb-1"></p>
+                        </button>
+                    {% empty %}
+                        <a href="#"
+                           class="list-group-item list-group-item-action flex-column align-items-start active">
+                            <div class="d-flex w-100 justify-content-center">
+                                <h5 class="mb-1"> Keine Module verfügbar</h5>
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -74,31 +80,46 @@
     {% endverbatim %}
 {% endblock %}
 {% block scripts %}
-    <script>
-        function update() {
-            $.ajax({
-                method: "POST",
-                url: "",
-                dataType: 'json',
-                contentType: 'json',
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                success: function (data) {
-                    const $el = $("#students");
-                    $el.empty(); // remove old options
-                    console.log(data)
-                    const source = document.getElementById("student-status-template").innerHTML;
-                    const template = Handlebars.compile(source);
+    <script>function module_selected(name) {
+        $.ajax({
+            method: "POST",
+            url: "",
+            data: {"type": "module", "module": name},
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function (data) {
+                const $el = $("#active_module");
+                $el.empty();
+                console.log(data)
+                $el.append("<h5>" + name + "</h5>")
+            }
+        })
+    };
 
-                    $.each(data.students, function (index, value) {
-                        const htmlOutput = template(value);
-                        $el.append(htmlOutput)
-                    });
-                }
-            })
-        };
-        setInterval(update, 2000)
+    function update() {
+        $.ajax({
+            method: "POST",
+            url: "",
+            data: {"type": "students"},
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function (data) {
+                const $el = $("#students");
+                $el.empty(); // remove old options
+                console.log(data)
+                const source = document.getElementById("student-status-template").innerHTML;
+                const template = Handlebars.compile(source);
+
+                $.each(data.students, function (index, value) {
+                    const htmlOutput = template(value);
+                    $el.append(htmlOutput)
+                });
+            }
+        })
+    };
+    setInterval(update, 2000)
     </script>
 {% endblock %}
 
