@@ -10,6 +10,14 @@ from .forms import JoinRoomForm
 
 
 def index(request):
+    try:
+        student = Student.objects.get(session=request.session.session_key)
+        if student.room.module is not None:
+            context = {'sname': student.user_name, 'rname': student.room}
+            return render(request, 'student/room_waiting.html', context)
+    except ObjectDoesNotExist:
+        pass
+
     if request.is_ajax():
         rooms = Room.objects.all()
         room_names = []
