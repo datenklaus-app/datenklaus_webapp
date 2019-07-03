@@ -17,7 +17,7 @@
                     $.each(data.rooms, function (index, value) {
                         $el.append($("<option></option>")
                             .attr("value", value).text(value));
-                        if (value == $selected){
+                        if (value == $selected) {
                             $el.val($selected)
                         }
                     });
@@ -29,17 +29,28 @@
 {% endblock %}
 {% block content %}
     {% load widget_tweaks %}
-    <div class="container w-50">
+    <div class="container w-75">
         <form action="{% url 'join' %}" method="post">
             {% csrf_token %}
-            <div class="row">
-                <h4>Name:</h4>
+            <div class="row "><h3>Wähle deinen <strong>Alias</strong> nach folgendem Schema:</h3></div>
+            <div class="row justify-content-center ">
+                <div class="alert alert-light w-100">
+                    <h4><strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
+                        geboren
+                        am <strong class="text-info">14</strong>.5.</h4><br/>
+                    <h4>wird zu:</h4><br/>
+                    <h3><strong class="text-danger">He</strong><strong class="text-warning">Me</strong><strong
+                            class="text-info">14</strong></h3>
+                </div>
             </div>
-            <div class="row pb-4">
+            <div class="row pt-1">
+                <h4>Dein Alias kommt hier rein:</h4>
+            </div>
+            <div class="row pb-5">
                 {% render_field form.username class+="form-control form-control-lg" type="text" %}
             </div>
             <div class="row">
-                <h4>Raum:</h4>
+                <h4>Wähle den Raum deiner Klasse:</h4>
             </div>
             <div class="row pb-4">
                 {% render_field form.room id='rooms' class+="form-control form-control-lg" %}

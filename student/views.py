@@ -1,6 +1,7 @@
 from django.contrib.sessions.models import Session
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from lesson.views import STATE_INITIAL
 from student.models import Student
@@ -44,7 +45,7 @@ def join_room(request):
     )
 
     context = {'sname': form.cleaned_data['username'], 'rname': form.cleaned_data['room']}
-    return render(request, 'student/join_room.html', context)
+    return render(request, 'student/room_waiting.html', context)
 
 
 def leave_room(request):
