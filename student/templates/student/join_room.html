@@ -23,19 +23,18 @@
         function check_for_active_lesson() {
             $.ajax({
                 method: "POST",
-                url: '/student/join/',
+                url: '/join/',
                 dataType: 'json',
                 contentType: 'json',
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    if (data.lesson === "")
-                        return;
-                    window.location.replace('/student/lesson/' + data.lesson);
+                    if (data.lesson_started)
+                        window.location.replace('/lesson/');
                 }
             })
         };
-        setInterval(check_for_active_lesson, 5000)
+        setInterval(check_for_active_lesson, 1000)
     </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-class TeachingModule:
+class Lesson:
     @staticmethod
     def get_description():
         raise NotImplementedError()
@@ -19,5 +19,3 @@ class TeachingModule:
     def next(current_state, arguments):
         raise NotImplementedError()
 
-
-STATE_INITIAL = 0

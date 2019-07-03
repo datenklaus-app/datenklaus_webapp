@@ -24,7 +24,7 @@ SECRET_KEY = '2^)1w99jee#rk+@d-jbx)o!7vt^lmkc7+hzykz2x_26jvvpi50'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'teacher',
     'student',
-    'index',
-    'lessons',
+    'lesson',
 ]
 
 MIDDLEWARE = [
