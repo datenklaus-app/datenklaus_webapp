@@ -16,6 +16,9 @@
 
 <body class="text-center">
 {% block content %}{% endblock %}
+<script>
+    var CSRF_TOKEN = '{% csrf_token %}';
+</script>
 
 <!-- JavaScript Includes-->
 <script src="{% static "js/jquery-3.4.1.js" %}"></script>
@@ -25,8 +28,8 @@
 <!-- Optional Handlebars templates-->
 
 <script id="student-status-template" type="text/x-handlebars-template">
-        {% block handlebars-template %}
-        {% endblock %}
+    {% block handlebars-template %}
+    {% endblock %}
 </script>
 <!-- Optional JavaScript -->
 {% block scripts %}{% endblock %}
