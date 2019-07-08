@@ -1,9 +1,8 @@
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
-from lesson.views import STATE_INITIAL
 from student.models import Student
 from teacher.models import Room
 from .forms import JoinRoomForm
@@ -16,6 +15,9 @@ def index(request):
             context = {'sname': student.user_name, 'rname': student.room}
             return render(request, 'student/room_waiting.html', context)
     except ObjectDoesNotExist:
+        # NOTE: we need to manually set this to ensure that the user's session
+        # is saved on the first request
+        request.session.modified = True
         pass
 
     if request.is_ajax():
@@ -39,7 +41,7 @@ def join_room(request):
 
     form = JoinRoomForm(request.POST)
     if not form.is_valid():
-        raise KeyError()  # TODO FIX ME
+        raise KeyError()  # FIXME
 
     # Make sure we only have one existing student object per session
     for student in Student.objects.filter(session=request.session.session_key):
@@ -49,7 +51,7 @@ def join_room(request):
         user_name=form.cleaned_data['username'],
         room=form.cleaned_data['room'],
         session=Session.objects.get(session_key=request.session.session_key),
-        current_state=STATE_INITIAL,
+        current_state=0,
     )
 
     context = {'sname': form.cleaned_data['username'], 'rname': form.cleaned_data['room']}

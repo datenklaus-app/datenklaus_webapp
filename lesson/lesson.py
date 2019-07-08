@@ -1,3 +1,6 @@
+from lesson.lessonState import LessonState
+
+
 class Lesson:
     @staticmethod
     def get_description():
@@ -12,10 +15,6 @@ class Lesson:
         raise NotImplementedError()
 
     @staticmethod
-    def initial():
-        raise NotImplementedError()
-
-    @staticmethod
-    def next(current_state, arguments):
+    def get_state(state) -> LessonState:
         raise NotImplementedError()
 

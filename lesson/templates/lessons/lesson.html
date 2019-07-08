@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
+{% block scripts %}
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+            console.log("Test")
+        })
+    </script>
+{% endblock %}
 {% block content %}
-    <div class="container table">
-    <div class="row justify-content-center">
-        {{ card|safe }}
-    </div>
-    <div class="row pt-4 justify-content-center ">
+    <div class="container table w-75">
+    <div class="row"><div class="col">{{ card|safe }} </div></div>
+    <div class="row pt-4">
+        <div class="col">
+            <input type=button class='btn-warning btn-sm' value="Zurück"
+                   onClick="history.back()">
+        </div>
         <div class="col">
             <p><strong class="text-info">Raum:</strong> {{ rname }}</p>
         </div>

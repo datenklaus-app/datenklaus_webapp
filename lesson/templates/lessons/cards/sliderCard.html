@@ -1,0 +1,15 @@
+<div class="card m-2">
+    <div class="h1 card-title"> {{ title }} </div>
+    {% load widget_tweaks %}
+    <div class="card-body w-75 align-self-center">
+        <form action="{% url 'lesson' state %}" method="post">
+            {% csrf_token %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">{% render_field form.svalue class+="custom-range" type="range" min=min_value max=max_value %}</li>
+                <li class="list-group-item">
+                    <button type="submit" class="btn-success btn-lg container-fluid">Weiter</button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
