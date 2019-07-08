@@ -8,6 +8,25 @@ $(document).ready(function () {
             room_name = $('#room_name').val();
         }
         let lesson = $('#modules').find('button.active').find('#module_name').data('name')
+        let error = false
+        if (lesson == null) {
+            $('#choose_module').addClass('text-danger').removeClass('text-info')
+            $('#warnings').append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>')
+            error = true
+        }
+        let password = $('#room_password').val()
+        console.log(password)
+        if (!password.trim()) {
+            $('#password_text').addClass('text-danger').removeClass('text-info')
+            $('#warnings').append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>')
+            error = true
+        }
+        console.log(error)
+        if (error) {
+            console.log("showing")
+            $('#warnings').parent().show()
+            return
+        }
         myRedirect('room/' + room_name, 'lesson', lesson)
     });
 
