@@ -23,6 +23,10 @@ body {
     scrollbar-width: thin;
 }
 
+.popover {
+    max-width: none;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }

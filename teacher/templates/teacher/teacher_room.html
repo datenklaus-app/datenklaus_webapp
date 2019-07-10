@@ -19,10 +19,11 @@
             <div class="col-md-5">
                 <div class="">
                     <h3 style="display: inline-block">Steuerung</h3>
-                    <button class="align-top rounded-circle bg-white text-dark btn-outline-info" data-toggle="popover"
-                            title="Steuerung">
-                        <small><b>?</b></small>
-                    </button>
+                    <a tabindex="0" class="btn btn-sm btn-outline-dark align-top rounded-circle bg-white text-dark"
+                       style="cursor: pointer"
+                       role="button" data-toggle="popover" title="Steuerung">
+                        <div class="small text-monospace text-primary"><b>?</b></div>
+                    </a>
                 </div>
                 <div class="list-group list-group-horizontal">
                     <button class="list-group-item list-group-item-action flex-column">
@@ -73,19 +74,37 @@
     <script id="popover-template" type="text/x-handlebars-template">
         <div class="list-group pop">
             <ul class="pl-3">
-                <img class="img-fluid" style="height: 75%" src="{% static 'open-iconic/svg/media-pause.svg' %}"
-                     alt="Pause">
-                Pausiert das Modul für alle Schüler*innen
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-pause.svg' %}"
+                             alt="Pause">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Pausiert das Modul für alle Schüler*innen
+                    </div>
+                </div>
             </ul>
             <ul class="pl-3">
-                <img class="img-fluid" style="height: 75%" src="{% static "open-iconic/svg/media-stop.svg" %}"
-                     alt="Pause">
-                Beendet das Modul
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-stop.svg' %}"
+                             alt="Stop">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Beendet das Modul
+                    </div>
+                </div>
             </ul>
             <ul class="pl-3">
-                <img class="img-fluid" style="height: 75%" src="{% static "open-iconic/svg/document.svg" %}"
-                     alt="Pause">
-                TBD - Gibt Überblick über den Modulfortschrit / Graphen?
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/document.svg' %}"
+                             alt="Auswertung">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Grafische Auswertung
+                    </div>
+                </div>
             </ul>
         </div>
     </script>
@@ -93,6 +112,7 @@
         $(function () {
             $('[data-toggle="popover"]').popover({
                 html: true,
+                // trigger: 'focus',
                 content: function () {
                     const template = Handlebars.compile($("#popover-template").html());
                     return (template())
