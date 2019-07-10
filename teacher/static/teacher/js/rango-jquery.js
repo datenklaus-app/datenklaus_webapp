@@ -21,9 +21,8 @@ $(document).ready(function () {
             $('#warnings').append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>')
             error = true
         }
-        console.log(error)
+        // TODO Show error if room already exists
         if (error) {
-            console.log("showing")
             $('#warnings').parent().show()
             return
         }

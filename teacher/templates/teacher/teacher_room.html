@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <div class="container text-center">
+    <div class="container text-center" xmlns="http://www.w3.org/1999/html">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h1>Raum <span style="color:blue">{{ room_name }}</span></h1>
@@ -9,15 +9,38 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h3>Aktives Modul</h3>
-                <div id="active_module">
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                        <div class="d-flex w-100 justify-content-center">
-                            <h5 class="mb-1">{{ module }}</h5>
-                        </div>
-                    </a>
+                <h3 class="text-dark" style="display:inline-block;">Aktives Modul:</h3>
+                <a href="#">
+                    <h4 style="display: inline-block" class="mb-1 text-primary">{{ module|lower|capfirst }}</h4>
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="">
+                    <h3 style="display: inline-block">Steuerung</h3>
+                    <button class="align-top rounded-circle bg-white text-dark btn-outline-info" data-toggle="popover"
+                            title="Steuerung">
+                        <small><b>?</b></small>
+                    </button>
+                </div>
+                <div class="list-group list-group-horizontal">
+                    <button class="list-group-item list-group-item-action flex-column">
+                        <img class="img-fluid" style="height: 75% "
+                             src={% static "open-iconic/svg/media-pause.svg" %} alt="Pause">
+                    </button>
+                    <button class="list-group-item list-group-item-action flex-column">
+                        <img class="img-fluid" style="height: 75% "
+                             src={% static "open-iconic/svg/media-stop.svg" %} alt="Stop">
+                    </button>
+                    <button class="list-group-item list-group-item-action flex-column">
+                        <img class="img-fluid" style="height: 75% "
+                             src={% static "open-iconic/svg/document.svg" %} alt="Stop">
+                    </button>
                 </div>
             </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="col-md-6">
                 <h3>Verbundene Schüler*innen</h3>
                 <div class="row justify-content-center">
@@ -30,13 +53,6 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-start">
-            <div class="col-md-6">
-                <h3>Verfügbare Module</h3>
-            </div>
-        </div>
-
-    </div>
     </div>
 {% endblock %}
 {% block handlebars-template %}
@@ -54,48 +70,77 @@
     {% endverbatim %}
 {% endblock %}
 {% block scripts %}
-    <script>function module_selected(name) {
-        $.ajax({
-            method: "POST",
-            url: "",
-            data: {"type": "module", "module": name},
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"
-            },
-            success: function (data) {
-                const $el = $("#active_module");
-                $el.empty();
-                console.log(data)
-                $el.append("<h5>" + name + "</h5>")
-            }
+    <script id="popover-template" type="text/x-handlebars-template">
+        <div class="list-group pop">
+            <ul class="pl-3">
+                <img class="img-fluid" style="height: 75%" src="{% static 'open-iconic/svg/media-pause.svg' %}"
+                     alt="Pause">
+                Pausiert das Modul für alle Schüler*innen
+            </ul>
+            <ul class="pl-3">
+                <img class="img-fluid" style="height: 75%" src="{% static "open-iconic/svg/media-stop.svg" %}"
+                     alt="Pause">
+                Beendet das Modul
+            </ul>
+            <ul class="pl-3">
+                <img class="img-fluid" style="height: 75%" src="{% static "open-iconic/svg/document.svg" %}"
+                     alt="Pause">
+                TBD - Gibt Überblick über den Modulfortschrit / Graphen?
+            </ul>
+        </div>
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({
+                html: true,
+                content: function () {
+                    const template = Handlebars.compile($("#popover-template").html());
+                    return (template())
+                },
+            });
         })
-    };
 
-    function update() {
-        $.ajax({
-            method: "POST",
-            url: "",
-            data: {"type": "students"},
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"
-            },
-            success: function (data) {
-                const $el = $("#students");
-                $el.empty(); // remove old options
-                console.log(data)
-                const source = document.getElementById("student-status-template").innerHTML;
-                const template = Handlebars.compile(source);
+        function module_selected(name) {
+            $.ajax({
+                method: "POST",
+                url: "",
+                data: {"type": "module", "module": name},
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    const $el = $("#active_module");
+                    $el.empty();
+                    console.log(data)
+                    $el.append("<h5>" + name + "</h5>")
+                }
+            })
+        };
 
-                $.each(data.students, function (index, value) {
-                    const htmlOutput = template(value);
-                    $el.append(htmlOutput)
-                });
-            }
-        })
-    };
-    setInterval(update, 2000)
+        function update() {
+            $.ajax({
+                method: "POST",
+                url: "",
+                data: {"type": "students"},
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    const $el = $("#students");
+                    $el.empty(); // remove old options
+                    console.log(data)
+                    const source = document.getElementById("student-status-template").innerHTML;
+                    const template = Handlebars.compile(source);
+
+                    $.each(data.students, function (index, value) {
+                        const htmlOutput = template(value);
+                        $el.append(htmlOutput)
+                    });
+                }
+            })
+        };
+        setInterval(update, 2000)
     </script>
 {% endblock %}
-
 </body>
 </html>
