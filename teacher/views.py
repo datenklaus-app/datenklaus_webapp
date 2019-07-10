@@ -33,7 +33,7 @@ def room(request, room_name):
         #       return HttpResponseBadRequest('Invalid Lesson')
         buf = Room.objects.get_or_create(room_name=room_name)
         if buf[1]:
-            buf[0].room_name = lesson
+            buf[0].module = lesson
             buf[0].save()
         return HttpResponseRedirect(reverse("room", args=[room_name]))
     buf = Room.objects.get_or_create(room_name=room_name)
