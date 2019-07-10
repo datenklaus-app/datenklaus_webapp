@@ -57,6 +57,7 @@
     </div>
 {% endblock %}
 {% block handlebars-template %}
+<script id="student-status-template" type="text/x-handlebars-template">
     {% verbatim %}
     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
@@ -69,6 +70,7 @@
         <small>ID: {{ session }}</small>
     </a>
     {% endverbatim %}
+</script>
 {% endblock %}
 {% block scripts %}
     <script id="popover-template" type="text/x-handlebars-template">

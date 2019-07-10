@@ -15,22 +15,23 @@
 </head>
 
 <body class="text-center">
-{% block content %}{% endblock %}
 <script>
     var CSRF_TOKEN = '{% csrf_token %}';
 </script>
+
+<!-- Content -->
+{% block content %}{% endblock %}
 
 <!-- JavaScript Includes-->
 <script src="{% static "js/jquery-3.4.1.js" %}"></script>
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="{% static "js/handlebars.js" %}"></script>
 <script src="{% static "bootstrap-4.3.1-dist/js/bootstrap.min.js" %}"></script>
+<script src="{% static 'js/Chart.min.js' %}"></script>
 <!-- Optional Handlebars templates-->
 
-<script id="student-status-template" type="text/x-handlebars-template">
-    {% block handlebars-template %}
-    {% endblock %}
-</script>
+{% block handlebars-template %}
+{% endblock %}
 <!-- Optional JavaScript -->
 {% block scripts %}{% endblock %}
 
