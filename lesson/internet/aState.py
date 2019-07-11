@@ -8,25 +8,35 @@ from student.models import Student
 
 
 class AState(LessonState):
-    card = None
-
-    def _make_card(self):
-        return SliderCard("Wie schätzt du dein Wissen zum Thema Internet ein ?", 0, 10, ASTATE)
+    card = SliderCard("Wie schätzt du dein Wissen zum Thema Internet ein ?", 0, 10, ASTATE)
 
     def next_state(self, student: Student) -> int:
         return BSTATE
 
-    def html(self, request, student: Student) -> str:
-        return self._make_card().get_html(request)
+    def render(self, request, student: Student, context) -> str:
+        return self.card.render(request, context)
 
     def handle_post(self, post, student):
-        self._make_card().handle_post(post, student, "INTERNET")
+        self.card.handle_post(post, student)
 
     @staticmethod
-    def get_results(student):
+    def get_results(room, student=None):
+        """
+        :param room:
+        :param student:
+        :return: A list of results for the entire room (or a students individual result) as list
+        """
         try:
-            obj = SliderCardModel.objects.get(state=ASTATE, student=student, lesson="INTERNET")
+            if student is not None:
+                obj = SliderCardModel.objects.get(state=ASTATE, student=student, room=room)
+                res = [obj.selected_value]
+            else:
+                objs = SliderCardModel.objects.filter(state=ASTATE, room=room)
+                res = [0]*10
+                for o in objs:
+                    res[o.selected_value] += 1
+
         except ObjectDoesNotExist:
             raise LessonState.LessonStateError(ASTATE)
 
-        return {"knowledge": obj.selected_value}
+        return {"knowledge": res}

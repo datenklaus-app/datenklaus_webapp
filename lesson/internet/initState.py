@@ -5,20 +5,18 @@ from student.models import Student
 
 
 class InitState(LessonState):
-    @staticmethod
-    def _make_card():
-        return DefaultCard("Willkommen",
-                           "Heute lernen wir etwas über das Internet",
-                           "Das Internet ist sehr toll", INITSTATE)
+    card = DefaultCard("Willkommen",
+                       "Heute lernen wir etwas über das Internet",
+                       "Das Internet ist sehr toll", INITSTATE)
 
     def next_state(self, student: Student) -> int:
         return ASTATE
 
-    def html(self, request, student: Student) -> str:
-        return self._make_card().get_html(request)
+    def render(self, request, student: Student, context) -> str:
+        return self.card.render(request, context)
 
     def handle_post(self, post, student):
-        return self._make_card().handle_post(post, student, "INTERNET")
+        return self.card.handle_post(post, student)
 
-    def get_results(self, student):
+    def get_results(self, room, student=None):
         pass  # FIXME: Maybe add a check to see whether this state has already been executed by the student once

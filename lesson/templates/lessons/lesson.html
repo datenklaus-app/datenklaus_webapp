@@ -1,27 +1,25 @@
 {% extends 'base.html' %}
-{% block scripts %}
-    <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-            console.log("Test")
-        })
-    </script>
-{% endblock %}
 {% block content %}
-    <div class="container table w-75">
-    <div class="row"><div class="col">{{ card|safe }} </div></div>
-    <div class="row pt-4">
-        <div class="col">
-            <input type=button class='btn-warning btn-sm' value="Zurück"
-                   onClick="history.back()">
+    <div class="container">
+        <div class="row">
+            <div class="col">{% block lesson_card %}{% endblock %}</div>
         </div>
-        <div class="col">
-            <p><strong class="text-info">Raum:</strong> {{ rname }}</p>
-        </div>
-        <div class="col">
-            <input type=button class='btn-info btn-sm' value="Raum verlassen"
-                   onClick="window.location.href = '{% url 'leave' %}'">
+        <div class="row pt-4">
+            <div class="col">
+                <input type=button class='btn-warning btn-sm' value="Zurück"
+                       onClick="history.back()">
+            </div>
+            <div class="col">
+                <p><strong class="text-info">Raum:</strong> {{ rname }}</p>
+            </div>
+            <div class="col">
+                <input type=button class='btn-info btn-sm' value="Raum verlassen"
+                       onClick="window.location.href = '{% url 'leave' %}'">
+            </div>
         </div>
     </div>
 {% endblock %}
 
+{% block scripts %}
+    {% block card_scripts %}{% endblock %}
+{% endblock %}

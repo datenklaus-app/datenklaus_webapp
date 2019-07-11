@@ -1,5 +1,5 @@
 from django import forms
-from django.template.loader import render_to_string
+from django.shortcuts import render
 
 from lesson.cards.card import Card
 
@@ -11,16 +11,16 @@ class DefaultCard(Card):
         self.text = text
         self.state = state
 
-    def get_html(self, request):
+    def render(self, request, context):
         form = DefaultCardForm()
-        context = {"title": self.title,
-                   "subtitle": self.subtitle,
-                   "text": self.text,
-                   "form": form,
-                   "state": self.state}
-        return render_to_string('lessons/cards/defaultCard.html', request=request, context=context)
+        context["title"] = self.title
+        context["subtitle"] = self.subtitle
+        context["text"] = self.text
+        context["form"] = form
+        context["state"] = self.state
+        return render(request, 'lessons/cards/defaultCard.html', context=context)
 
-    def handle_post(self, post, student, lesson):
+    def handle_post(self, post, student):
         form = DefaultCardForm(post)
         if not form.is_valid():
             raise Card.InvalidCardFormError()

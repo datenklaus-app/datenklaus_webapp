@@ -1,25 +1,23 @@
-from lesson.cards.defaultCard import DefaultCard
+from lesson.cards.BarChartCard import LineChartCard
 from lesson.internet.aState import AState
-from lesson.internet.states import BSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class BState(LessonState):
-    @staticmethod
-    def _make_card(student: Student):
-        res = AState.get_results(student)
-        return DefaultCard("Danke", "Du bist toll! Auswahl: " + str(res["knowledge"]), "<3", BSTATE)
+    card = LineChartCard(list(map(lambda i: str(i), range(1, 11))), title="So schätzt ihr euch ein:")
 
     def next_state(self, student: Student) -> int:
         return 0  # FIXME: Implement more states
 
-    def html(self, request, student: Student) -> str:
-        return self._make_card(student).get_html(request)
+    def render(self, request, student: Student, context) -> str:
+        results = AState().get_results(student.room)
+
+        return self.card.render(request, context, dataset=results['knowledge'])
 
     def handle_post(self, post, student: Student):
-        return self._make_card(student).handle_post(post, student, "INTERNET")
+        return None
 
     @staticmethod
-    def get_results(student):
+    def get_results(room, student=None):
         pass

@@ -1,3 +1,6 @@
+{% extends 'lessons/lesson.html' %}
+{% block lesson_card %}
+
 <div class="card m-2">
     <div class="h1 card-title"> {{ title }} </div>
     {% load widget_tweaks %}
@@ -13,3 +16,5 @@
         </form>
     </div>
 </div>
+
+{% endblock %}

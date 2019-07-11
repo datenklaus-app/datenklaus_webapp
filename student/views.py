@@ -9,6 +9,13 @@ from .forms import JoinRoomForm
 
 
 def index(request):
+    if request.is_ajax():
+        rooms = Room.objects.all()
+        room_names = []
+        for r in rooms:
+            room_names.append(r.room_name)
+        return JsonResponse({'rooms': room_names})
+
     try:
         student = Student.objects.get(session=request.session.session_key)
         if student.room.module is not None:
@@ -17,15 +24,9 @@ def index(request):
     except ObjectDoesNotExist:
         # NOTE: we need to manually set this to ensure that the user's session
         # is saved on the first request
-        request.session.modified = True
+        request.session.create()
         pass
 
-    if request.is_ajax():
-        rooms = Room.objects.all()
-        room_names = []
-        for r in rooms:
-            room_names.append(r.room_name)
-        return JsonResponse({'rooms': room_names})
     form = JoinRoomForm()
     context = {'form': form}
     return render(request, 'student/index.html', context)

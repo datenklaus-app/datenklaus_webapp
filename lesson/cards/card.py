@@ -1,8 +1,8 @@
 class Card:
-    def get_html(self, request):
+    def render(self, request):
         raise NotImplementedError("Error: Using Card Interface function")
 
-    def handle_post(self, request, student, lesson, state):
+    def handle_post(self, post, student):
         raise NotImplementedError("Error: Using Card Interface function")
 
     class InvalidCardFormError(Exception):

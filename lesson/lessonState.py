@@ -15,12 +15,13 @@ class LessonState:
         """
         raise NotImplementedError()
 
-    def html(self, request, student: Student) -> str:
+    def render(self, request, student: Student, context: {}) -> str:
         """
+        Renders (calls djangos render shortcut and returns the result) the given states
+        :param context: context for the "lesson.html" template
         :param request: Current request
         :param student: The student who requested the next state
-        :return: HTML representation of the current state (card) which is
-        used by the view
+        :return: Whatever django's render method returns #fixme better documentation !
         :raises LessonStateError:
         """
         raise NotImplementedError()
@@ -38,9 +39,10 @@ class LessonState:
         raise NotImplementedError()
 
     @staticmethod
-    def get_results(student):
+    def get_results(room, student=None):
         """
-        :param student: Student for which to get results for
+        :param room: Room to get results for
+        :param student: Student for which to get results for (if None, results for entire room are returned)
         :return: Dictionary containing the student's results
         :raises LessonSateError: If state has not been finished yet
         """

@@ -1,4 +1,6 @@
+from chartjs.views.lines import BaseLineChartView
 from django import forms
+from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from lesson.cards.card import Card
@@ -12,24 +14,24 @@ class SliderCard(Card):
         self.max_val = max_val
         self.state = state
 
-    def handle_post(self, post, student, lesson):
+    def handle_post(self, post, student):
         form = self._make_form(post=post)
         if not form.is_valid():
             raise Card.InvalidCardFormError()
 
-        obj = SliderCardModel.objects.get_or_create(student=student, lesson=lesson, state=self.state)[0]
+        obj = SliderCardModel.objects.get_or_create(student=student, room=student.room, state=self.state)[0]
         obj.selected_value = form.cleaned_data['svalue']
         obj.save()
 
-    def get_html(self, request):
-        context = {"title": self.title,
-                   "form": self._make_form(),
-                   "min_value": str(self.min_val),
-                   "max_value": str(self.max_val),
-                   "state": self.state}
+    def render(self, request, context):
+        context["title"] = self.title
+        context["form"] = self._make_form()
+        context["min_value"] = str(self.min_val)
+        context["max_value"] = str(self.max_val)
+        context["state"] = self.state
+        return render(request, 'lessons/cards/sliderCard.html', context=context)
 
-        return render_to_string('lessons/cards/sliderCard.html', request=request, context=context)
-
+    #FIXME: use form constructor!?
     def _make_form(self, post=None):
         if post is not None:
             form = self.SliderCardForm(post)
