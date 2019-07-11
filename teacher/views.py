@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -41,6 +41,13 @@ def room(request, room_name):
         return HttpResponseRedirect(reverse("index"))
     context = {'room_name': room_name, 'module': r.module}
     return render(request, 'teacher/teacher_room.html', context=context)
+
+
+def get_rooms(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    rooms = [n['room_name'] for n in Room.objects.all().values('room_name')]
+    return JsonResponse({'rooms': rooms})
 
 
 def validate_room_name(request):

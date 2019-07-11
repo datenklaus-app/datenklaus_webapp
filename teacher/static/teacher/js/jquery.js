@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    validateRoomName();
+    getRooms();
+    setInterval(getRooms, 5000);
 
     $("#room_name").change(validateRoomName);
 
@@ -9,9 +12,29 @@ $(document).ready(function () {
     })
 });
 
+getRooms = function () {
+    $.ajax({
+        url: "get-rooms",
+        dataType: 'json',
+        success: function (data) {
+            const list = $("#rooms");
+            const selected = list.val();
+            list.empty(); // remove old options
+            $.each(data.rooms, function (index, value) {
+                list.append($("<option></option>")
+                    .attr("value", value).text(value));
+                if (value === selected) {
+                    list.val(selected)
+                }
+            })
+        }
+    })
+};
+
+
 validateRoomName = function () {
     const room = $('#room_name');
-    console.log("change");
+    if (!room) return;
     $.ajax({
         url: room.attr("data-validate-room-name-url"),
         data: room.serialize(),
@@ -19,8 +42,10 @@ validateRoomName = function () {
         success: function (data) {
             if (data.exists) {
                 $('#room_name_exists').show();
+                $('#button-room').prop('disabled', true);
             } else {
                 $('#room_name_existing').hide();
+                $('#button-room').prop('disabled', false);
             }
 
         }
@@ -53,7 +78,6 @@ joinRoom = function () {
         $('#warnings').append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>');
         error = true
     }
-    // TODO Show error if room already exists
     if (error) {
         $('#warnings').parent().show();
         return
