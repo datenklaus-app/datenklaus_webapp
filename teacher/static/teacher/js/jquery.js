@@ -1,14 +1,6 @@
 $(document).ready(function () {
 
-    (function ($) {
-        let roomDelay;
-        $.myNamespace = {roomDelay};
-    })(jQuery);
-
-    $("#room_name").change(function () {
-        clearTimeout($.myNamespace.roomDelay);
-        $.myNamespace.roomDelay = setTimeout(validateRoomName, 1000)
-    });
+    $("#room_name").change(validateRoomName);
 
     $("#button-room").click(joinRoom);
 
@@ -26,25 +18,27 @@ validateRoomName = function () {
         dataType: 'json',
         success: function (data) {
             if (data.exists) {
-                $('#room_name_exists').show()
+                $('#room_name_exists').show();
+            } else {
+                $('#room_name_existing').hide();
             }
+
         }
     })
 };
 
 getRoomName = function () {
-    console.log("roomanme")
     let roomName;
-    if (!$('#room_name').val()) {
-        roomName = $('#room_name').attr('placeholder');
+    const roomElem = $('#room_name');
+    if (!roomElem.val()) {
+        roomName = roomElem.attr('placeholder');
     } else {
-        roomName = $('#room_name').val();
+        roomName = roomElem.val();
     }
     return roomName;
 };
 
 joinRoom = function () {
-    console.log("join")
     let room_name = getRoomName();
     let lesson = $('#modules').find('button.active').find('#module_name').data('name');
     let error = false;

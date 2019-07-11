@@ -36,8 +36,7 @@ def room(request, room_name):
             buf[0].module = lesson
             buf[0].save()
         return HttpResponseRedirect(reverse("room", args=[room_name]))
-    buf = Room.objects.get(room_name=room_name)
-    r = buf[0]
+    r = Room.objects.get(room_name=room_name)
     if r.module is None:
         return HttpResponseRedirect(reverse("index"))
     context = {'room_name': room_name, 'module': r.module}
