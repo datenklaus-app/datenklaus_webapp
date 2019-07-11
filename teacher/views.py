@@ -36,10 +36,18 @@ def room(request, room_name):
             buf[0].module = lesson
             buf[0].save()
         return HttpResponseRedirect(reverse("room", args=[room_name]))
-    buf = Room.objects.get_or_create(room_name=room_name)
+    buf = Room.objects.get(room_name=room_name)
     r = buf[0]
+    if r.module is None:
+        return HttpResponseRedirect(reverse("index"))
     context = {'room_name': room_name, 'module': r.module}
     return render(request, 'teacher/teacher_room.html', context=context)
+
+
+def validate_room_name(request):
+    room_name = request.GET.get("roomName", None)
+    data = {'exists': Room.objects.filter(room_name=room_name).exists()}
+    return JsonResponse(data)
 
 
 def refresh_student_list(room_name):

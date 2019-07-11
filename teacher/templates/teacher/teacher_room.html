@@ -21,7 +21,7 @@
                     <h3 style="display: inline-block">Steuerung</h3>
                     <a tabindex="0" class="btn btn-sm btn-outline-dark align-top rounded-circle bg-white text-dark"
                        style="cursor: pointer"
-                       role="button" data-toggle="popover" title="Steuerung">
+                       role="button" data-toggle="popover" data-trigger="focus" title="Steuerung">
                         <div class="small text-monospace text-primary"><b>?</b></div>
                     </a>
                 </div>
@@ -114,7 +114,6 @@
         $(function () {
             $('[data-toggle="popover"]').popover({
                 html: true,
-                // trigger: 'focus',
                 content: function () {
                     const template = Handlebars.compile($("#popover-template").html());
                     return (template())

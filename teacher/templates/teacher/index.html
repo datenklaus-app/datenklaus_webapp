@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+<!-- Strings -->
+<!-- Strings end -->
 {% block content %}
     {% load static %}
     <div class="container">
@@ -41,13 +43,18 @@
                 <h3 class="text-info">einen Raumnamen</h3>
             </div>
         </div>
-        <div class="row justify-content-center ">
+        <div class="row justify-content-center" id="room_name_div">
             <div class="col-md-6">
                 <div class="input-group mb-3">
-                    <input id="room_name" type="text" class="form-control" placeholder="{{ random_room }}"
-                           aria-label="room"
-                           aria-describedby="button-room">
+                    <input id="room_name" type="text" name="roomName" class="form-control"
+                           placeholder="{{ random_room }}"
+                           aria-label="room" aria-describedby="button-room"
+                           data-validate-room-name-url="{% url 'validate-room' %}">
                 </div>
+            </div>
+        </div>
+        <div class="row justify-content-center" style="display: none" id="room_name_exists">
+            <div class="col-md-6">
             </div>
         </div>
         <div class="row justify-content-center">
@@ -92,7 +99,6 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script src="{% static "teacher/js/rango-jquery.js" %}"></script>
+    <script src="{% static "teacher/js/jquery.js" %}"></script>
 {% endblock %}
-</body>
 </html>
