@@ -44,7 +44,7 @@ validateRoomName = function () {
                 $('#room_name_exists').show();
                 $('#button-room').prop('disabled', true);
             } else {
-                $('#room_name_existing').hide();
+                $('#room_name_exists').hide();
                 $('#button-room').prop('disabled', false);
             }
 
