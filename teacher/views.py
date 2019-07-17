@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson import get_lessons_list, get_lessons_description
+from lesson.views import get_lessons_list, get_lessons_description
 from teacher import random_word_chain
 from teacher.models import Room
 from teacher.utils import get_students_for_room

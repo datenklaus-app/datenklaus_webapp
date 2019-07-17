@@ -3,10 +3,24 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from lesson import get_state
+from lesson.internet.internet import Internet
 from lesson.internet.states import INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
+
+
+def get_state(lesson_name, state):
+    if lesson_name == "INTERNET":
+        return Internet.get_state(state)
+    raise NotImplementedError("Selected Lesson does not exist")
+
+
+def get_lessons_list():
+    return ["INTERNET"]
+
+
+def get_lessons_description(lesson):
+    return "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt."
 
 
 def lesson(request, state_num=None):
