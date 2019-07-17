@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     {% load static %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.min.css' %}">
@@ -15,26 +14,26 @@
 </head>
 
 <body>
-<script>
-    var CSRF_TOKEN = '{% csrf_token %}';
-</script>
+
+<script>const CSRF_TOKEN = '{% csrf_token %}';</script>
 
 <!-- Content -->
-{% block content %}{% endblock %}
+{% block content %}
+{% endblock %}
 
 <!-- JavaScript Includes-->
 <script src="{% static "js/jquery-3.4.1.js" %}"></script>
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="{% static "js/handlebars.js" %}"></script>
 <script src="{% static "bootstrap-4.3.1-dist/js/bootstrap.min.js" %}"></script>
-<script src="{% static 'js/Chart.min.js' %}"></script>
-<!-- Optional Handlebars templates-->
 
+<!-- Optional Handlebars templates-->
 {% block handlebars-template %}
 {% endblock %}
-<!-- Optional JavaScript -->
-{% block scripts %}{% endblock %}
 
+<!-- Optional JavaScript -->
+{% block scripts %}
+{% endblock %}
 </body>
 </html>
 
