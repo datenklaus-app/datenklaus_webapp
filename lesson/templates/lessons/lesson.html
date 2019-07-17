@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container">
-        <div class="row">
+    <div class="container text-center">
+        <div class="row ">
             <div class="col">{% block lesson_card %}{% endblock %}</div>
         </div>
         <div class="row pt-4">
-            <div class="col">
+            <div class="col-sm">
+                {% if has_previous %}
                 <input type=button class='btn-warning btn-sm' value="Zurück"
                        onClick="history.back()">
+                {% endif %}
             </div>
-            <div class="col">
+            <div class="col-sm">
                 <p><strong class="text-info">Raum:</strong> {{ rname }}</p>
             </div>
-            <div class="col">
+            <div class="col-sm">
                 <input type=button class='btn-info btn-sm' value="Raum verlassen"
                        onClick="window.location.href = '{% url 'leave' %}'">
             </div>

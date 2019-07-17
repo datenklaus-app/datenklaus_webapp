@@ -21,9 +21,11 @@ class LineChartCard(Card):
     def render(self, request, context, dataset=[]):
         style = DefaultStyle()
         style.background = "#FFFFFF"
-        chart = pygal.Bar(show_legend=False, show_y_labels=True, height=300, style=style)
+        chart = pygal.Bar(show_legend=False, show_y_labels=True, classes=(..., "card-img-bottom", "img-fluid"),
+                          height=400, explicit_size=True)
         chart.x_labels = self.labels
-        chart.y_labels = range(max(dataset)+1)
+        chart.y_labels = range(max(dataset) + 1)
+
         chart.add('', dataset)
         context["title"] = self.title
         context["cht"] = chart.render(is_unicode=True)

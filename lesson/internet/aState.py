@@ -8,7 +8,7 @@ from student.models import Student
 
 
 class AState(LessonState):
-    card = SliderCard("Wie schätzt du dein Wissen zum Thema Internet ein ?", 0, 10, ASTATE)
+    card = SliderCard("Wie schätzt du dein Wissen zum Thema Internet ein ?", 0, 9, ASTATE)
 
     def next_state(self, student: Student) -> int:
         return BSTATE

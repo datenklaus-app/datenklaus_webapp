@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from lesson import get_state
+from lesson.internet.states import INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
@@ -31,31 +32,5 @@ def lesson(request, state_num=None):
     except LessonState.LessonStateError as e:
         return HttpResponseRedirect(reverse("lesson", args=[e.fallback_state]))
 
-    context = {"rname": student.room}
+    context = {"rname": student.room, "has_previous": state_num is not INITSTATE}
     return state.render(request, student, context)
-
-
-class LineChartJSONView(BaseLineChartView):
-    COLORS = [(122, 159, 191)]
-
-    def get_labels(self):
-        """Return 7 labels for the x-axis."""
-        return ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
-
-    def get_providers(self):
-        """Return names of datasets."""
-        return ["Ergebnisse"]
-
-    def get_data(self):
-        """Return 3 datasets to plot."""
-
-        return [[0, 2, 1, 5, 6, 5, 1, 2, 0]]
-
-    def get_colors(self):
-        return next_color(color_list=self.COLORS)
-
-
-def chart(request):
-    view = LineChartJSONView()
-    context = {"data": view.convert_context_to_json(view.get_context_data())}
-    return render(request, 'lessons/cards/barChartCard.html', context=context)

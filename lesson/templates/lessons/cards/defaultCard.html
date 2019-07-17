@@ -1,14 +1,18 @@
 {% extends 'lessons/lesson.html' %}
 {% block lesson_card %}
-<div class="card">
-    <div class="h1 card-title pt-3">{{ title }}</div>
-    <div class="h2 card-subtitle text-muted">{{ subtitle }}</div>
-    <div class="card-body w-75 align-self-center">
-        <p class="card-text">{{ text }}</p>
-        <form action="{% url 'lesson' state %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn-success btn-lg container-fluid">Weiter</button>
-        </form>
+    <div class="card">
+        <h4 class="card-header">{{ title }}</h4>
+        <div class="card-body">
+            <h6 class="card-title text-muted">{{ subtitle }}</h6>
+            <div class="card-text">{{ text }}</div>
+        </div>
+        <ul class="list-group list-group-flush">
+            <form action="{% url 'lesson' state %}" method="post">
+                {% csrf_token %}
+                <li class="list-group-item">
+                    <button type="submit" class="btn-success btn-lg container-fluid">Weiter</button>
+                </li>
+            </form>
+        </ul>
     </div>
-</div>
 {% endblock %}
