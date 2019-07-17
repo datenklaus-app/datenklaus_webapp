@@ -28,7 +28,7 @@ def room(request, room_name):
         return refresh_student_list(room_name)
     if request.method == "POST":
         lesson = request.POST.get("lesson", None)
-        # TODO: Error Handling
+        # TODO: Sanitizing and Error Handling
         #    if lesson is None or lesson not in get_lessons_list():
         #       return HttpResponseBadRequest('Invalid Lesson')
         buf = Room.objects.get_or_create(room_name=room_name)
@@ -52,6 +52,7 @@ def get_rooms(request):
 
 def validate_room_name(request):
     room_name = request.GET.get("roomName", None)
+    # TODO: Validate and sanitize
     data = {'exists': Room.objects.filter(room_name=room_name).exists()}
     return JsonResponse(data)
 
