@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <div class="container text-center" xmlns="http://www.w3.org/1999/html">
+    <div class="container" xmlns="http://www.w3.org/1999/html">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col">
                 <h1>Raum <span style="color:blue">{{ room_name }}</span></h1>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col">
                 <h3 class="text-dark" style="display:inline-block;">Aktives Modul:</h3>
                 <a href="#">
                     <h4 style="display: inline-block" class="mb-1 text-primary">{{ module|lower|capfirst }}</h4>
@@ -41,38 +41,46 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
+        <div class="row justify-content-center pt-2">
+            <div class="col-md-7">
                 <h3>Verbundene Schüler*innen</h3>
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="row justify-content-center">
-                            <div class="list-group overflow-auto" id="students">
-                            </div>
-                        </div>
-                    </div>
+                <div class="row pt-2 position-absolute" style="overflow-y: auto; height: 200px;" id="students">
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block handlebars-template %}
-<script id="student-status-template" type="text/x-handlebars-template">
-    {% verbatim %}
-    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1 text-info">{{ name }}</h5>
-            <small> {{ expiry }}</small>
+    <script id="connected-students" type="text/x-handlebars-template">
+        {% verbatim %}
+        <div class="col-md-6 btn" type="button">
+            <div class="d-inline-block mb-2 w-100 card">
+                <div class="d-block card-body">
+                    <h5 class="mb-1 text-info">{{ name }}</h5>
+                    <p class="mb-1"></p>
+                    <h6 class="mb-1">{{ progress }}</h6>
+                    <p class="mb-1"></p>
+                    <small>ID: {{ session }}</small>
+                </div>
+            </div>
         </div>
-        <p class="mb-1"></p>
-        <h6 class="mb-1">{{ progress }}</h6>
-        <p class="mb-1"></p>
-        <small>ID: {{ session }}</small>
-    </a>
-    {% endverbatim %}
-</script>
-{% endblock %}
-{% block scripts %}
+        {% endverbatim %}
+    </script>
+    <script id="student-status-template" type="text/x-handlebars-template">
+        {% verbatim %}
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-info">{{ name }}</h5>
+                <small> {{ expiry }}</small>
+            </div>
+            <p class="mb-1"></p>
+            <h6 class="mb-1">{{ progress }}</h6>
+            <p class="mb-1"></p>
+            <small>ID: {{ session }}</small>
+        </a>
+        {% endverbatim %}
+    </script>
+    <!-- Template for the controls popovers -->
     <script id="popover-template" type="text/x-handlebars-template">
         <div class="list-group pop">
             <ul class="pl-3">
@@ -110,6 +118,9 @@
             </ul>
         </div>
     </script>
+    <!-- Template end -->
+{% endblock %}
+{% block scripts %}
     <script>
         $(function () {
             $('[data-toggle="popover"]').popover({
@@ -147,15 +158,12 @@
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    const $el = $("#students");
-                    $el.empty(); // remove old options
-                    console.log(data)
-                    const source = document.getElementById("student-status-template").innerHTML;
+                    const students = $("#students");
+                    students.empty(); // remove old options
+                    const source = document.getElementById("connected-students").innerHTML;
                     const template = Handlebars.compile(source);
-
                     $.each(data.students, function (index, value) {
-                        const htmlOutput = template(value);
-                        $el.append(htmlOutput)
+                        students.append(template(value));
                     });
                 }
             })
