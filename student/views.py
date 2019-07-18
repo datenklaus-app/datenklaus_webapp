@@ -39,7 +39,7 @@ def join_room(request):
         if student.room.lesson is None:
             return HttpResponseNotFound("Student has not joined a room yet")
         else:
-            return JsonResponse({'lesson_started': True})
+            return JsonResponse({'lesson_started': student.room.state >= 0})
 
     form = JoinRoomForm(request.POST)
     if not form.is_valid():

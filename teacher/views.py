@@ -42,7 +42,7 @@ def room(request, room_name):
             return HttpResponseRedirect(reverse("room", args=[room_name]))
     try:
         r = Room.objects.get(room_name=room_name)
-        context = {'room_name': room_name, 'lesson': r.lesson}
+        context = {'room_name': room_name, 'lesson': r.lesson, 'state': r.state}
         return render(request, 'teacher/teacher_room.html', context=context)
     except Room.DoesNotExist:
         return HttpResponseRedirect(reverse("teacher_index"))

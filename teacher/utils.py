@@ -29,6 +29,6 @@ def ajax_bad_request(error_msg):
 
 
 class Cmd(Enum):
-    PAUS = 0
-    STOP = 1
-    EVAL = 2
+    START = 0
+    PAUSE = 1
+    STOP = 2

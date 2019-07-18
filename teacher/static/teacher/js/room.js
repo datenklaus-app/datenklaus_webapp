@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $("#button-play").click(function () {
+        controlCommand($(this), cmds.PLAY)
+    });
     $("#button-pause").click(function () {
         controlCommand($(this), cmds.PAUSE)
     });
@@ -7,13 +10,30 @@ $(document).ready(function () {
     });
     setInterval(updateStudentList, 2000);
     initPopover();
+    setStates();
 });
 
 const cmds = {
-    PAUSE: 0,
-    STOP: 1,
-    EVAL: 2
-}
+    PLAY: 0,
+    PAUSE: 1,
+    STOP: 2,
+};
+
+const states = {
+    NOT_STARTED: -1,
+    RUNNING: 0,
+    PAUSED: 1,
+    STOPPED: 2
+};
+
+setStates = function () {
+    $('#button-play').find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"})
+        .prop('disabled', state === states.RUNNING);
+    $('#button-pause').find('path').css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"})
+        .prop('disabled', state > states.RUNNING || state === states.NOT_STARTED);
+    $('#button-stop').find('path').css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"})
+        .prop('disabled', state === states.STOPPED || state === states.NOT_STARTED)
+};
 
 initPopover = function () {
     $('#control-popover').popover({
@@ -32,7 +52,8 @@ controlCommand = function (el, cmd) {
         data: {'room_name': roomName, 'cmd': cmd},
         dataType: 'json',
         success: function () {
-            console.log("Command success");
+            state = cmd;
+            setStates()
         },
         error: function (data) {
             console.log(data.error);
