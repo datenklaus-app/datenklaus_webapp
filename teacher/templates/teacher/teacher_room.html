@@ -12,7 +12,7 @@
             <div class="col">
                 <h3 class="text-dark" style="display:inline-block;">Aktives Modul:</h3>
                 <a href="#">
-                    <h4 style="display: inline-block" class="mb-1 text-primary">{{ module|lower|capfirst }}</h4>
+                    <h4 style="display: inline-block" class="mb-1 text-primary">{{ lesson|lower|capfirst }}</h4>
                 </a>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="col-auto">
                 <h3 style="display: inline-block">Steuerung</h3>
                 <a tabindex="0" class="btn btn-sm align-top" style="cursor: pointer"
-                   role="button" data-toggle="popover" data-trigger="focus" title="Steuerung">
+                   role="button" id="control-popover" title="Steuerung">
                     <img class="img-fluid w-75" src={% static "round-help-24px.svg" %}>
                 </a>
             </div>
@@ -35,7 +35,7 @@
                     <img class="img-fluid" style="min-height: 25px"
                          src={% static "open-iconic/svg/media-stop.svg" %} alt="Stop">
                 </button>
-                <button class="btn" id="button-charts">
+                <button class="btn" id="button-eval">
                     <img class="img-fluid" style="min-height: 25px"
                          src={% static "open-iconic/svg/document.svg" %} alt="Stop">
                 </button>
@@ -64,20 +64,6 @@
                 </div>
             </div>
         </div>
-        {% endverbatim %}
-    </script>
-    <script id="student-status-template" type="text/x-handlebars-template">
-        {% verbatim %}
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1 text-info">{{ name }}</h5>
-                <small> {{ expiry }}</small>
-            </div>
-            <p class="mb-1"></p>
-            <h6 class="mb-1">{{ progress }}</h6>
-            <p class="mb-1"></p>
-            <small>ID: {{ session }}</small>
-        </a>
         {% endverbatim %}
     </script>
     <!-- Template for the controls popovers -->
@@ -122,17 +108,6 @@
 {% endblock %}
 {% block scripts %}
     <script>const roomName = '{{ room_name }}';</script>
-    <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover({
-                html: true,
-                content: function () {
-                    const template = Handlebars.compile($("#popover-template").html());
-                    return (template())
-                },
-            });
-        });
-    </script>
     <script src="{% static "teacher/js/room.js" %}"></script>
 {% endblock %}
 </body>

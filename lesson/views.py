@@ -31,7 +31,7 @@ def lesson(request, state_num=None):
 
     if state_num is not None:
         student.current_state = state_num
-    current_lesson = student.room.module
+    current_lesson = student.room.lesson
 
     try:
         state = get_state(current_lesson, student.current_state)

@@ -70,10 +70,10 @@ getRoomName = function () {
 
 joinRoom = function () {
     let room_name = getRoomName();
-    let lesson = $('#modules').find('button.active').find('#module_name').data('name');
+    let lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
     let error = false;
     if (lesson == null) {
-        $('#choose_module').addClass('text-danger').removeClass('text-info');
+        $('#choose_lesson').addClass('text-danger').removeClass('text-info');
         $('#warnings').append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>');
         error = true
     }
@@ -94,6 +94,5 @@ myRedirect = function (redirectUrl, arg, value) {
     const form = $('<form action="' + redirectUrl + '" method="post">' + CSRF_TOKEN +
         '<input type="hidden" + " name="' + arg + '" value="' + value + '">' + '</form>');
     $('body').append(form);
-    console.log(form);
     $(form).submit();
 };

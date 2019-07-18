@@ -5,18 +5,18 @@ from django.urls import reverse
 from lesson.views import get_lessons_list, get_lessons_description
 from teacher import random_word_chain
 from teacher.models import Room
-from teacher.utils import get_students_for_room, room_not_found_response
+from teacher.utils import get_students_for_room, ajax_bad_request, Cmd
 
 
 def index(request):
     mod = get_lessons_list()
     for i in range(0, 10):
         mod.append(mod[0] + str(i))
-    modules = []
+    lessons = []
     # TODO exclude existing rooms from name suggestions
     for m in mod:
-        modules.append({'name': m, 'description': get_lessons_description(m)})
-    context = {'random_room': random_word_chain.random_word_chain(), 'modules': modules}
+        lessons.append({'name': m, 'description': get_lessons_description(m)})
+    context = {'random_room': random_word_chain.random_word_chain(), 'lessons': lessons}
     return render(request, 'teacher/index.html', context=context)
 
 
@@ -38,14 +38,14 @@ def room(request, room_name):
             # TODO: better error message
             return HttpResponseBadRequest()
         except Room.DoesNotExist:
-            Room.objects.create(room_name=room_name, module=lesson)
+            Room.objects.create(room_name=room_name, lesson=lesson)
             return HttpResponseRedirect(reverse("room", args=[room_name]))
     try:
         r = Room.objects.get(room_name=room_name)
-        context = {'room_name': room_name, 'module': r.module}
+        context = {'room_name': room_name, 'lesson': r.lesson}
         return render(request, 'teacher/teacher_room.html', context=context)
     except Room.DoesNotExist:
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("teacher_index"))
 
 
 def get_rooms(request):
@@ -74,18 +74,23 @@ def refresh_student_list(request):
         students = get_students_for_room(r)
         return JsonResponse({"students": students})
     except Room.DoesNotExist:
-        return room_not_found_response(room_name)
+        return ajax_bad_request("Room " + room_name + " not found")
 
 
-def pause_module(request):
+def control_cmd(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
+    b = request.GET.get("cmd", None)
+    if b is None:
+        return ajax_bad_request("Command not found")
+    cmd = Cmd(int(b))
     # TODO: Validate and sanitize
     # TODO: Check permission
     try:
         r = Room.objects.get(room_name=room_name)
-        r.state = Room.PAUSED
+        r.state = cmd.value
+        r.save()
         return JsonResponse({'data': None})
     except Room.DoesNotExist:
-        return room_not_found_response(room_name)
+        return ajax_bad_request(room_name)

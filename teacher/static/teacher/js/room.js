@@ -1,15 +1,38 @@
 $(document).ready(function () {
-    $("#button-pause").click(pauseModule);
-    setInterval(updateStudentList, 2000)
+    $("#button-pause").click(function () {
+        controlCommand($(this), cmds.PAUSE)
+    });
+    $("#button-stop").click(function () {
+        controlCommand($(this), cmds.STOP)
+    });
+    setInterval(updateStudentList, 2000);
+    initPopover();
 });
 
-pauseModule = function () {
+const cmds = {
+    PAUSE: 0,
+    STOP: 1,
+    EVAL: 2
+}
+
+initPopover = function () {
+    $('#control-popover').popover({
+        html: true,
+        content: function () {
+            const template = Handlebars.compile($("#popover-template").html());
+            return (template())
+        },
+    });
+};
+
+controlCommand = function (el, cmd) {
+    el.blur();
     $.ajax({
-        url: "/teacher/pause-module",
-        data: {'room_name': roomName},
+        url: "/teacher/control",
+        data: {'room_name': roomName, 'cmd': cmd},
         dataType: 'json',
         success: function () {
-            console.log("Module paused");
+            console.log("Command success");
         },
         error: function (data) {
             console.log(data.error);

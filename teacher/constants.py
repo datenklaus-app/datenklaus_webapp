@@ -1,1 +1,1 @@
-MODULE_STATE_WAITING = "Wartet auf Beginn"
+LESSON_STATE_WAITING = "Wartet auf Beginn"

@@ -1,7 +1,8 @@
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from student.models import Student
 from teacher.models import Room
@@ -18,7 +19,7 @@ def index(request):
 
     try:
         student = Student.objects.get(session=request.session.session_key)
-        if student.room.module is not None:
+        if student.room.lesson is not None:
             context = {'sname': student.user_name, 'rname': student.room}
             return render(request, 'student/room_waiting.html', context)
     except ObjectDoesNotExist:
@@ -35,7 +36,7 @@ def index(request):
 def join_room(request):
     if request.is_ajax():
         student = Student.objects.get(session=request.session.session_key)
-        if student.room.module is None:
+        if student.room.lesson is None:
             return HttpResponseNotFound("Student has not joined a room yet")
         else:
             return JsonResponse({'lesson_started': True})
@@ -62,5 +63,4 @@ def join_room(request):
 def leave_room(request):
     for s in Student.objects.filter(session=request.session.session_key):
         s.delete()
-
-    return index(request)
+    return HttpResponseRedirect(reverse("index"))
