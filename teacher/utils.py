@@ -1,4 +1,7 @@
+import http
+
 from django.contrib.sessions.models import Session
+from django.http import JsonResponse
 
 from student.models import Student
 from teacher.constants import MODULE_STATE_WAITING
@@ -16,3 +19,9 @@ def get_students_for_room(room_name):
                              "progress": module_state,
                              "expiry": s.expire_date})
     return student_info
+
+
+def room_not_found_response(room_name):
+    response = JsonResponse({'error': "Room " + room_name + " not found"})
+    response.status_code = http.HTTPStatus.BAD_REQUEST
+    return response

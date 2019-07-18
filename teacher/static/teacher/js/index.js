@@ -10,7 +10,7 @@ $(document).ready(function () {
     $("#button-room-existing").click(function () {
         const room = $('#rooms').val();
         myRedirect('room/' + room);
-    })
+    });
 
     $("button.list-group-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
@@ -54,7 +54,7 @@ validateRoomName = function () {
             }
 
         }
-    })
+    });
 };
 
 getRoomName = function () {
