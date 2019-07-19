@@ -9,6 +9,14 @@ from teacher.utils import get_students_for_room, ajax_bad_request, Cmd
 
 
 def index(request):
+    room_name = request.session.get("room", None)
+    if room_name is not None:
+        try:
+            Room.objects.get(room_name=room_name)
+            return HttpResponseRedirect(reverse("room", args={room_name}))
+        except Room.DoesNotExist:
+            del request.session["room"]
+            request.session.save()
     mod = get_lessons_list()
     for i in range(0, 10):
         mod.append(mod[0] + str(i))
@@ -23,7 +31,8 @@ def index(request):
 def room(request, room_name):
     if request.is_ajax():
         return HttpResponseBadRequest()
-    if request.session.get("room") == "":
+    r = request.session.get("room", None)
+    if r is None:
         request.session["room"] = room_name
     if request.method == "POST":
         lesson = request.POST.get("lesson", None)
@@ -46,6 +55,12 @@ def room(request, room_name):
         return render(request, 'teacher/teacher_room.html', context=context)
     except Room.DoesNotExist:
         return HttpResponseRedirect(reverse("teacher_index"))
+
+
+def leave_room(request):
+    del request.session["room"]
+    request.session.save()
+    return HttpResponseRedirect(reverse("teacher_index"))
 
 
 def get_rooms(request):

@@ -46,6 +46,11 @@
                     <img class="img-fluid" style="min-height: 25px"
                          src={% static "open-iconic/svg/document.svg" %} alt="Stop">
                 </button>
+                <button class="btn" id="button-leave" onclick="window.location.href = '{% url 'teacher_leave' %}'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
+                        <path d="M3 0v1h4v5h-4v1h5v-7h-5zm-1 2l-2 1.5 2 1.5v-1h4v-1h-4v-1z"/>
+                    </svg>
+                </button>
             </div>
         </div>
         <div class="row justify-content-center pt-2">
@@ -76,7 +81,7 @@
     <!-- Template for the controls popovers -->
     <script id="popover-template" type="text/x-handlebars-template">
         <div class="list-group pop">
-                <ul class="pl-3">
+            <ul class="pl-3">
                 <div class="row">
                     <div class="col-auto pr-0">
                         <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-play.svg' %}"
@@ -117,6 +122,17 @@
                     </div>
                     <div class="col text-left pl-2">
                         Grafische Auswertung.
+                    </div>
+                </div>
+            </ul>
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/account-logout.svg' %}"
+                             alt="Raum verlassen">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Raum verlassen.
                     </div>
                 </div>
             </ul>
