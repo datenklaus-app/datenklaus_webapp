@@ -9,6 +9,12 @@ class InitState(LessonState):
                        "Heute lernen wir etwas über das Internet",
                        "Das Internet ist sehr toll", INITSTATE)
 
+    def get_state_number(self):
+        return INITSTATE
+
+    def get_previous_state(self, student: Student):
+        return None  # Initial state has no previous
+
     def next_state(self, student: Student) -> int:
         return ASTATE
 
