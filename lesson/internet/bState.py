@@ -1,4 +1,4 @@
-from lesson.cards.BarChartCard import BarChartCard
+from lesson.cards.barChartCard import BarChartCard
 from lesson.internet.aState import AState
 from lesson.internet.states import CSTATE, BSTATE
 from lesson.lessonState import LessonState
@@ -11,7 +11,7 @@ class BState(LessonState):
         return BSTATE
 
     card = BarChartCard(BSTATE,
-                        list(map(lambda i: str(i), range(1, 11))),
+                        list(map(lambda i: str(i), range(1, 6))),
                         title="So schätzt ihr euch ein:")
 
     def next_state(self, student: Student) -> int:

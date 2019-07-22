@@ -42,7 +42,7 @@ class AState(LessonState):
                 res = [int(obj.choice)]
             else:
                 objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
-                res = [0] * 10
+                res = [0] * 5
                 for o in objs:
                     res[int(o.choice)] += 1
 
