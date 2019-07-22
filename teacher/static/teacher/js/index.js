@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    $(window).on('beforeunload', function () {
+        $(':input', '#joinForm')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+        $('#lessons').scrollTop(0);
+    });
     validateRoomName();
     getRooms();
     setInterval(getRooms, 5000);
@@ -9,7 +15,7 @@ $(document).ready(function () {
 
     $("#button-room-existing").click(function () {
         const room = $('#rooms').val();
-        myRedirect('room/' + room);
+        $(location).attr('href', 'room/' + room);
     });
 
     $("button.list-group-item").click(function () {
@@ -69,15 +75,15 @@ getRoomName = function () {
 };
 
 joinRoom = function () {
-    let room_name = getRoomName();
-    let lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
+    const room_name = getRoomName();
+    const lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
     let error = false;
     if (lesson == null) {
         $('#choose_lesson').addClass('text-danger').removeClass('text-info');
         $('#warnings').append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>');
         error = true
     }
-    let password = $('#room_password').val();
+    const password = $('#room_password').val();
     if (!password.trim()) {
         $('#password_text').addClass('text-danger').removeClass('text-info');
         $('#warnings').append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>');
@@ -87,12 +93,21 @@ joinRoom = function () {
         $('#warnings').parent().show();
         return
     }
-    myRedirect('room/' + room_name, 'lesson', lesson)
-};
-
-myRedirect = function (redirectUrl, arg, value) {
-    const form = $('<form action="' + redirectUrl + '" method="post">' + CSRF_TOKEN +
-        '<input type="hidden" + " name="' + arg + '" value="' + value + '">' + '</form>');
-    $('body').append(form);
-    $(form).submit();
+    $('#module_choice').val(lesson);
+    $('#room_name').val(room_name);
+    $.ajax({
+        url: 'join-room',
+        type: 'post',
+        headers: {
+            "X-CSRFToken": CSRF_TOKEN
+        },
+        dataType: 'json',
+        data: $("#joinForm").serialize(),
+        success: function () {
+            $(location).attr('href', "room/" + room_name);
+        },
+        error: function (jqXHR) {
+            console.log(jqXHR.responseJSON.err)
+        }
+    });
 };

@@ -27,12 +27,12 @@ const states = {
 };
 
 setStates = function () {
-    $('#button-play').find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"})
-        .prop('disabled', state === states.RUNNING);
-    $('#button-pause').find('path').css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"})
-        .prop('disabled', state > states.RUNNING || state === states.NOT_STARTED);
-    $('#button-stop').find('path').css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"})
-        .prop('disabled', state === states.STOPPED || state === states.NOT_STARTED)
+    $('#button-play').prop('disabled', state === states.RUNNING)
+        .find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"});
+    $('#button-pause').prop('disabled', state > states.RUNNING || state === states.NOT_STARTED).find('path')
+        .css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"});
+    $('#button-stop').prop('disabled', state === states.STOPPED || state === states.NOT_STARTED).find('path')
+        .css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"});
 };
 
 initPopover = function () {
@@ -55,8 +55,9 @@ controlCommand = function (el, cmd) {
             state = cmd;
             setStates()
         },
-        error: function (data) {
-            console.log(data.error);
+        error: function (jqXHR) {
+            // TODO: remove?
+            console.log(jqXHR.responseJSON.err)
         }
     })
 };
@@ -76,6 +77,7 @@ updateStudentList = function update() {
             },);
         },
         error: function (data) {
+            // TODO: remove?
             console.log(data.error)
         }
     })

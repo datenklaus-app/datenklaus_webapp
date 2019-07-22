@@ -5,7 +5,7 @@ from django.urls import reverse
 from lesson.views import get_lessons_list, get_lessons_description
 from teacher import random_word_chain
 from teacher.models import Room
-from teacher.utils import get_students_for_room, ajax_bad_request, Cmd
+from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
 def index(request):
@@ -28,27 +28,36 @@ def index(request):
     return render(request, 'teacher/index.html', context=context)
 
 
-def room(request, room_name):
-    if request.is_ajax():
+def join(request):
+    if not request.is_ajax():
         return HttpResponseBadRequest()
-    r = request.session.get("room", None)
-    if r is None:
-        request.session["room"] = room_name
     if request.method == "POST":
+        room_name = request.POST.get("room_name", None)
+        if room_name is None:
+            return HttpResponseBadRequest()
         lesson = request.POST.get("lesson", None)
         if lesson is None:
+            return HttpResponseBadRequest()
+        password = request.POST.get("room_password", None)
+        if password is None:
             return HttpResponseBadRequest()
         # TODO: Sanitizing and Error Handling
         #    if lesson is None or lesson not in get_lessons_list():
         #       return HttpResponseBadRequest('Invalid Lesson')
         # TODO: Password
+
         try:
             Room.objects.get(room_name=room_name)
-            # TODO: better error message
-            return HttpResponseBadRequest()
+            return ajax_bad_request("Room already exist: " + room_name)
         except Room.DoesNotExist:
-            Room.objects.create(room_name=room_name, lesson=lesson)
-            return HttpResponseRedirect(reverse("room", args=[room_name]))
+            Room.objects.create(room_name=room_name, lesson=lesson, password=password)
+            return HttpResponseNoContent()
+
+
+def room(request, room_name):
+    r = request.session.get("room", None)
+    if r is None:
+        request.session["room"] = room_name
     try:
         r = Room.objects.get(room_name=room_name)
         context = {'room_name': room_name, 'lesson': r.lesson, 'state': r.state}
@@ -106,6 +115,6 @@ def control_cmd(request):
         r = Room.objects.get(room_name=room_name)
         r.state = cmd.value
         r.save()
-        return JsonResponse({'data': None})
+        return HttpResponseNoContent()
     except Room.DoesNotExist:
-        return ajax_bad_request(room_name)
+        return ajax_bad_request("Room doesn't exist: " + room_name)
