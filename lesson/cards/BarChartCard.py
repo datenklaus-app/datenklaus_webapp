@@ -30,7 +30,7 @@ class BarChartCard(Card):
         context["title"] = self.title
         context["cht"] = chart.render(is_unicode=True)
         context["state"] = self.state
-        return render(request, 'lessons/cards/barChartCard.html', context=context)
+        return render(request, 'lesson/cards/barChartCard.html', context=context)
 
     def handle_post(self, post):
         pass

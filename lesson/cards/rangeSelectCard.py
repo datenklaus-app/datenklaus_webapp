@@ -20,7 +20,7 @@ class RangeSelectCard(Card):
         context["title"] = self.title
         context["form"] = RangeSelectForm(self.choices)
         context["state"] = self.state
-        return render(request, 'lessons/cards/rangeSelectCard.html', context=context)
+        return render(request, 'lesson/cards/rangeSelectCard.html', context=context)
 
 
 class RangeSelectForm(forms.Form):

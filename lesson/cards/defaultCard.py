@@ -18,7 +18,7 @@ class DefaultCard(Card):
         context["text"] = self.text
         context["form"] = form
         context["state"] = self.state
-        return render(request, 'lessons/cards/defaultCard.html', context=context)
+        return render(request, 'lesson/cards/defaultCard.html', context=context)
 
     def handle_post(self, post):
         form = DefaultCardForm(post)
