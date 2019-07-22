@@ -1,7 +1,8 @@
+from lesson.internet import states
 from lesson.internet.aState import AState
 from lesson.internet.bState import BState
+from lesson.internet.cState import CState
 from lesson.internet.initState import InitState
-from lesson.internet.states import BSTATE, ASTATE, INITSTATE
 from lesson.lessonState import LessonState
 from lesson.lesson import Lesson
 
@@ -23,9 +24,11 @@ class Internet(Lesson):
 
     @staticmethod
     def get_state(state) -> LessonState:
-        if state == INITSTATE:
+        if state == states.INITSTATE:
             return InitState()
-        elif state == ASTATE:
+        elif state == states.ASTATE:
             return AState()
-        elif state == BSTATE:
+        elif state == states.BSTATE:
             return BState()
+        elif state == states.CSTATE:
+            return CState()
