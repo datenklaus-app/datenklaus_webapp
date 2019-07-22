@@ -1,7 +1,24 @@
+from lesson.models import LessonSateModel
 from student.models import Student
 
 
 class LessonState:
+    def set_previous_state(self, student: Student, state: int):
+        s, _ = LessonSateModel.objects.get_or_create(state=self.get_state_number(),
+                                                     student=student,
+                                                     room=student.room)
+        s.previous_state = state
+        s.save()
+
+    def get_previous_state(self, student: Student):
+        s, _ = LessonSateModel.objects.get_or_create(state=self.get_state_number(),
+                                                     student=student,
+                                                     room=student.room)
+        return s.previous_state
+
+    def get_state_number(self):
+        raise NotImplementedError()
+
     def next_state(self, student: Student) -> int:
         """
         Returns the next (numerical) state which succeeds this state
@@ -46,7 +63,7 @@ class LessonState:
         :return: Dictionary containing the student's results
         :raises LessonSateError: If state has not been finished yet
         """
-        raise NotImplementedError()
+        return None
 
     class LessonStateError(Exception):
         """
