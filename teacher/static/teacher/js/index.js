@@ -1,27 +1,32 @@
 $(document).ready(function () {
-    $(window).on('beforeunload', function () {
-        $(':input', '#joinForm')
-            .not(':button, :submit, :reset, :hidden')
-            .val('')
-        $('#lessons').scrollTop(0);
-    });
-    validateRoomName();
+    // Clear form on reload
+    $(window).on('beforeunload', clearForm);
+    // Get list of existing rooms
     getRooms();
     setInterval(getRooms, 5000);
-
-    $("#room_name").change(validateRoomName);
-
+    // Validate room with 1s delay
+    let wto;
+    $("#room_name").on('input', function () {
+        clearTimeout(wto);
+        wto = setTimeout(validateRoomName, 1000);
+    });
+    // Set click handler
     $("#button-room").click(joinRoom);
-
     $("#button-room-existing").click(function () {
         const room = $('#rooms').val();
         $(location).attr('href', 'room/' + room);
     });
-
     $("button.list-group-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     })
 });
+
+clearForm = function () {
+    $(':input', '#joinForm')
+        .not(':button, :submit, :reset, :hidden')
+        .val('')
+    $('#lessons').scrollTop(0);
+};
 
 getRooms = function () {
     $.ajax({
@@ -41,7 +46,6 @@ getRooms = function () {
         }
     })
 };
-
 
 validateRoomName = function () {
     const room = $('#room_name');
@@ -106,8 +110,8 @@ joinRoom = function () {
         success: function () {
             $(location).attr('href', "room/" + room_name);
         },
-        error: function (jqXHR) {
-            console.log(jqXHR.responseJSON.err)
+        error: function (data) {
+            console.log(data.responseJSON.err)
         }
     });
 };
