@@ -1,13 +1,7 @@
 {% extends 'lesson/lesson.html' %}
 {% block lesson_card %}
-    <div class="card p-6">
-        <h4 class="card-header">{{ title }}</h4>
-        <div>{{ cht|safe }}</div>
+    <div class="card-body text-center">
+        <h4 class="card-title">{{ title }}</h4>
     </div>
-    <form action="{% url 'lesson' state %}" method="post">
-        <div class="card-footer text-right">
-            {% csrf_token %}
-            <button type="submit" class="btn-success btn-lg">Weiter</button>
-        </div>
-    </form>
+    {{ cht|safe }}
 {% endblock %}

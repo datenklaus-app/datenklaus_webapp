@@ -1,24 +1,14 @@
 {% extends 'lesson/lesson.html' %}
 {% block lesson_card %}
-
-    <div class="card m-2">
-        <h4 class="card-header">{{ title }}</h4>
-        <form action="{% url 'lesson' state %}" method="post">
-            {% csrf_token %}
-            <div class="card-body">
-                <div class="btn-group-toggle btn-group-lg" data-toggle="buttons">
-                    {% for choice in form.value %}
-                        <label class="btn btn-info p-2 btn-block" for="{{ choice.for_id_label }}">
-                            {{ choice.tag }}
-                            {{ choice.choice_label }}
-                        </label>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="card-footer text-right">
-                <button type="submit" class="btn-success btn-lg">Weiter</button>
-            </div>
-        </form>
+    <div class="card-body">
+        <h4 class="card-title">{{ title }}</h4>
+        <div class="btn-group-toggle btn-group-lg" data-toggle="buttons">
+            {% for choice in form.value %}
+                <label class="btn btn-info p-2 btn-block" for="{{ choice.for_id_label }}">
+                    {{ choice.tag }}
+                    {{ choice.choice_label }}
+                </label>
+            {% endfor %}
+        </div>
     </div>
-
 {% endblock %}

@@ -4,24 +4,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container text-center">
-        <div class="row ">
-            <div class="col">{% block lesson_card %}{% endblock %}</div>
-        </div>
-        <div class="row pt-4">
-            <div class="col-sm">
-                {% if previous_state is not None %}
-                <input type=button class='btn-warning btn-sm' value="Zurück"
-                       onClick="window.location.href = '{% url 'lesson' previous_state %}'">
-                {% endif %}
-            </div>
-            <div class="col-sm">
-                <p><strong class="text-info">Raum:</strong> {{ rname }}</p>
-            </div>
-            <div class="col-sm">
-                <input type=button class='btn-info btn-sm' value="Raum verlassen"
+    <div class="container">
+        <div class="card">
+            <div class="card-header btn-toolbar" role="toolbar">
+                <div class="w-50"><strong class="text-info w-50">Raum:</strong> {{ rname }}</div>
+                <input type=button class="btn-info btn-sm w-50" value="Raum verlassen"
                        onClick="window.location.href = '{% url 'leave' %}'">
             </div>
+            <form action="{% url 'lesson' state %}" method="post">
+                {% csrf_token %}
+                {% block lesson_card %}{% endblock %}
+                <div class="card-footer btn-group btn-group-lg w-100">
+                    {% if previous_state is not None %}
+                        <input type="button" class='btn btn-warning w-50' value="Zurück"
+                               onClick="window.location.href = '{% url 'lesson' previous_state %}'">
+                    {% else %}
+                        <div class="w-50"></div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-success w-50">Weiter</button>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
