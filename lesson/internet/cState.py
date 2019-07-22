@@ -19,3 +19,6 @@ class CState(LessonState):
     def handle_post(self, post, student):
         self.card.handle_post(post)
 
+    @staticmethod
+    def get_name():
+        return "Zauberer Slides"

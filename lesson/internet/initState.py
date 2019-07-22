@@ -23,3 +23,7 @@ class InitState(LessonState):
 
     def handle_post(self, post, student):
         return self.card.handle_post(post)
+
+    @staticmethod
+    def get_name():
+        return "Intro"

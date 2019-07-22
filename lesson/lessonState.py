@@ -65,6 +65,13 @@ class LessonState:
         """
         return None
 
+    @staticmethod
+    def get_name():
+        """
+        :return: Returns the name of the state
+        """
+        raise NotImplementedError()
+
     class LessonStateError(Exception):
         """
         Raised when the state is missing information from a previous

@@ -2,7 +2,6 @@ from lesson.cards.barChartCard import BarChartCard
 from lesson.internet.aState import AState
 from lesson.internet.states import CSTATE, BSTATE
 from lesson.lessonState import LessonState
-from lesson.models import LessonSateModel
 from student.models import Student
 
 
@@ -24,3 +23,7 @@ class BState(LessonState):
 
     def handle_post(self, post, student: Student):
         return None
+
+    @staticmethod
+    def get_name():
+        return "Selbsteinschätzung: Ergebnis"

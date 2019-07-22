@@ -12,7 +12,7 @@ class AState(LessonState):
         return ASTATE
 
     card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet ein ?",
-                           list(map(lambda x: (x, str(x + 1)), range(0,5))), ASTATE)
+                           list(map(lambda x: (x, str(x + 1)), range(0, 5))), ASTATE)
 
     def next_state(self, student: Student) -> int:
         return BSTATE
@@ -50,3 +50,7 @@ class AState(LessonState):
             raise LessonState.LessonStateError(ASTATE)
 
         return {"knowledge": res}
+
+    @staticmethod
+    def get_name():
+        return "Selbsteinschätzung"
