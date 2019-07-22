@@ -6,13 +6,12 @@
             <h6 class="card-title text-muted">{{ subtitle }}</h6>
             <div class="card-text">{{ text }}</div>
         </div>
-        <ul class="list-group list-group-flush">
-            <form action="{% url 'lesson' state %}" method="post">
+
+        <form action="{% url 'lesson' state %}" method="post">
+            <div class="card-footer text-right">
                 {% csrf_token %}
-                <li class="list-group-item">
-                    <button type="submit" class="btn-success btn-lg container-fluid">Weiter</button>
-                </li>
-            </form>
-        </ul>
+                <button type="submit" class="btn-success btn-lg">Weiter</button>
+            </div>
+        </form>
     </div>
 {% endblock %}
