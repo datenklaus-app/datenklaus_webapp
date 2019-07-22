@@ -24,7 +24,3 @@ class BState(LessonState):
 
     def handle_post(self, post, student: Student):
         return None
-
-    @staticmethod
-    def get_results(room, student=None):
-        pass
