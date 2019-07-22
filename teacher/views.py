@@ -24,7 +24,11 @@ def index(request):
     # TODO exclude existing rooms from name suggestions
     for m in mod:
         lessons.append({'name': m, 'description': get_lessons_description(m)})
-    context = {'random_room': random_word_chain.random_word_chain(), 'lessons': lessons}
+    rd = random_word_chain.random_word_chain()
+    rooms = Room.objects.all()
+    while rooms.filter(room_name=rd).exists():
+        rd = random_word_chain.random_word_chain()
+    context = {'random_room': rd, 'lessons': lessons}
     return render(request, 'teacher/index.html', context=context)
 
 
