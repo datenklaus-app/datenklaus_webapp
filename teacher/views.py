@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.views import get_lessons_list, get_lessons_description
+from lesson.lessonUtil import get_lessons
 from teacher import random_word_chain
 from teacher.models import Room
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
@@ -17,13 +17,11 @@ def index(request):
         except Room.DoesNotExist:
             del request.session["room"]
             request.session.save()
-    mod = get_lessons_list()
-    for i in range(0, 10):
-        mod.append(mod[0] + str(i))
+
     lessons = []
-    # TODO exclude existing rooms from name suggestions
-    for m in mod:
-        lessons.append({'name': m, 'description': get_lessons_description(m)})
+    for lessonName, lesson in get_lessons().items():
+        lessons.append({'name': lessonName, 'description': lesson.get_description()})
+
     rd = random_word_chain.random_word_chain()
     rooms = Room.objects.all()
     while rooms.filter(room_name=rd).exists():

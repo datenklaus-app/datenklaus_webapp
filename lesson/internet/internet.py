@@ -12,15 +12,15 @@ class Internet(Lesson):
 
     @staticmethod
     def get_description():
-        pass
+        return "Eine Einführung in das Internet"
 
     @staticmethod
     def get_short_description():
-        pass
+        return "Eine Einführung in das Internet"
 
     @staticmethod
     def get_duration():
-        pass
+        return 45
 
     @staticmethod
     def get_state(state) -> LessonState:

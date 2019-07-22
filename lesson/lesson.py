@@ -17,4 +17,3 @@ class Lesson:
     @staticmethod
     def get_state(state) -> LessonState:
         raise NotImplementedError()
-
