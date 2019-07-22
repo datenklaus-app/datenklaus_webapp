@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from lesson.internet.internet import Internet
-from lesson.internet.states import INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
@@ -37,14 +36,17 @@ def lesson(request, state_num=None):
         state = get_state(current_lesson, student.current_state)
 
         if request.method == 'POST':
+            # FIXME : clean up this mess!
             state.handle_post(request.POST, student)
             student.current_state = state.next_state(student)
+            state = get_state(current_lesson, student.current_state)
+            state.set_previous_state(student, state_num)
             student.save()
             return HttpResponseRedirect(reverse("lesson", args=[student.current_state]))
         else:  # FIXME: Handle potential error cases?
-            pass  # Resend current card  if we receive a GET request
+            student.save()  # Resend current card  if we receive a GET request
     except LessonState.LessonStateError as e:
         return HttpResponseRedirect(reverse("lesson", args=[e.fallback_state]))
 
-    context = {"rname": student.room, "has_previous": state_num is not INITSTATE}
+    context = {"lname": student.room.lesson, "rname": student.room, "previous_state": state.get_previous_state(student)}
     return state.render(request, student, context)

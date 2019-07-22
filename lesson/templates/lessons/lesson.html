@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block title %}
+    {{ rname }}: {{ lname|lower|capfirst }}
+{% endblock %}
+
 {% block content %}
     <div class="container text-center">
         <div class="row ">
@@ -6,9 +10,9 @@
         </div>
         <div class="row pt-4">
             <div class="col-sm">
-                {% if has_previous %}
+                {% if previous_state is not None %}
                 <input type=button class='btn-warning btn-sm' value="Zurück"
-                       onClick="history.back()">
+                       onClick="window.location.href = '{% url 'lesson' previous_state %}'">
                 {% endif %}
             </div>
             <div class="col-sm">
