@@ -20,7 +20,7 @@ class DefaultCard(Card):
         context["state"] = self.state
         return render(request, 'lessons/cards/defaultCard.html', context=context)
 
-    def handle_post(self, post, student):
+    def handle_post(self, post):
         form = DefaultCardForm(post)
         if not form.is_valid():
             raise Card.InvalidCardFormError()

@@ -22,7 +22,4 @@ class InitState(LessonState):
         return self.card.render(request, context)
 
     def handle_post(self, post, student):
-        return self.card.handle_post(post, student)
-
-    def get_results(self, room, student=None):
-        pass  # FIXME: Maybe add a check to see whether this state has already been executed by the student once
+        return self.card.handle_post(post)

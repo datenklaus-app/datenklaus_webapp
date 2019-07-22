@@ -31,5 +31,5 @@ class LineChartCard(Card):
         context["cht"] = chart.render(is_unicode=True)
         return render(request, 'lessons/cards/barChartCard.html', context=context)
 
-    def handle_post(self, post, student):
+    def handle_post(self, post):
         pass
