@@ -72,6 +72,7 @@ updateStudentList = function update() {
             students.empty(); // remove old options
             const source = document.getElementById("connected-students").innerHTML;
             const template = Handlebars.compile(source);
+            /** @namespace data.students **/
             $.each(data.students, function (index, value) {
                 students.append(template(value));
             },);

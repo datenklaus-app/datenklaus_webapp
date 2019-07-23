@@ -24,7 +24,7 @@ $(document).ready(function () {
 clearForm = function () {
     $(':input', '#joinForm')
         .not(':button, :submit, :reset, :hidden')
-        .val('')
+        .val('');
     $('#lessons').scrollTop(0);
 };
 
@@ -36,6 +36,7 @@ getRooms = function () {
             const list = $("#rooms");
             const selected = list.val();
             list.empty(); // remove old options
+            /** @namespace data.rooms **/
             $.each(data.rooms, function (index, value) {
                 list.append($("<option></option>")
                     .attr("value", value).text(value));
@@ -54,6 +55,7 @@ validateRoomName = function () {
         url: room.attr("data-validate-room-name-url"),
         data: room.serialize(),
         dataType: 'json',
+        /** @namespace data.exists **/
         success: function (data) {
             if (data.exists) {
                 $('#room_name_exists').show();
@@ -79,22 +81,35 @@ getRoomName = function () {
 };
 
 joinRoom = function () {
+    const warnings = $('#warnings');
+    warnings.empty();
     const room_name = getRoomName();
     const lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
     let error = false;
     if (lesson == null) {
         $('#choose_lesson').addClass('text-danger').removeClass('text-info');
-        $('#warnings').append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>');
+        warnings.append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>');
         error = true
+    } else {
+        $('#choose_lesson').removeClass('text-danger').addClass('text-info');
+    }
+    if (!room_name.trim()) {
+        $('#room_name_text').addClass('text-danger').removeClass('text-info');
+        warnings.append('<li><h6 class="text-danger">Bitte wähle einen Raumnamen</h6></li>');
+        error = true
+    } else {
+        $('#room_name_text').removeClass('text-danger').addClass('text-info');
     }
     const password = $('#room_password').val();
     if (!password.trim()) {
         $('#password_text').addClass('text-danger').removeClass('text-info');
-        $('#warnings').append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>');
+        warnings.append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>');
         error = true
+    } else {
+        $('#password_text').removeClass('text-danger').addClass('text-info');
     }
     if (error) {
-        $('#warnings').parent().show();
+        warnings.parent().show();
         return
     }
     $('#module_choice').val(lesson);
@@ -110,6 +125,7 @@ joinRoom = function () {
         success: function () {
             $(location).attr('href', "room/" + room_name);
         },
+        /** @namespace data.responseJSON.err **/
         error: function (data) {
             console.log(data.responseJSON.err)
         }

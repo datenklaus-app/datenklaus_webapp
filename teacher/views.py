@@ -17,14 +17,15 @@ def index(request):
         except Room.DoesNotExist:
             del request.session["room"]
             request.session.save()
-
-    lessons = []
-    for lessonName, lesson in get_lessons().items():
-        lessons.append({'name': lessonName, 'description': lesson.get_description()})
-
+    lessons = [{'name': n, 'description': l.get_description()} for n, l in get_lessons().items()]
     rd = random_word_chain.random_word_chain()
     rooms = Room.objects.all()
+    i = 0
     while rooms.filter(room_name=rd).exists():
+        i += 1
+        if i == 100:
+            rd = ""
+            break
         rd = random_word_chain.random_word_chain()
     context = {'random_room': rd, 'lessons': lessons}
     return render(request, 'teacher/index.html', context=context)

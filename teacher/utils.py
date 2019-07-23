@@ -1,7 +1,6 @@
 import http
 from enum import Enum
 
-from django.contrib.sessions.models import Session
 from django.http import JsonResponse, HttpResponse
 
 from lesson.lessonUtil import get_lesson
@@ -19,12 +18,8 @@ def get_students_for_room(room_name):
     students = Student.objects.filter(room=room_name)
     student_info = []
     for student in students:
-        s = Session.objects.get(session_key=student.session)
         lesson_state = LESSON_STATE_WAITING if room.state == -1 else lesson.get_state(student.current_state).get_name()
-        student_info.append({"name": student.user_name,
-                             "session": s.session_key,
-                             "progress": lesson_state,
-                             "expiry": s.expire_date})
+        student_info.append({"name": student.user_name, "progress": lesson_state})
     return student_info
 
 
