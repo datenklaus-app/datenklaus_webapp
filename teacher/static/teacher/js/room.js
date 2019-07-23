@@ -64,7 +64,7 @@ controlCommand = function (el, cmd) {
 
 updateStudentList = function update() {
     $.ajax({
-        url: "/teacher/get-students",
+        url: "/teacher/students",
         data: {'room_name': roomName},
         dataType: 'json',
         success: function (data) {

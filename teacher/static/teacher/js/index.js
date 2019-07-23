@@ -30,7 +30,7 @@ clearForm = function () {
 
 getRooms = function () {
     $.ajax({
-        url: "get-rooms",
+        url: "rooms",
         dataType: 'json',
         success: function (data) {
             const list = $("#rooms");
@@ -52,7 +52,7 @@ validateRoomName = function () {
     const room = $('#room_name');
     if (!room) return;
     $.ajax({
-        url: room.attr("data-validate-room-name-url"),
+        url: "validate-rooms",
         data: room.serialize(),
         dataType: 'json',
         /** @namespace data.exists **/

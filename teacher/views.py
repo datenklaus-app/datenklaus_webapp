@@ -75,7 +75,7 @@ def leave_room(request):
     return HttpResponseRedirect(reverse("teacher_index"))
 
 
-def get_rooms(request):
+def rooms(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
     rooms = [n['room_name'] for n in Room.objects.all().values('room_name')]
@@ -91,7 +91,7 @@ def validate_room_name(request):
     return JsonResponse(data)
 
 
-def refresh_student_list(request):
+def students(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
