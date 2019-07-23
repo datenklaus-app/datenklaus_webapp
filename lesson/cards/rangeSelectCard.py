@@ -10,7 +10,7 @@ class RangeSelectCard(Card):
         self.choices = choices
         self.state = state
 
-    def handle_post(self, post):
+    def post(self, post):
         form = RangeSelectForm(self.choices, post=post)
         if not form.is_valid():
             raise Card.InvalidCardFormError(form.errors)

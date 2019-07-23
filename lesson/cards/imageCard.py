@@ -16,7 +16,7 @@ class ImageCard(Card):
         context["state"] = self.state
         return render(request, 'lesson/cards/imageCard.html', context=context)
 
-    def handle_post(self, post):
+    def post(self, post):
         form = ImageCardForm(post)
         if not form.is_valid():
             raise Card.InvalidCardFormError()

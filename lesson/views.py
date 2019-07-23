@@ -19,12 +19,12 @@ def lesson(request, state_num=None):
     current_lesson = get_lesson(student.room.lesson)
 
     try:
-        state = current_lesson.get_state(student.current_state)
+        state = current_lesson. state(student.current_state)
         if request.method == 'POST':
             # FIXME : clean up this mess!
-            state.handle_post(request.POST, student)
+            state.post(request.POST, student)
             student.current_state = state.next_state(student)
-            state = current_lesson.get_state(student.current_state)
+            state = current_lesson.state(student.current_state)
             state.set_previous_state(student, state_num)
             student.save()
             return HttpResponseRedirect(reverse("lesson", args=[student.current_state]))
@@ -34,5 +34,5 @@ def lesson(request, state_num=None):
     except LessonState.LessonStateError as e:
         return HttpResponseRedirect(reverse("lesson", args=[e.fallback_state]))
 
-    context = {"lname": student.room.lesson, "rname": student.room, "previous_state": state.get_previous_state(student)}
+    context = {"lname": student.room.lesson, "rname": student.room, "previous_state": state.previous_state(student)}
     return state.render(request, student, context)

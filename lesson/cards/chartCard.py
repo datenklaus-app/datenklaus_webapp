@@ -19,5 +19,5 @@ class ChartCard(Card):
         context["state"] = self.state
         return render(request, 'lesson/cards/chartCard.html', context=context)
 
-    def handle_post(self, post):
+    def post(self, post):
         pass

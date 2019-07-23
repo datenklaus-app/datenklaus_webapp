@@ -16,26 +16,26 @@ class Internet(Lesson):
     }
 
     @staticmethod
-    def get_description():
+    def description():
         return "Eine Einführung in das Internet"
 
     @staticmethod
-    def get_short_description():
+    def short_description():
         return "Eine Einführung in das Internet"
 
     @staticmethod
-    def get_duration():
+    def duration():
         return 45
 
     @staticmethod
-    def get_state(s: int) -> LessonState:
+    def state(s: int) -> LessonState:
         try:
             return Internet._lessonStates[s]()
         except KeyError:
             NotImplementedError("State does not exist: " + str(s))
 
     @staticmethod
-    def get_all_states() -> [LessonState]:
+    def all_states() -> [LessonState]:
 
         ls = []
         for s in Internet._lessonStates.values():

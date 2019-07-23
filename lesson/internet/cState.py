@@ -7,7 +7,7 @@ from student.models import Student
 class CState(LessonState):
     card = ImageCard(["/lesson/internet/anm-1.png", "/lesson/internet/anm-2.png"], CSTATE)
 
-    def get_state_number(self):
+    def state_number(self):
         return CSTATE
 
     def next_state(self, student: Student) -> int:
@@ -16,9 +16,9 @@ class CState(LessonState):
     def render(self, request, student: Student, context: {}) -> str:
         return self.card.render(request, context)
 
-    def handle_post(self, post, student):
-        self.card.handle_post(post)
+    def post(self, post, student):
+        self.card.post(post)
 
     @staticmethod
-    def get_name():
+    def name():
         return "Zauberer Slides"

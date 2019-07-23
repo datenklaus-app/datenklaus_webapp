@@ -3,26 +3,26 @@ from lesson.lessonState import LessonState
 
 class Lesson:
     @staticmethod
-    def get_description():
+    def description():
         raise NotImplementedError()
 
     @staticmethod
-    def get_short_description():
+    def short_description():
         raise NotImplementedError()
 
     @staticmethod
-    def get_duration():
+    def duration():
         raise NotImplementedError()
 
     @staticmethod
-    def get_state(state) -> LessonState:
+    def state(state) -> LessonState:
         """
         :return: A new Instance of the given state (s)
         """
         raise NotImplementedError()
 
     @staticmethod
-    def get_all_states() -> [LessonState]:
+    def all_states() -> [LessonState]:
         """
         :return: A list of all states (instantiated)
         """

@@ -2,7 +2,7 @@ from lesson.internet.internet import Internet
 from lesson.lesson import Lesson
 
 
-def get_lessons() -> {str: Lesson}:
+def all_lessons() -> {str: Lesson}:
     """
     Returns all existing lessons as dictionary
     :return: Dictionary where:
@@ -14,6 +14,6 @@ def get_lessons() -> {str: Lesson}:
 
 def get_lesson(name: str):
     try:
-        return get_lessons()[name]
+        return all_lessons()[name]
     except KeyError:
         raise NotImplementedError("Lesson does not exist: " + name)

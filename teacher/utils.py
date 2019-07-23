@@ -18,7 +18,7 @@ def get_students_for_room(room_name):
     students = Student.objects.filter(room=room_name)
     student_info = []
     for student in students:
-        lesson_state = LESSON_STATE_WAITING if room.state == -1 else lesson.get_state(student.current_state).get_name()
+        lesson_state = LESSON_STATE_WAITING if room.state == -1 else lesson.state(student.current_state).name()
         student_info.append({"name": student.user_name, "progress": lesson_state})
     return student_info
 

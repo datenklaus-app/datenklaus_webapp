@@ -8,7 +8,7 @@ from student.models import Student
 class BState(LessonState):
     card = ChartCard(BSTATE, title="So schätzt ihr euch ein:")
 
-    def get_state_number(self) -> int:
+    def state_number(self) -> int:
         return BSTATE
 
     def next_state(self, student: Student) -> int:
@@ -18,9 +18,9 @@ class BState(LessonState):
         chart = AState.result_svg(student.room)
         return self.card.render(request, context, chart=chart)
 
-    def handle_post(self, post, student: Student):
+    def post(self, post, student: Student):
         return None
 
     @staticmethod
-    def get_name():
+    def name():
         return "Selbsteinschätzung: Ergebnis"

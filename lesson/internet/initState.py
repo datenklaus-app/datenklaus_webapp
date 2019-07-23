@@ -9,10 +9,10 @@ class InitState(LessonState):
                        "Heute lernen wir etwas über das Internet",
                        "Das Internet ist sehr toll", INITSTATE)
 
-    def get_state_number(self):
+    def state_number(self):
         return INITSTATE
 
-    def get_previous_state(self, student: Student):
+    def previous_state(self, student: Student):
         return None  # Initial state has no previous
 
     def next_state(self, student: Student) -> int:
@@ -21,9 +21,9 @@ class InitState(LessonState):
     def render(self, request, student: Student, context) -> str:
         return self.card.render(request, context)
 
-    def handle_post(self, post, student):
-        return self.card.handle_post(post)
+    def post(self, post, student):
+        return self.card.post(post)
 
     @staticmethod
-    def get_name():
+    def name():
         return "Intro"

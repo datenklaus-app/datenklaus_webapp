@@ -12,7 +12,7 @@ class AState(LessonState):
     card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet ein ?",
                            list(map(lambda x: (x, str(x + 1)), range(0, 5))), ASTATE)
 
-    def get_state_number(self) -> int:
+    def state_number(self) -> int:
         return ASTATE
 
     def next_state(self, student: Student) -> int:
@@ -21,8 +21,8 @@ class AState(LessonState):
     def render(self, request, student: Student, context) -> str:
         return self.card.render(request, context)
 
-    def handle_post(self, post, student):
-        result = self.card.handle_post(post)
+    def post(self, post, student):
+        result = self.card.post(post)
         try:
             s = LessonSateModel.objects.get(state=ASTATE, student=student, room=student.room)
         except ObjectDoesNotExist:
@@ -31,7 +31,7 @@ class AState(LessonState):
         s.save()
 
     @staticmethod
-    def get_result(room, student) -> int:
+    def result(room, student) -> int:
         try:
             if student is not None:
                 obj = LessonSateModel.objects.get(state=ASTATE, student=student, room=room)
@@ -51,5 +51,5 @@ class AState(LessonState):
         return DKBarChart(dataset=data, labels=list(map(lambda i: str(i), range(1, 6)))).render()
 
     @staticmethod
-    def get_name():
+    def name():
         return "Selbsteinschätzung"
