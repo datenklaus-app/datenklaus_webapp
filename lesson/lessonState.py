@@ -4,6 +4,12 @@ from student.models import Student
 
 class LessonState:
     def set_previous_state(self, student: Student, state: int):
+        """
+        Stores the preceding state in the database
+        :param student: 
+        :param state:
+        :return:
+        """
         s, _ = LessonSateModel.objects.get_or_create(state=self.get_state_number(),
                                                      student=student,
                                                      room=student.room)
@@ -56,12 +62,20 @@ class LessonState:
         raise NotImplementedError()
 
     @staticmethod
-    def get_results(room, student=None):
+    def get_result(room: str, student: Student):
         """
         :param room: Room to get results for
-        :param student: Student for which to get results for (if None, results for entire room are returned)
-        :return: Dictionary containing the student's results
+        :param student: Student for which to get results for
+        :return: Result(s) for given student and room (Type is defined by the state)
         :raises LessonSateError: If state has not been finished yet
+        """
+        return None
+
+    @staticmethod
+    def result_svg(room: str) -> str:
+        """
+        Returns the results for the given room as svg string
+        :param room: Room to get result
         """
         return None
 

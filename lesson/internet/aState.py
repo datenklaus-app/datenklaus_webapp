@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from lesson.cards.rangeSelectCard import RangeSelectCard
+from lesson.charts import DKBarChart
 from lesson.internet.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
 from lesson.models import LessonSateModel
@@ -8,11 +9,11 @@ from student.models import Student
 
 
 class AState(LessonState):
-    def get_state_number(self):
-        return ASTATE
-
     card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet ein ?",
                            list(map(lambda x: (x, str(x + 1)), range(0, 5))), ASTATE)
+
+    def get_state_number(self) -> int:
+        return ASTATE
 
     def next_state(self, student: Student) -> int:
         return BSTATE
@@ -30,26 +31,24 @@ class AState(LessonState):
         s.save()
 
     @staticmethod
-    def get_results(room, student=None):
-        """
-        :param room: Specifies the room which the results relate to
-        :param student: (optional) If specified returns the result for given student
-        :return: A list of results for the entire room (or a students individual result) as list
-        """
+    def get_result(room, student) -> int:
         try:
             if student is not None:
                 obj = LessonSateModel.objects.get(state=ASTATE, student=student, room=room)
                 res = [int(obj.choice)]
-            else:
-                objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
-                res = [0] * 5
-                for o in objs:
-                    res[int(o.choice)] += 1
-
         except (ObjectDoesNotExist, KeyError):
             raise LessonState.LessonStateError(ASTATE)
 
-        return {"knowledge": res}
+        return res
+
+    @staticmethod
+    def result_svg(room: str) -> str:
+        objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
+        data = [0] * 5
+        for o in objs:
+            data[int(o.choice)] += 1
+
+        return DKBarChart(dataset=data, labels=list(map(lambda i: str(i), range(1, 6)))).render()
 
     @staticmethod
     def get_name():

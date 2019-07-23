@@ -16,4 +16,14 @@ class Lesson:
 
     @staticmethod
     def get_state(state) -> LessonState:
+        """
+        :return: A new Instance of the given state (s)
+        """
+        raise NotImplementedError()
+
+    @staticmethod
+    def get_all_states() -> [LessonState]:
+        """
+        :return: A list of all states (instantiated)
+        """
         raise NotImplementedError()

@@ -3,12 +3,17 @@ from lesson.internet.aState import AState
 from lesson.internet.bState import BState
 from lesson.internet.cState import CState
 from lesson.internet.initState import InitState
-from lesson.lessonState import LessonState
 from lesson.lesson import Lesson
+from lesson.lessonState import LessonState
 
 
 class Internet(Lesson):
-    STRING = "INTERNET"
+    _lessonStates = {
+        states.INITSTATE: InitState,
+        states.ASTATE: AState,
+        states.BSTATE: BState,
+        states.CSTATE: CState,
+    }
 
     @staticmethod
     def get_description():
@@ -23,12 +28,16 @@ class Internet(Lesson):
         return 45
 
     @staticmethod
-    def get_state(state) -> LessonState:
-        if state == states.INITSTATE:
-            return InitState()
-        elif state == states.ASTATE:
-            return AState()
-        elif state == states.BSTATE:
-            return BState()
-        elif state == states.CSTATE:
-            return CState()
+    def get_state(s: int) -> LessonState:
+        try:
+            return Internet._lessonStates[s]()
+        except KeyError:
+            NotImplementedError("State does not exist: " + str(s))
+
+    @staticmethod
+    def get_all_states() -> [LessonState]:
+
+        ls = []
+        for s in Internet._lessonStates.values():
+            ls.append(s())
+        return ls
