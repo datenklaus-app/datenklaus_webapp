@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block title %}
+    Gleich geht es los..
+{% endblock %}
+
 {% block content %}
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
@@ -34,14 +38,17 @@
         function check_for_active_lesson() {
             $.ajax({
                 method: "POST",
-                url: '/join/',
+                url: '/lesson/room_status',
                 dataType: 'json',
                 contentType: 'json',
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    if (data.lesson_started)
+                    if (data.redirect)
+                        window.location.replace(data.redirect);
+
+                    if (data.running)
                         window.location.replace('/lesson/');
                 }
             })

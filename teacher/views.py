@@ -5,9 +5,10 @@ from django.urls import reverse
 from lesson.lessonUtil import all_lessons
 from student.models import Student
 from teacher import random_word_chain
+from teacher.constants import RoomStates
 from teacher.models import Room
 from teacher.random_word_chain import random_word
-from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
+from teacher.utils import get_students_for_room, ajax_bad_request, HttpResponseNoContent, Cmd
 
 
 def index(request):
@@ -111,18 +112,26 @@ def control_cmd(request):
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
     b = request.GET.get("cmd", None)
+
     if b is None:
         return ajax_bad_request("Command not found")
-    cmd = Cmd(int(b))
-    # TODO: Validate and sanitize
-    # TODO: Check permission
     try:
         r = Room.objects.get(room_name=room_name)
-        r.state = cmd.value
-        r.save()
-        return HttpResponseNoContent()
     except Room.DoesNotExist:
         return ajax_bad_request("Room doesn't exist: " + room_name)
+
+    cmd = Cmd(int(b))
+    if cmd == Cmd.START:
+        r.state = RoomStates.RUNNING.value
+    elif cmd == Cmd.STOP:
+        r.state = RoomStates.CLOSED.value
+    elif cmd == Cmd.PAUSE:
+        r.state = RoomStates.PAUSED.value
+    else:
+        return ajax_bad_request("Room command does not exist: " + str(cmd))
+
+    r.save()
+    return HttpResponseNoContent()
 
 
 def create_test_students(request):

@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from student.models import Student
+from teacher.constants import RoomStates
 from teacher.models import Room
 from .forms import JoinRoomForm
 
@@ -14,14 +15,14 @@ def index(request):
         rooms = Room.objects.all()
         room_names = []
         for r in rooms:
-            room_names.append(r.room_name)
+            if r.state is not RoomStates.CLOSED.value:
+                room_names.append(r.room_name)
         return JsonResponse({'rooms': room_names})
 
     try:
         student = Student.objects.get(session=request.session.session_key)
-        if student.room.lesson is not None:
-            context = {'sname': student.user_name, 'rname': student.room}
-            return render(request, 'student/room_waiting.html', context)
+        if student.room.state is not RoomStates.CLOSED.value:
+            return HttpResponseRedirect('lesson')
     except ObjectDoesNotExist:
         # NOTE: we need to manually set this to ensure that the user's session
         # is saved on the first request
@@ -34,16 +35,13 @@ def index(request):
 
 
 def join_room(request):
-    if request.is_ajax():
-        student = Student.objects.get(session=request.session.session_key)
-        if student.room.lesson is None:
-            return HttpResponseNotFound("Student has not joined a room yet")
-        else:
-            return JsonResponse({'lesson_started': student.room.state >= 0})
+    if request.method != "POST":
+        return HttpResponseNotFound()
 
     form = JoinRoomForm(request.POST)
+    # TODO: add proper server side invalid form handling
     if not form.is_valid():
-        raise KeyError()  # FIXME
+        return HttpResponseRedirect(reverse('student'))
 
     # Make sure we only have one existing student object per session
     for student in Student.objects.filter(session=request.session.session_key):
@@ -57,7 +55,7 @@ def join_room(request):
     )
 
     context = {'sname': form.cleaned_data['username'], 'rname': form.cleaned_data['room']}
-    return render(request, 'student/room_waiting.html', context)
+    return HttpResponseRedirect(reverse('lesson'))
 
 
 def leave_room(request):

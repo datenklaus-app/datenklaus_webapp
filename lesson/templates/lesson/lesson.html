@@ -42,6 +42,28 @@
 {% block scripts %}
     {% block card_scripts %}{% endblock %}
     <script>
-
+        function check_room_status() {
+            $.ajax({
+                method: "POST",
+                url: '/lesson/room_status',
+                dataType: 'json',
+                contentType: 'json',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    if (data.redirect) {
+                        // data.redirect contains the string URL to redirect to
+                        window.location.href = data.redirect;
+                    }
+                    if (!data.running) {
+                        // data.redirect contains the string URL to redirect to
+                        window.location.href = "/lesson/";
+                    }
+                }
+            })
+        };
+        check_room_status();
+        setInterval(check_room_status, 1000);
     </script>
 {% endblock %}
