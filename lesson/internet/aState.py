@@ -9,8 +9,14 @@ from student.models import Student
 
 
 class AState(LessonState):
-    card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet ein ?",
-                           list(map(lambda x: (x, str(x + 1)), range(0, 5))), ASTATE)
+    _OPTIONS = [(0, "Sehr schlecht"),
+                (1, "Eher schlecht"),
+                (2, "Naja"),
+                (3, "Eher gut"),
+                (4, "Sehr gut")]
+
+    card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet <nobr>ein ?</nobr>",
+                           _OPTIONS, ASTATE)
 
     def state_number(self) -> int:
         return ASTATE
@@ -48,7 +54,7 @@ class AState(LessonState):
         for o in objs:
             data[int(o.choice)] += 1
 
-        return DKBarChart(dataset=data, labels=list(map(lambda i: str(i), range(1, 6)))).render()
+        return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], AState._OPTIONS))).render()
 
     @staticmethod
     def name():

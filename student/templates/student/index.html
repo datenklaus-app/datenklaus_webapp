@@ -29,44 +29,43 @@
 {% endblock %}
 {% block content %}
     {% load widget_tweaks %}
-    <div class="container w-75">
-        <form action="{% url 'join' %}" method="post">
-            {% csrf_token %}
-            <div class="row "><h3>Wähle deinen <strong>Alias</strong> nach folgendem Schema:</h3></div>
-            <div class="row justify-content-center ">
-                <div class="alert alert-light w-100">
-                    <h4><strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
-                        geboren
-                        am <strong class="text-info">14</strong>.5.</h4><br/>
-                    <h4>wird zu:</h4><br/>
-                    <h3><strong class="text-danger">He</strong><strong class="text-warning">Me</strong><strong
-                            class="text-info">14</strong></h3>
+    <div class="container h-100">
+        <div class="row align-items-center text-center h-100">
+            <div class="col">
+                <div class="row ">
+                    <div class="col">
+                        <h3>Wähle deinen <strong>Alias</strong> nach folgendem Schema:</h3>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col alert alert-light w-100">
+                        <h4><strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
+                            geboren
+                            am <strong class="text-info">14</strong>.5.</h4><br/>
+                        <h4>wird zu:</h4><br/>
+                        <h3><strong class="text-danger">He</strong><strong class="text-warning">Me</strong><strong
+                                class="text-info">14</strong></h3>
+                    </div>
+                </div>
+                <form action="{% url 'join' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row pt-1">
+                        <div class="col h4">Dein Alias kommt hier rein:</div>
+                    </div>
+                    <div class="row pb-4">
+                        {% render_field form.username class+="form-control form-control-lg" type="text" %}
+                    </div>
+                    <div class="row">
+                        <div class="col h4">Wähle den Raum deiner Klasse:</div>
+                    </div>
+                    <div class="row pb-4">
+                        {% render_field form.room id='rooms' class+="form-control form-control-lg" %}
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn-success btn-lg container-fluid">Los geht's!</button>
+                    </div>
+                </form>
             </div>
-            <div class="row pt-1">
-                <h4>Dein Alias kommt hier rein:</h4>
-            </div>
-            <div class="row pb-5">
-                {% render_field form.username class+="form-control form-control-lg" type="text" %}
-            </div>
-            <div class="row">
-                <h4>Wähle den Raum deiner Klasse:</h4>
-            </div>
-            <div class="row pb-4">
-                {% render_field form.room id='rooms' class+="form-control form-control-lg" %}
-            </div>
-            <div class="row">
-                <button type="submit" class="btn-success btn-lg container-fluid">Los geht's!</button>
-            </div>
-        </form>
-
-        {#    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-        {#        Wähle hier einen Klassenraum#}
-        {#    </button>#}
-        {#    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
-        {#        {% for rname in room_names %}#}
-        {#        <a class="dropdown-item" href="{% url "join" rname %}">{{ rname }}</a>#}
-        {#        {% endfor %}#}
-        {#    </div>#}
+        </div>
     </div>
 {% endblock %}
