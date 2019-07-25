@@ -29,10 +29,10 @@ const states = {
 setStates = function () {
     $('#button-play').prop('disabled', state === states.RUNNING)
         .find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"});
-    $('#button-pause').prop('disabled', state > states.RUNNING || state === states.NOT_STARTED).find('path')
-        .css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"});
-    $('#button-stop').prop('disabled', state === states.STOPPED || state === states.NOT_STARTED).find('path')
-        .css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"});
+    $('#button-pause').prop('disabled', state > states.RUNNING || state === states.NOT_STARTED)
+        .find('path').css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"});
+    $('#button-stop').prop('disabled', state === states.STOPPED || state === states.NOT_STARTED)
+        .find('path').css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"});
 };
 
 initPopover = function () {
@@ -84,3 +84,17 @@ updateStudentList = function update() {
     })
 };
 
+createTestStudents = function () {
+    $.ajax({
+        url: "/teacher/test-students",
+        data: {'room_name': roomName},
+        dataType: 'json',
+        success: function (data) {
+            console.log("Test students created")
+        },
+        error: function (data) {
+            // TODO: remove?
+            console.log(data.error)
+        }
+    })
+};

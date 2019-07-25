@@ -3,8 +3,10 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from lesson.lessonUtil import all_lessons
+from student.models import Student
 from teacher import random_word_chain
 from teacher.models import Room
+from teacher.random_word_chain import random_word
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
@@ -121,3 +123,18 @@ def control_cmd(request):
         return HttpResponseNoContent()
     except Room.DoesNotExist:
         return ajax_bad_request("Room doesn't exist: " + room_name)
+
+
+def create_test_students(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest
+    room_name = request.GET.get("room_name", None)
+    if room_name is None:
+        return HttpResponseBadRequest
+    try:
+        room = Room.objects.get(room_name=room_name)
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room" + room_name + " doesn't exist")
+    for _ in range(0, 10):
+        Student(user_name=random_word(), session=None, room=room).save()
+    return HttpResponseNoContent()

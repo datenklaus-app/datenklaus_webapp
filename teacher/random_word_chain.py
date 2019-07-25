@@ -5,6 +5,10 @@ def random_word_chain():
     return "".join([nouns[random.randrange(0, len(nouns))].capitalize() for i in range(2)])
 
 
+def random_word():
+    return nouns[random.randrange(0, len(nouns))]
+
+
 nouns = [
     "Alphabet", "Altenheim", "Amulett", "Anlage", "Arm", "Aufkleber", "Auspuff", "Auto", "Ball", "Bar", "Baum",
     "Bestellliste", "Betttuch", "Biokraftstoff", "Blatt", "Buch", "Callcenter", "Castingshow", "Chinese", "Clip",
