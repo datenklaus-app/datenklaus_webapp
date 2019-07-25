@@ -1,7 +1,9 @@
 {% extends 'lesson/lesson.html' %}
 {% block lesson_card %}
-    <div class="card-body text-center">
-        <h4 class="card-title">{{ title }}</h4>
+    <div class="row row-v-h-centered">
+        <div class="col">
+            <h1 class="text-center">{{ title }}</h1>
+            <div class="w-100">{{ cht|safe }}</div>
+        </div>
     </div>
-    {{ cht|safe }}
 {% endblock %}

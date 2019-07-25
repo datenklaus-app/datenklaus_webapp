@@ -1,19 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    <div class="container w-50">
-        <div class="row pb-4">
-            <h1 class="text-info"><span class="text-danger">{{ sname }}</span>, du bist dem Klassenraum <span
-                    class="text-warning">{{ rname }}</span> beigetreten! Gleich geht es los...</h1>
-        </div>
-        <div class="row pb-4 justify-content-center">
-            <div class="spinner-border text-dark" role="status">
-                <span class="sr-only">Loading...</span>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-auto">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="text-danger">{{ sname }}</h1>
+                        <h4 class="text-info">
+                            Du bist dem Klassenraum <span class="text-warning">{{ rname }}</span> beigetreten!
+                            <br/>
+                            Gleich geht es los...
+                        </h4>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col text-center">
+                        <div class="spinner-border text-danger" role="status"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-right">
+                        <input type=button class='btn-info btn-lg' value="Raum verlassen"
+                               onClick="window.location.href = '{% url 'leave' %}'">
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row pb-4 justify-content-center">
-            <input type=button class='btn-info btn-lg' value="Raum verlassen"
-                   onClick="window.location.href = '{% url 'leave' %}'">
         </div>
     </div>
 {% endblock %}
