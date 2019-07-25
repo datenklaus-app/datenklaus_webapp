@@ -1,22 +1,31 @@
 {% extends "base.html" %}
 {% block css %}{% endblock %}
-{% block title %}Datenklaus ~ {{ room_name }}{% endblock %}
+{% block title %}DK ☰ {{ room_name }}{% endblock %}
 {% block content %}
-    {% load static %}
-    <div class="container" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
-        <div class="row justify-content-center text-center">
-            <div class="col">
-                <h1>Raum <span style="color:blue">{{ room_name }}</span></h1>
-            </div>
+    {% load static %}<!-- Image and text -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <span class="navbar-brand mb-0 h1">Datenklaus</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <span class="h1 navbar-brand text-white position-fixed"
+              style="left: 50%; transform: translateX(-50%);">{{ lesson }}</span>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Übersicht <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Auswertung</a>
+                </li>
+            </ul>
+            <span class="navbar-text text-white">Raum {{ room_name }}</span>
         </div>
-        <div class="row justify-content-center text-center">
-            <div class="col">
-                <h3 class="text-dark" style="display:inline-block;">Aktives Modul:</h3>
-                <a href="#">
-                    <h4 style="display: inline-block" class="mb-1 text-primary">{{ lesson|lower|capfirst }}</h4>
-                </a>
-            </div>
-        </div>
+    </nav>
+    <div class="container-fluid" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+        <!--
+>>>>>>> Move lesson to navbar and controls to bottom
         <div class="row justify-content-center text-center">
             <div class="col-auto">
                 <h3 style="display: inline-block">Steuerung</h3>
@@ -54,6 +63,7 @@
                 </button>
             </div>
         </div>
+        -->
         <div class="row justify-content-center pt-2">
             <div class="col-auto text-center">
                 <h3>Verbundene Schüler*innen</h3>
