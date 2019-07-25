@@ -1,26 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Datenklaus ~ {{ room_name }}{% endblock %}
 {% block content %}
-    {% load static %}<!-- Image and text -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <span class="navbar-brand mb-0 h1">Datenklaus</span>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Übersicht <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Auswertung</a>
-                </li>
-            </ul>
-            <span class="navbar-text text-white">Raum {{ room_name }}</span>
-        </div>
-    </nav>
+    {% load static %}
     <div class="container" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+        <div class="row justify-content-center text-center">
+            <div class="col">
+                <h1>Raum <span style="color:blue">{{ room_name }}</span></h1>
+            </div>
+        </div>
         <div class="row justify-content-center text-center">
             <div class="col">
                 <h3 class="text-dark" style="display:inline-block;">Aktives Modul:</h3>
@@ -70,6 +57,8 @@
             <div class="col-auto text-center">
                 <h3>Verbundene Schüler*innen</h3>
             </div>
+        </div>
+        <div class="row pt-2 justify-content-center" id="students">
         </div>
     </div>
 {% endblock %}
