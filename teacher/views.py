@@ -8,7 +8,7 @@ from teacher import random_word_chain
 from teacher.constants import RoomStates
 from teacher.models import Room
 from teacher.random_word_chain import random_word
-from teacher.utils import get_students_for_room, ajax_bad_request, HttpResponseNoContent, Cmd
+from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
 def index(request):
