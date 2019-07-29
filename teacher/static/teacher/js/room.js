@@ -10,7 +10,7 @@ $(document).ready(function () {
     });
     $('#createNewRoom').click(function () {
         $('#roomStartText').hide();
-        $('#controlsRow').css("style", "display: none");
+        $('#controlsRow').hide()
         $('#joinForm').show();
     });
 
