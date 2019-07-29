@@ -236,7 +236,7 @@
 {% endblock %}
 {% block scripts %}
     <script>const roomName = '{{ room_name }}';
-    let state = -1;</script>
+    let state = {{ state }};</script>
     <script src="{% static "teacher/js/room.js" %}"></script>
 {% endblock %}
 </body>

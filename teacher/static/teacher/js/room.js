@@ -1,12 +1,12 @@
 $(document).ready(function () {
     $("#button-play").click(function () {
-        controlCommand($(this), cmds.PLAY)
+        controlCommand($(this), cmds.PLAY, states.RUNNING)
     });
     $("#button-pause").click(function () {
-        controlCommand($(this), cmds.PAUSE)
+        controlCommand($(this), cmds.PAUSE, states.PAUSED)
     });
     $("#button-stop").click(function () {
-        controlCommand($(this), cmds.STOP)
+        controlCommand($(this), cmds.STOP, states.CLOSED)
     });
     $('#createNewRoom').click(function () {
         $('#roomStartText').hide();
@@ -24,7 +24,7 @@ $(document).ready(function () {
     $("button.list-group-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
-    if (roomName.length > 0) {
+    if (roomName) {
         setInterval(updateStudentList, 2000);
     }
     initPopover();
@@ -40,19 +40,19 @@ const cmds = {
 };
 
 const states = {
-    NOT_STARTED: -1,
-    RUNNING: 0,
-    PAUSED: 1,
-    STOPPED: 2
+    CLOSED: 0,
+    WAITING: 1,
+    RUNNING: 2,
+    PAUSED: 3,
 };
 
 setStates = function () {
     $('#button-play').prop('disabled', state === states.RUNNING)
         .find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"});
-    $('#button-pause').prop('disabled', state > states.RUNNING || state === states.NOT_STARTED)
-        .find('path').css({fill: state > states.RUNNING || state === states.NOT_STARTED ? "" : "#08e11f"});
-    $('#button-stop').prop('disabled', state === states.STOPPED || state === states.NOT_STARTED)
-        .find('path').css({fill: state === states.STOPPED || state === states.NOT_STARTED ? "" : "#FF0000"});
+    $('#button-pause').prop('disabled', state === states.PAUSED || state === states.WAITING || state === states.CLOSED)
+        .find('path').css({fill: state === states.PAUSED || state === states.WAITING || state === states.CLOSED ? "" : "#08e11f"});
+    $('#button-stop').prop('disabled', state === states.CLOSED)
+        .find('path').css({fill: state === states.CLOSED ? "" : "#FF0000"});
 };
 
 initPopover = function () {
@@ -98,14 +98,14 @@ validateRoomName = function () {
 };
 
 
-controlCommand = function (el, cmd) {
+controlCommand = function (el, cmd, s) {
     el.blur();
     $.ajax({
         url: "/teacher/control",
         data: {'room_name': roomName, 'cmd': cmd},
         dataType: 'json',
         success: function () {
-            state = cmd;
+            state = s;
             setStates()
         },
         error: function (jqXHR) {
@@ -125,7 +125,6 @@ updateStudentList = function update() {
             students.empty(); // remove old options
             const source = document.getElementById("connected-students").innerHTML;
             const template = Handlebars.compile(source);
-            console.log(data.students)
             /** @namespace data.students **/
             $.each(data.students, function (index, value) {
                 students.append(template(value));
