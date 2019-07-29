@@ -2,7 +2,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
-from django.urls import reverse
 
 from lesson.lessonState import LessonState
 from lesson.lessonUtil import get_lesson
@@ -54,12 +53,12 @@ def lesson(request, state_num=None):
             state = current_lesson.state(student.current_state)
             state.set_previous_state(student, state_num)
             student.save()
-            return HttpResponseRedirect(reverse("lesson", args=[student.current_state]))
         else:  # FIXME: Handle potential error cases?
             student.save()  # Resend current card  if we receive a GET request
 
     except LessonState.LessonStateError as e:
-        return HttpResponseRedirect(reverse("lesson", args=[e.fallback_state]))
+        student.current_state = e.fallback_state
+        state = current_lesson.state(e.fallback_state)
 
     context = {"lname": student.room.lesson, "rname": student.room, "previous_state": state.previous_state(student)}
     return state.render(request, student, context)
