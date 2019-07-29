@@ -217,7 +217,11 @@ getRooms = function () {
             /** @namespace data.rooms **/
             console.log(data.rooms)
             $.each(data.rooms, function (index, value) {
-                list.append($('<a class="dropdown-item" data-delete="true" href="#"></a>').text(value));
+                list.append($('<a class="dropdown-item" data-delete="true" href="#"></a>').text(value).click(function () {
+                    $(location).attr('href', "/teacher?room_name=" + value);
+                    $(this).addClass("active").siblings().removeClass("active");
+                    $('#dropdownMenuButton').text(value)
+                }));
             })
         }
     })
