@@ -38,7 +38,7 @@ getRooms = function () {
             list.empty(); // remove old options
             /** @namespace data.rooms **/
             $.each(data.rooms, function (index, value) {
-                list.append($("<option></option>")
+                list.append($('<a class=\"dropdown-item" href="#"></a>')
                     .attr("value", value).text(value));
                 if (value === selected) {
                     list.val(selected)
