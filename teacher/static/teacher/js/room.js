@@ -9,8 +9,9 @@ $(document).ready(function () {
         controlCommand($(this), cmds.STOP)
     });
     $('#createNewRoom').click(function () {
-        $('#joinForm').show();
         $('#roomStartText').hide();
+        $('#controlsRow').css("style", "display: none");
+        $('#joinForm').show();
     });
 
     $("#button-room").click(joinRoom);
@@ -23,7 +24,9 @@ $(document).ready(function () {
     $("button.list-group-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
-    setInterval(updateStudentList, 2000);
+    if (roomName.length > 0) {
+        setInterval(updateStudentList, 2000);
+    }
     initPopover();
     setStates();
     getRooms();
@@ -122,6 +125,7 @@ updateStudentList = function update() {
             students.empty(); // remove old options
             const source = document.getElementById("connected-students").innerHTML;
             const template = Handlebars.compile(source);
+            console.log(data.students)
             /** @namespace data.students **/
             $.each(data.students, function (index, value) {
                 students.append(template(value));
@@ -215,7 +219,6 @@ getRooms = function () {
                 v.remove();
             });
             /** @namespace data.rooms **/
-            console.log(data.rooms)
             $.each(data.rooms, function (index, value) {
                 list.append($('<a class="dropdown-item" data-delete="true" href="#"></a>').text(value).click(function () {
                     $(location).attr('href', "/teacher?room_name=" + value);
