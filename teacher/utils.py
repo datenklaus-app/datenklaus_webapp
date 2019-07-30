@@ -5,7 +5,6 @@ from django.http import JsonResponse, HttpResponse
 
 from lesson.lessonUtil import get_lesson
 from student.models import Student
-from teacher.constants import LESSON_STATE_WAITING
 from teacher.models import Room
 
 
@@ -18,7 +17,7 @@ def get_students_for_room(room_name):
     students = Student.objects.filter(room=room_name)
     student_info = []
     for student in students:
-        lesson_state = LESSON_STATE_WAITING if room.state == -1 else lesson.state(student.current_state).name()
+        lesson_state = lesson.state(student.current_state).name()
         student_info.append({"name": student.user_name, "progress": lesson_state})
     return student_info
 

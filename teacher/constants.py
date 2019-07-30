@@ -1,7 +1,5 @@
 from enum import Enum
 
-LESSON_STATE_WAITING = "Wartet auf Beginn"
-
 
 class RoomStates(Enum):
     CLOSED = 0
