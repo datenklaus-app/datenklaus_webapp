@@ -17,7 +17,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <span class="h1 navbar-brand text-white position-absolute"
+        <span class="h1 navbar-brand text-white position-absolute" id="roomLesson"
               style="left: 50%; transform: translateX(-50%);">{{ lesson }}</span>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
@@ -272,7 +272,7 @@
     </script>
 {% endblock %}
 {% block scripts %}
-    <script>const roomName = '{% if not room_name %}""{% else %}{{ room_name }}{% endif %}';
+    <script>let roomName = '{% if not room_name %}{% else %}{{ room_name }}{% endif %}';
     let state = {% if not state %}1{% else %}{{ state }}{% endif %};</script>
     <script src="{% static "teacher/js/room.js" %}"></script>
 {% endblock %}

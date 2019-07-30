@@ -10,49 +10,14 @@ $(document).ready(function () {
     });
     $('#createNewRoom').click(function () {
         $('#roomStartText').hide();
-        $('#controlsRow').hide()
-        $('#auswertung').show();
-        $('#joinForm').show();
-    });
-    $('#button-overview').click(function () {
-        $(this).addClass('active');
-        $('#button-auswertung').removeClass('active');
-        if (!roomName) {
-            $('#roomStartText').show()
-        } else {
-            $('#controlsRow').show();
-        }
-        $('#auswertung').hide();
-        $('#joinForm').hide();
-    });
-    $('#button-auswertung').click(function () {
-        $(this).addClass('active');
-        $('#button-overview').removeClass('active');
-        $('#roomStartText').hide();
         $('#controlsRow').hide();
         $('#auswertung').show();
-        $.ajax({
-            url: "/teacher/results/" + roomName,
-            dataType: 'json',
-            success: function (data) {
-                const results = $("#state_results");
-                results.empty(); // remove old options
-                const source = document.getElementById("resultItem").innerHTML;
-                const template = Handlebars.compile(source);
-                /** @namespace data.results **/
-                $.each(data.results, function (index, value) {
-                    value.no_students = data.no_students
-                    results.append(template(value));
-                },);
-            },
-            error: function (jqXHR) {
-                // TODO: remove?
-                console.log(jqXHR.responseJSON.err)
-            }
-        })
-    })
-
-    $("#button-room").click(joinRoom);
+        $('#joinForm').show();
+        clearTimeout(interval);
+    });
+    $('#button-overview').click(dOverview);
+    $('#button-auswertung').click(dResults);
+    $("#button-room").click(createRoom);
     // Validate room with 1s delay
     let wto;
     $("#room_name").on('input', function () {
@@ -62,15 +27,14 @@ $(document).ready(function () {
     $("button.list-group-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
-    if (roomName) {
-        setInterval(updateStudentList, 2000);
-    }
+
     initPopover();
     setStates();
     getRooms();
     setInterval(getRooms, 5000);
 });
 
+var interval;
 const cmds = {
     PLAY: 0,
     PAUSE: 1,
@@ -101,6 +65,56 @@ initPopover = function () {
             return (template())
         },
     });
+};
+
+dOverview = function () {
+    $(this).addClass('active');
+    $('#button-auswertung').removeClass('active');
+    $('#auswertung').hide();
+    $('#joinForm').hide();
+    if (!roomName) {
+        $('#roomStartText').show();
+        $('#controlsRow').hide();
+    } else {
+        $('#roomStartText').hide();
+        $('#controlsRow').show();
+        updateStudentList();
+        clearInterval(interval);
+        interval = setInterval(updateStudentList, 2000);
+    }
+};
+
+dResults = function () {
+    $(this).addClass('active');
+    $('#button-overview').removeClass('active');
+    $('#roomStartText').hide();
+    $('#controlsRow').hide();
+    $('#joinForm').hide();
+    $('#auswertung').show();
+    updateResults();
+    clearInterval(interval);
+    interval = setInterval(updateResults, 2000);
+};
+
+updateResults = function () {
+    $.ajax({
+        url: "/teacher/results/" + roomName,
+        dataType: 'json',
+        success: function (data) {
+            const results = $("#state_results");
+            results.empty(); // remove old options
+            const source = document.getElementById("resultItem").innerHTML;
+            const template = Handlebars.compile(source);
+            /** @namespace data.results **/
+            $.each(data.results, function (index, value) {
+                value.no_students = data.no_students;
+                results.append(template(value));
+            },);
+        },
+        error: function (jqXHR) {
+            console.log(jqXHR.responseJSON.err)
+        }
+    })
 };
 
 getRoomName = function () {
@@ -180,7 +194,7 @@ createTestStudents = function () {
         url: "/teacher/test-students",
         data: {'room_name': roomName},
         dataType: 'json',
-        success: function (data) {
+        success: function () {
             console.log("Test students created")
         },
         error: function (data) {
@@ -190,7 +204,7 @@ createTestStudents = function () {
     })
 };
 
-joinRoom = function () {
+createRoom = function () {
     const warnings = $('#warnings');
     warnings.empty();
     const room_name = getRoomName();
@@ -225,15 +239,15 @@ joinRoom = function () {
     $('#module_choice').val(lesson);
     $('#room_name').val(room_name);
     $.ajax({
-        url: 'join-room',
+        url: 'create-room',
         type: 'post',
         headers: {
             "X-CSRFToken": CSRF_TOKEN
         },
         dataType: 'json',
         data: $("#joinForm").serialize(),
-        success: function () {
-            $(location).attr('href', "/teacher?room_name=" + room_name);
+        success: function (data) {
+            updateRoom(data);
         },
         /** @namespace data.responseJSON.err **/
         error: function (data) {
@@ -242,6 +256,31 @@ joinRoom = function () {
     });
 };
 
+joinRoom = function (roomName) {
+    $.ajax({
+        url: "/teacher/join-room/" + roomName,
+        dataType: 'json',
+        success: function (data) {
+            updateRoom(data)
+        },
+        error: function (jqXHR) {
+            // TODO: remove?
+            console.log(jqXHR.responseJSON.err)
+        }
+    })
+};
+
+updateRoom = function (data) {
+    roomName = data.room_name;
+    state = data.state;
+    $('#roomLesson').text(data.lesson);
+    $('#button-auswertung').removeClass('disabled');
+    if ($('#button-overview').hasClass('active')) {
+        dOverview();
+    } else {
+        dResults();
+    }
+};
 
 getRooms = function () {
     $.ajax({
@@ -249,18 +288,16 @@ getRooms = function () {
         dataType: 'json',
         success: function (data) {
             const list = $("#dropDownRooms");
-            const selected = list.val();
-            const l = $('.dropdown-item[data-delete="true"]')
+            const l = $('.dropdown-item[data-delete="true"]');
             // Empty dropdown menu except static entries
             $.each(l, function (i, v) {
                 v.remove();
             });
             /** @namespace data.rooms **/
             $.each(data.rooms, function (index, value) {
-                list.append($('<a class="dropdown-item" data-delete="true" href="#"></a>').text(value).click(function () {
-                    $(location).attr('href', "/teacher?room_name=" + value);
-                    $(this).addClass("active").siblings().removeClass("active");
-                    $('#dropdownMenuButton').text(value)
+                list.append($('<button class="dropdown-item" data-delete="true"></button>').text(value).click(function () {
+                    $('#dropdownMenuButton').text(value);
+                    joinRoom(value)
                 }));
             })
         }
