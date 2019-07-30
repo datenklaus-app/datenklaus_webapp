@@ -54,7 +54,8 @@ class AState(LessonState):
         for o in objs:
             data[int(o.choice)] += 1
 
-        return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], AState._OPTIONS))).render()
+        return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], AState._OPTIONS))).render(
+            disable_xml_declaration=True)
 
     @staticmethod
     def name():

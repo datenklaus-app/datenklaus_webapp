@@ -14,5 +14,5 @@ class DKBarChart(pygal.Bar):
 
         self.add('', dataset)
 
-    def render(self):
-        return super().render(is_unicode=True)
+    def render(self, disable_xml_declaration=False):
+        return super().render(is_unicode=True, disable_xml_declaration=disable_xml_declaration)

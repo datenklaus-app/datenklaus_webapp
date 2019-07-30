@@ -2,7 +2,8 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonUtil import all_lessons
+from lesson.lessonUtil import all_lessons, get_lesson
+from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
@@ -32,6 +33,22 @@ def join(request):
             Room.objects.create(room_name=room_name, lesson=lesson)
             # return HttpResponseRedirect(reverse('teacher_index', {'room_name': room_name}))
             return HttpResponseNoContent()
+
+
+def results(request, room_name):
+    try:
+        room = Room.objects.get(room_name=room_name)
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room doesn't exist")
+    no_students = Student.objects.filter(room=room).count()
+    states = get_lesson(room.lesson).all_states()
+    results = []
+    for state in states:
+        r = state.result_svg(room_name)
+        if r is not None:
+            completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
+            results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
+    return JsonResponse({'results': results, 'no_students': no_students})
 
 
 def index(request):

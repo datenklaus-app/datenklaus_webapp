@@ -11,8 +11,46 @@ $(document).ready(function () {
     $('#createNewRoom').click(function () {
         $('#roomStartText').hide();
         $('#controlsRow').hide()
+        $('#auswertung').show();
         $('#joinForm').show();
     });
+    $('#button-overview').click(function () {
+        $(this).addClass('active');
+        $('#button-auswertung').removeClass('active');
+        if (!roomName) {
+            $('#roomStartText').show()
+        } else {
+            $('#controlsRow').show();
+        }
+        $('#auswertung').hide();
+        $('#joinForm').hide();
+    });
+    $('#button-auswertung').click(function () {
+        $(this).addClass('active');
+        $('#button-overview').removeClass('active');
+        $('#roomStartText').hide();
+        $('#controlsRow').hide();
+        $('#auswertung').show();
+        $.ajax({
+            url: "/teacher/results/" + roomName,
+            dataType: 'json',
+            success: function (data) {
+                const results = $("#state_results");
+                results.empty(); // remove old options
+                const source = document.getElementById("resultItem").innerHTML;
+                const template = Handlebars.compile(source);
+                /** @namespace data.results **/
+                $.each(data.results, function (index, value) {
+                    value.no_students = data.no_students
+                    results.append(template(value));
+                },);
+            },
+            error: function (jqXHR) {
+                // TODO: remove?
+                console.log(jqXHR.responseJSON.err)
+            }
+        })
+    })
 
     $("#button-room").click(joinRoom);
     // Validate room with 1s delay
