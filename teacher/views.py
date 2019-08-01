@@ -30,7 +30,7 @@ def create_room(request):
             return ajax_bad_request("Room already exist: " + room_name)
         except Room.DoesNotExist:
             room = Room.objects.create(room_name=room_name, lesson=lesson)
-            return join_room(request, room)
+            return join_room(request, room_name, room)
 
 
 def join_room(request, room_name, room: Room = None):
