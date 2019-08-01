@@ -11,7 +11,7 @@ $(document).ready(function () {
     $('#createNewRoom').click(function () {
         $('#roomStartText').hide();
         $('#controlsRow').hide();
-        $('#auswertung').show();
+        $('#auswertung').hide();
         $('#joinForm').show();
         clearTimeout(interval);
     });
@@ -32,6 +32,7 @@ $(document).ready(function () {
     setStates();
     getRooms();
     setInterval(getRooms, 5000);
+    window.location.hash = 'overview';
 });
 
 var interval;
@@ -67,7 +68,18 @@ initPopover = function () {
     });
 };
 
+updateView = function () {
+    if (window.location.hash) {
+        if (window.location.hash.substring(1) === 'results') {
+            dResults();
+        } else {
+            dOverview();
+        }
+    }
+};
+
 dOverview = function () {
+    window.location.hash = '#overview';
     $(this).addClass('active');
     $('#button-auswertung').removeClass('active');
     $('#auswertung').hide();
@@ -275,11 +287,7 @@ updateRoom = function (data) {
     state = data.state;
     $('#roomLesson').text(data.lesson);
     $('#button-auswertung').removeClass('disabled');
-    if ($('#button-overview').hasClass('active')) {
-        dOverview();
-    } else {
-        dResults();
-    }
+    updateView();
 };
 
 getRooms = function () {
