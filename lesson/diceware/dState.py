@@ -1,17 +1,17 @@
 from lesson.cards.textCard import TextCard
-from lesson.diceware.states import CSTATE, DSTATE
+from lesson.diceware.states import INITSTATE, DSTATE, ESTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
-class CState(LessonState):
-    card = TextCard(CSTATE, template='lesson/diceware/c-textCard.html')
+class DState(LessonState):
+    card = TextCard(DSTATE, template='lesson/diceware/d-textCard.html')
 
     def state_number(self):
-        return CSTATE
+        return DSTATE
 
     def next_state(self, student: Student) -> int:
-        return DSTATE
+        return ESTATE
 
     def render(self, request, student: Student, context: {}) -> str:
         return self.card.render(request, context)

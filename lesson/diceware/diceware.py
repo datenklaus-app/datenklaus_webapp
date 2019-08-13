@@ -1,8 +1,10 @@
+from lesson.diceware import states
 from lesson.diceware.aState import AState
 from lesson.diceware.bState import BState
 from lesson.diceware.cState import CState
+from lesson.diceware.dState import DState
+from lesson.diceware.eState import EState
 from lesson.diceware.initState import InitState
-from lesson.internet import states
 from lesson.lesson import Lesson
 from lesson.lessonState import LessonState
 
@@ -13,6 +15,8 @@ class Diceware(Lesson):
         states.ASTATE: AState,
         states.BSTATE: BState,
         states.CSTATE: CState,
+        states.DSTATE: DState,
+        states.ESTATE: EState,
     }
 
     @staticmethod

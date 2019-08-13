@@ -5,7 +5,7 @@ from student.models import Student
 
 
 class BState(LessonState):
-    card = TextCard(state=BSTATE, template="lesson/diceware/b-textCard.html")
+    card = TextCard(BSTATE, template="lesson/diceware/b-textCard.html")
 
     def state_number(self) -> int:
         return BSTATE
