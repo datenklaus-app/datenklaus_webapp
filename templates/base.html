@@ -3,11 +3,14 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport"
+          content="height=device-height, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     {% load static %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.min.css' %}">
+    <link href="{% static 'fontawesome/css/fontawesome.css' %}" rel="stylesheet' %}">
+    <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet"> <!--load all styles -->
     {% block css %}
         <link rel="stylesheet" href="{% static 'base_style.css' %}">
     {% endblock %}
@@ -26,6 +29,7 @@
 {% endblock %}
 
 <!-- JavaScript Includes-->
+<script defer src="{% static 'fontawesome/js/all.js' %}"></script> <!--load all styles -->
 <script src="{% static "js/jquery-3.4.1.js" %}"></script>
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="{% static "js/handlebars.js" %}"></script>
