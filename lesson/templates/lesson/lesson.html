@@ -14,7 +14,7 @@
                        onClick="window.location.href = '{% url 'leave' %}'">
             </div>
         </div>
-        <div class="row flex-grow-1">
+        <div class="row flex-grow-1 pt-2 pb-2">
             <div class="col h-100">
                 <form class="h-100" id="card-form" action="{% url 'lesson' state %}" method="post">
                     {% csrf_token %}

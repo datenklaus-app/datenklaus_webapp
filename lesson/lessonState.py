@@ -17,12 +17,20 @@ class LessonState:
         s.save()
 
     def previous_state(self, student: Student):
+        """
+        Returns the preceding state for the given student
+        :param student:
+        :return:
+        """
         s, _ = LessonSateModel.objects.get_or_create(state=self.state_number(),
                                                      student=student,
                                                      room=student.room)
         return s.previous_state
 
     def state_number(self):
+        """
+        :return: This state's number as integer representation
+        """
         raise NotImplementedError()
 
     def next_state(self, student: Student) -> int:

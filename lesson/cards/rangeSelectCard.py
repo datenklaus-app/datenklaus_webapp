@@ -5,10 +5,11 @@ from lesson.cards.card import Card
 
 
 class RangeSelectCard(Card):
-    def __init__(self, title, choices, state):
+    def __init__(self, title, choices, state, template='lesson/cards/rangeSelectCard.html'):
         self.title = title
         self.choices = choices
         self.state = state
+        self.template = template
 
     def post(self, post):
         form = RangeSelectForm(self.choices, post=post)
@@ -20,7 +21,7 @@ class RangeSelectCard(Card):
         context["title"] = self.title
         context["form"] = RangeSelectForm(self.choices)
         context["state"] = self.state
-        return render(request, 'lesson/cards/rangeSelectCard.html', context=context)
+        return render(request, self.template, context=context)
 
 
 class RangeSelectForm(forms.Form):

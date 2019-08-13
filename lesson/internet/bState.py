@@ -19,7 +19,7 @@ class BState(LessonState):
         return self.card.render(request, context, chart=chart)
 
     def post(self, post, student: Student):
-        return None
+        pass
 
     @staticmethod
     def name():

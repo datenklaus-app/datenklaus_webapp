@@ -1,11 +1,11 @@
-from lesson.cards.defaultCard import DefaultCard
+from lesson.cards.textCard import TextCard
 from lesson.internet.states import ASTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class InitState(LessonState):
-    card = DefaultCard("Willkommen",
+    card = TextCard("Willkommen",
                        "Heute lernen wir etwas über das Internet",
                        "Das Internet ist sehr toll", INITSTATE)
 
