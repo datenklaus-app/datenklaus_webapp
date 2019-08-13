@@ -7,7 +7,7 @@ from student.models import Student
 
 
 class InitState(LessonState):
-    card = SingleImageCard("Sicheres Passwort", static('diceware/'), INITSTATE)
+    card = SingleImageCard("Sicheres Passwort", static('diceware/dice-magician.png'), INITSTATE)
 
     def state_number(self):
         return INITSTATE
