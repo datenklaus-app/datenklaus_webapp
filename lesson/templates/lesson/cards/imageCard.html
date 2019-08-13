@@ -13,6 +13,9 @@
 
     <div class="row row-v-h-centered">
         <div class="col">
+            {% if title != None %}
+                <h1 class="text-center">{{ title }}</h1>
+            {% endif %}
             <div id="carouselFade" class="carousel slide carousel-fade" data-interval="false" data-wrap=false
                  data-touch=true>
                 <div class="carousel-inner">
@@ -45,19 +48,27 @@
 
 {% block card_scripts %}
     <script>
-        $('#lesson-continue-state').css('visibility', 'hidden')
-        $('#carouselFade').on('slide.bs.carousel', function (event) {
-            if (event.to == ({{ images|length }}-1)) {
-                $('#lesson-continue-state').css('visibility', 'visible')
-                $('#carousel_next').hide()
-            } else
-                $('#carousel_next').show()
+        $(document).ready(function () {
+                if (1 ===  {{ images|length }}) {
+                    $('#carousel_next').hide()
+                } else {
+                    $('#lesson-continue-state').css('visibility', 'hidden')
+                }
 
-            if (event.to != 0)
-                $('#carousel_back').show()
-            else
-                $('#carousel_back').hide()
+                $('#carouselFade').on('slide.bs.carousel', function (event) {
+                    if (event.to === ({{ images|length }}-1)) {
+                        $('#lesson-continue-state').css('visibility', 'visible')
+                        $('#carousel_next').hide()
+                    } else
+                        $('#carousel_next').show()
 
-        })
+                    if (event.to !== 0)
+                        $('#carousel_back').show()
+                    else
+                        $('#carousel_back').hide()
+                })
+            }
+        );
+
     </script>
 {% endblock %}
