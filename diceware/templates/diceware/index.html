@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Passwort würfeln
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'base_style.css' %}">
+    <link rel="stylesheet" href="{% static '/diceware/style.css' %}">
+{% endblock %}
+{% block content %}
+    {% include 'diceware/intro.html' %}
+    <div class="container-fluid" id="topCont" style="display: none; height: 40%">
+        <div class="row pt-3 justify-content-center align-items-center h-100">
+            <div class="col text-center h-100">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1 class="text-primary" id="round-text">Runde 1</h1>
+                    </div>
+                </div>
+                <div class="row pt-3 justify-content-center align-items-center">
+                    <div class="col text-center">
+                        <h1 class="text-primary">[Anleitung]</h1>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="bottomCont" style="display: none; height: 60%">
+        <i class="fas fa-dice-one fa-2x" id="dice-1" style="display: none"></i>
+        <i class="fas fa-dice-two fa-2x" id="dice-2" style="display: none;"></i>
+        <i class="fas fa-dice-three fa-2x" id="dice-3" style="display: none;"></i>
+        <i class="fas fa-dice-four fa-2x" id="dice-4" style="display: none"></i>
+        <i class="fas fa-dice-five fa-2x" id="dice-5" style="display: none"></i>
+        <i class="fas fa-dice-six fa-2x" id="dice-6" style="display: none"></i>
+        <div class="row pt-3 justify-content-center pb-4">
+            <div class="col-auto text-center" id="dice-holder-1">
+                <i class="fas fa-dice-one fa-2x" id="dice-pl" style="visibility: hidden "></i>
+            </div>
+            <div class="col-auto text-center" id="dice-holder-2">
+            </div>
+            <div class="col-auto text-center" id="dice-holder-3">
+            </div>
+            <div class="col-auto text-center" id="dice-holder-4">
+            </div>
+            <div class="col-auto text-center" id="dice-holder-5">
+            </div>
+        </div>
+        <div class="row justify-content-center pt-1">
+            <div class="col-lg-4 col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" maxlength="5" pattern="[0-6]{5}"
+                           title="Bitte gib dein Würfelergebnis ein (z.B. 24243)" class="form-control"
+                           placeholder="12345" id="dice-input"
+                           aria-label="Würfelergebnis" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="button-next" type="button">Weiter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-4 col-md-6">
+                <h4>Passwort:</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-4 col-md-6 col-">
+                <h4 id="password-sentence"></h4>
+            </div>
+        </div>
+    </div>
+    {% include 'diceware/result.html' %}
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static "diceware/js/diceware.js" %}"></script>
+{% endblock %}
