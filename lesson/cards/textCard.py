@@ -5,7 +5,7 @@ from lesson.cards.card import Card
 
 
 class TextCard(Card):
-    def __init__(self, title, subtitle, text, state, template="lesson/cards/textCard.html"):
+    def __init__(self, state, title=None, subtitle=None, text=None, template="lesson/cards/textCard.html"):
         self.title = title
         self.subtitle = subtitle
         self.text = text

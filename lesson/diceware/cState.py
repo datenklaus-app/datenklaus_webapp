@@ -1,11 +1,11 @@
-from lesson.cards.imageCard import ImageCard
+from lesson.cards.textCard import TextCard
 from lesson.diceware.states import CSTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class CState(LessonState):
-    card = ImageCard(["/lesson/internet/anm-1.png", "/lesson/internet/anm-2.png"], CSTATE)
+    card = TextCard(CSTATE, template='lesson/diceware/c-textCard.html')
 
     def state_number(self):
         return CSTATE
