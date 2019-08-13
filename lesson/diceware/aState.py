@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-from lesson.cards.rangeSelectCard import RangeSelectCard
+from lesson.cards.textCard import TextCard
 from lesson.charts import DKBarChart
 from lesson.diceware.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
@@ -9,14 +9,13 @@ from student.models import Student
 
 
 class AState(LessonState):
-    _OPTIONS = [(0, "Sehr schlecht"),
-                (1, "Eher schlecht"),
-                (2, "Naja"),
-                (3, "Eher gut"),
-                (4, "Sehr gut")]
-
-    card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet <nobr>ein ?</nobr>",
-                           _OPTIONS, ASTATE)
+    card = TextCard(None,
+                    "Ein sicheres Passwort muss, entgegen der allgemeinen Auffassung, "
+                    "nicht zwingend so kompliziert sein, dass du es dir nicht merken kannst!",
+                    "Verabschiede dich von verzwickten Zahlen-, Großbuchstaben- und Zeichen-Kombinationen,"
+                    " denn wir zeigen und erklären dir ein Spiel, bei dem du ein sicheres Passwort "
+                    "erstellst, dass du dir sogar - mithilfe einer Eselsbrücke - leichter merken kannst!",
+                    ASTATE,template="lesson/diceware/a-textCard.html")
 
     def state_number(self) -> int:
         return ASTATE
@@ -59,4 +58,4 @@ class AState(LessonState):
 
     @staticmethod
     def name():
-        return "Selbsteinschätzung"
+        return "Hinführung zum Spiel"

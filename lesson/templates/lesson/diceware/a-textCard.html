@@ -3,8 +3,8 @@
     <div class="row row-v-h-centered">
         <div class="col-auto">
             {% if title != None %}<h1>{{ title|safe }}</h1>{% endif %}
-            {% if subtitle != None %}<h2 class="text-muted">{{ subtitle|safe }}</h2>{% endif %}
-            {% if text != None %}<h3>{{ text|safe }}</h3>{% endif %}
+            {% if subtitle != None %}<h2 class="text-info">{{ subtitle|safe }}</h2>{% endif %}
+            {% if text != None %}<h4 class="text-muted">{{ text|safe }}</h4>{% endif %}
         </div>
     </div>
 {% endblock %}
