@@ -1,0 +1,17 @@
+{% extends 'lesson/lesson.html' %}
+{% block lesson_card %}
+    <div class="row row-v-h-centered">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center">{{ title }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <img src="{{ img }}" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
