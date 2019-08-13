@@ -1,3 +1,4 @@
+from lesson.diceware.diceware import Diceware
 from lesson.internet.internet import Internet
 from lesson.lesson import Lesson
 
@@ -9,7 +10,7 @@ def all_lessons() -> {str: Lesson}:
              key: Name of Lesson
              value: Lesson
     """
-    return {"Internet": Internet}
+    return {"Internet": Internet, "Diceware": Diceware}
 
 
 def get_lesson(name: str):

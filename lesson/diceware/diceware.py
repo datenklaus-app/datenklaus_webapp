@@ -7,7 +7,7 @@ from lesson.lesson import Lesson
 from lesson.lessonState import LessonState
 
 
-class Internet(Lesson):
+class Diceware(Lesson):
     _lessonStates = {
         states.INITSTATE: InitState,
         states.ASTATE: AState,
@@ -17,11 +17,11 @@ class Internet(Lesson):
 
     @staticmethod
     def description():
-        return "Eine Einführung in das Internet"
+        return "Diceware"
 
     @staticmethod
     def short_description():
-        return "Eine Einführung in das Internet"
+        return "Diceware short"
 
     @staticmethod
     def duration():
@@ -30,7 +30,7 @@ class Internet(Lesson):
     @staticmethod
     def state(s: int) -> LessonState:
         try:
-            return Internet._lessonStates[s]()
+            return Diceware._lessonStates[s]()
         except KeyError:
             NotImplementedError("State does not exist: " + str(s))
 
@@ -38,6 +38,6 @@ class Internet(Lesson):
     def all_states() -> [LessonState]:
 
         ls = []
-        for s in Internet._lessonStates.values():
+        for s in Diceware._lessonStates.values():
             ls.append(s())
         return ls

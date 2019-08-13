@@ -1,13 +1,13 @@
-from lesson.cards.defaultCard import DefaultCard
+from django.templatetags.static import static
+
+from lesson.cards.singleImageCard import SingleImageCard
 from lesson.internet.states import ASTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class InitState(LessonState):
-    card = DefaultCard("Willkommen",
-                       "Heute lernen wir etwas über das Internet",
-                       "Das Internet ist sehr toll", INITSTATE)
+    card = SingleImageCard("Sicheres Passwort", static('diceware/'), INITSTATE)
 
     def state_number(self):
         return INITSTATE
