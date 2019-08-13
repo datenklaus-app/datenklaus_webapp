@@ -1,6 +1,6 @@
 from lesson.cards.chartCard import ChartCard
-from lesson.internet.aState import AState
-from lesson.internet.states import CSTATE, BSTATE
+from lesson.diceware.aState import AState
+from lesson.diceware.states import BSTATE, CSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 

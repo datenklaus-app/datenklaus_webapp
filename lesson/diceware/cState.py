@@ -1,5 +1,5 @@
 from lesson.cards.imageCard import ImageCard
-from lesson.internet.states import CSTATE, INITSTATE
+from lesson.diceware.states import CSTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 

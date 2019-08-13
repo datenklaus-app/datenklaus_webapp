@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from lesson.cards.rangeSelectCard import RangeSelectCard
 from lesson.charts import DKBarChart
-from lesson.internet.states import ASTATE, BSTATE
+from lesson.diceware.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
 from lesson.models import LessonSateModel
 from student.models import Student

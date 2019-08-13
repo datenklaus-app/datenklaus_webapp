@@ -12,7 +12,7 @@ class SingleImageCard(Card):
         self.template = template
 
     def render(self, request, context):
-        form = SingleImageCard()
+        form = SingleImageCardForm()
         context["title"] = self.title
         context["img"] = self.image
         context["form"] = form

@@ -1,13 +1,13 @@
 from django.templatetags.static import static
 
 from lesson.cards.singleImageCard import SingleImageCard
-from lesson.internet.states import ASTATE, INITSTATE
+from lesson.diceware.states import INITSTATE, ASTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class InitState(LessonState):
-    card = SingleImageCard("Sicheres Passwort", static('diceware/dice-magician.png'), INITSTATE)
+    card = SingleImageCard(title="Sicheres Passwort", image=static('lesson/diceware/dice-magician.png'), state=INITSTATE)
 
     def state_number(self):
         return INITSTATE

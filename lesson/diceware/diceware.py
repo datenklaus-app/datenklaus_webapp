@@ -1,8 +1,8 @@
+from lesson.diceware.aState import AState
+from lesson.diceware.bState import BState
+from lesson.diceware.cState import CState
+from lesson.diceware.initState import InitState
 from lesson.internet import states
-from lesson.internet.aState import AState
-from lesson.internet.bState import BState
-from lesson.internet.cState import CState
-from lesson.internet.initState import InitState
 from lesson.lesson import Lesson
 from lesson.lessonState import LessonState
 
