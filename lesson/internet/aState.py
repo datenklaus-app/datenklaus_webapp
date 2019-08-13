@@ -52,6 +52,8 @@ class AState(LessonState):
         objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
         data = [0] * 5
         for o in objs:
+            if o.choice is None:
+                continue
             data[int(o.choice)] += 1
 
         return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], AState._OPTIONS))).render(
