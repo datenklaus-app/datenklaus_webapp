@@ -1,9 +1,24 @@
 {% extends 'lesson/lesson.html' %}
 {% block lesson_card %}
-    <div class="row row-v-h-centered">
-        <div class="col">
-            <h1 class="text-center">{{ title }}</h1>
-            <div class="w-100">{{ cht|safe }}</div>
-        </div>
-    </div>
+        <style>
+        .img-wrapper {
+        {% if title != None %}
+            height: calc(100% - 56px)
+        {% else %}
+            height: 100%
+        {% endif %}
+        }
+
+        .chart-card-chart {
+            height: 100%;
+            max-height: 100%;
+            width: auto;
+            min-height: 300px;
+
+        }
+
+    </style>
+
+    <h1 class="text-center text-light">{{ title }}</h1>
+    <div class="text-center img-wrapper">{{ cht|safe }}</div>
 {% endblock %}

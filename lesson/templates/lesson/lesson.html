@@ -2,35 +2,46 @@
 {% block title %}
     {{ rname }}: {{ lname|lower|capfirst }}
 {% endblock %}
+{% load staticfiles %}
 
 {% block content %}
-    <div class="container d-flex flex-column h-100 pt-2">
-        <div class="row">
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
+
+    <div id="lesson" class="container-fluid">
+        <div class="row lesson-header">
             <div class="col align-self-center">
-                <h4><span class="text-info">Raum:</span><span class="text-muted"> {{ rname }}</span></h4>
+                <h4><span class="text-info">Raum:</span><span class="text-light"> {{ rname }}</span></h4>
             </div>
             <div class="col text-right">
-                <input type=button class="btn btn-info" value="Raum verlassen"
+                <input type=button class="btn btn-danger" value="Raum verlassen"
                        onClick="window.location.href = '{% url 'leave' %}'">
             </div>
         </div>
-        <div class="row flex-grow-1 pt-2 pb-2">
-            <div class="col h-100">
-                <form class="h-100" id="card-form" action="{% url 'lesson' state %}" method="post">
+        <div class="row row-v-h-centered lesson-content">
+            <form class="h-100" id="card-form" action="{% url 'lesson' state %}" method="post">
+                <div class="col h-100 d-flex flex-column">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
-
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-        <div class="row">
+        <div class="row lesson-footer">
             <div class="col">
                 {% if previous_state is not None %}
                     <input type="button" class='btn btn-warning btn-block btn-lg' value="Zurück"
                            onClick="window.location.href = '{% url 'lesson' previous_state %}'">
                 {% endif %}
             </div>
-            <div class="col mb-2">
+            <div class="col">
                 <button id="lesson-continue-state" type="submit" form="card-form"
                         class="btn btn-success btn-lg btn-block">Weiter
                 </button>
