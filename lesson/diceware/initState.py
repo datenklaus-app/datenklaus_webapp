@@ -1,5 +1,3 @@
-from django.templatetags.static import static
-
 from lesson.cards.imageCard import ImageCard
 from lesson.diceware.states import INITSTATE, ASTATE
 from lesson.lessonState import LessonState
@@ -7,7 +5,7 @@ from student.models import Student
 
 
 class InitState(LessonState):
-    card = ImageCard(title="Sicheres Passwort", images=['lesson/diceware/dice-magician.png'], state=INITSTATE)
+    card = ImageCard(INITSTATE, template="lesson/diceware/init-imageCard.html")
 
     def state_number(self):
         return INITSTATE
