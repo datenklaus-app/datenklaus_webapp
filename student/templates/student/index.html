@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
 
 {% block title %}
     DatenKLAUs
@@ -32,18 +34,29 @@
         setInterval(update, 5000)
     </script>
 {% endblock %}
+
 {% block content %}
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+
     {% load widget_tweaks %}
     <div class="container h-100">
-        <div class="row align-items-center text-center h-100">
-            <div class="col">
+        <div class="row align-items-center justify-content-center text-center h-100">
+            <div class="col w-50 ">
                 <div class="row ">
-                    <div class="col">
+                    <div class="col text-light">
                         <h3>Wähle deinen <strong>Alias</strong> nach folgendem Schema:</h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col alert alert-light w-100">
+                    <div class="col alert alert-light">
                         <h4><strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
                             geboren
                             am <strong class="text-info">14</strong>.5.</h4><br/>
@@ -55,12 +68,12 @@
                 <form action="{% url 'join' %}" method="post">
                     {% csrf_token %}
                     <div class="row pt-1">
-                        <div class="col h4">Dein Alias kommt hier rein:</div>
+                        <div class="col h4 text-light">Dein Alias kommt hier rein:</div>
                     </div>
                     <div class="row pb-4">
                         {% render_field form.username class+="form-control form-control-lg" type="text" %}
                     </div>
-                    <div class="row">
+                    <div class="row text-light">
                         <div class="col h4">Wähle den Raum deiner Klasse:</div>
                     </div>
                     <div class="row pb-4">
