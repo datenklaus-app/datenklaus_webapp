@@ -1,0 +1,46 @@
+{% extends 'lesson/lesson.html' %}
+{% load staticfiles %}
+{% block lesson_card %}
+    <style>
+        .image-card-img {
+            height: 100%;
+            max-height: 100%;
+            width: auto;
+            min-height: 300px;
+
+        }
+
+        {# https://leaverou.github.io/bubbly/ #}
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: .4em;
+            padding: 15px;
+        }
+
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 58px solid transparent;
+            border-left-color: #ffffff;
+            border-right: 0;
+            border-bottom: 0;
+            margin-top: -29px;
+            margin-right: -58px;
+        }
+    </style>
+
+    <div class="row h-100">
+        <div class="col">
+            <h1 class="text-dark speech-bubble">Ich zeige euch Passwort Magie!</h1>
+        </div>
+        <div class="col h-100 text-center">
+            <img class="img-fluid rounded image-card-img" style="object-fit: contain"
+                 src="{% static "lesson/diceware/robotmage.png" %}">
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,7 @@ from student.models import Student
 
 
 class CState(LessonState):
-    card = ImageCard(["/lesson/internet/anm-1.png", "/lesson/internet/anm-2.png"], CSTATE)
+    card = ImageCard(CSTATE, ["/lesson/internet/anm-1.png", "/lesson/internet/anm-2.png"])
 
     def state_number(self):
         return CSTATE

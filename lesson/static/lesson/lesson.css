@@ -1,0 +1,23 @@
+.lesson-header {
+    padding-top: 12px;
+}
+
+.lesson-footer {
+    padding-bottom: 12px;
+}
+
+.lesson-content{
+    height: calc(100vh - 110px); /*(50 px (header) + 60px (footer))*/
+    padding-top: 12px;
+    padding-bottom: 12px;
+    min-height: 394px;
+}
+
+.row-v-h-centered {
+    justify-content: center;
+    align-items: center;
+}
+
+.speech-bubble {
+
+}
