@@ -70,7 +70,7 @@ initPopover = function () {
 
 updateView = function () {
     if (window.location.hash) {
-        if (window.location.hash.substring(1) === 'results') {
+       if (window.location.hash.substring(1) === 'results') {
             dResults();
         } else {
             dOverview();
@@ -235,14 +235,6 @@ createRoom = function () {
         error = true
     } else {
         $('#room_name_text').removeClass('text-danger').addClass('text-info');
-    }
-    const password = $('#room_password').val();
-    if (!password.trim()) {
-        $('#password_text').addClass('text-danger').removeClass('text-info');
-        warnings.append('<li><h6 class="text-danger">Bitte wähle ein Passwort</h6></li>');
-        error = true
-    } else {
-        $('#password_text').removeClass('text-danger').addClass('text-info');
     }
     if (error) {
         warnings.parent().show();

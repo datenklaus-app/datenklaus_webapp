@@ -11,14 +11,12 @@
     {% trans "Wähle oder erstelle einen Raum um anzufangen" as start_text %}
     {% trans "Raum existiert bereits. Bitte wähle einen anderen Namen oder öffne den Raum über die Eingabe ganz unten." as exists %}
     <!-- Strings end -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Datenklaus</span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <span class="h1 navbar-brand text-white position-absolute" id="roomLesson"
-              style="left: 50%; transform: translateX(-50%);">{{ lesson }}</span>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -31,7 +29,7 @@
                 </li>
             </ul>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                <button class="btn btn-light dropdown-toggle text-dark" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if room_name %} {{ room_name }} {% else %} {{ no_room_selected }} {% endif %}
                 </button>
@@ -44,37 +42,30 @@
     </nav>
     <div class="container-fluid" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
         <div id="controlsRow" {% if not room_name %} style="display: none" {% endif %} >
-            <div class="row justify-content-center text-center pt-2">
-                <div class="col-auto">
-                    <h3 style="display: inline-block">Steuerung</h3>
-                    <a tabindex="0" class="btn btn-sm align-top" style="cursor: pointer"
-                       role="button" id="control-popover" title="Steuerung">
-                        <img class="img-fluid w-75" src={% static "round-help-24px.svg" %}>
-                    </a>
+            <div class="row justify-content-center pt-2 pb-2 bg-light">
+                <div class="col text-dark align-self-center">
+                    <h4 class="m-0"> Modul: <span id="roomLesson">{{ lesson }}</span></h4>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-auto border bg-white">
-                    <button class="btn pr-4" id="button-play">
+                <div class="col text-center m-1">
+                    <button class="btn" id="button-play">
                         <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 8 8">
                             <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)"/>
                         </svg>
                     </button>
-                    <button class="btn pr-4" id="button-pause">
+                    <button class="btn" id="button-pause">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
                             <path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)"/>
                         </svg>
                     </button>
-                    <button class="btn pr-4" id="button-stop">
+                    <button class="btn" id="button-stop">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
                             <path d="M0 0v6h6v-6h-6z" transform="translate(1 1)"/>
                         </svg>
                     </button>
-                    <button class="btn" id="button-leave" onclick="window.location.href = '{% url 'teacher_leave' %}'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
-                            <path d="M3 0v1h4v5h-4v1h5v-7h-5zm-1 2l-2 1.5 2 1.5v-1h4v-1h-4v-1z"/>
-                        </svg>
-                    </button>
+                    <a tabindex="0" class="btn btn-sm" style="cursor: pointer"
+                       role="button" id="control-popover" title="Steuerung">
+                        <i class="far fa-question-circle"></i>
+                    </a>
                 </div>
             </div>
             <div class="row justify-content-center pt-3">
@@ -95,7 +86,7 @@
         <form id="joinForm" method="post" style="display: none">
             <div class="row justify-content-center pt-3 text-center">
                 <div class="col-md-6">
-                    <h3 class="text-info" id="choose_lesson">Wähle ein Modul</h3>
+                    <h3 class="text-dark" id="choose_lesson">Wähle ein Modul</h3>
                 </div>
             </div>
             <div class="row justify-content-center text-center">
@@ -127,7 +118,7 @@
             </div>
             <div class="row justify-content-center text-center">
                 <div class="col-md-6">
-                    <h3 id="room_name_text" class="text-info">einen Raumnamen</h3>
+                    <h3 id="room_name_text" class="text-dark">einen Raumnamen</h3>
                 </div>
             </div>
             <div class="row justify-content-center text-center" id="room_name_div">
@@ -136,30 +127,16 @@
                         <input id="room_name" type="text" name="room_name" maxlength="50" class="form-control"
                                placeholder="{{ random_room }}"
                                aria-label="room" aria-describedby="button-room">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-room">Erstellen</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center text-center" style="display: none" id="room_name_exists">
                 <div class="col-md-6">
                     <h6 class="text-danger">{{ exists }}</h6>
-                </div>
-            </div>
-            <div class="row justify-content-center text-center">
-                <div class="col-md-6">
-                    <h3 id="password_text" class="text-info">und ein Passwort</h3>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <input id="room_password" name="room_password" type="text" maxlength="10" class="form-control"
-                               placeholder="Password eingeben"
-                               aria-label="room"
-                               aria-describedby="button-room">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-room">Erstellen</button>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="row justify-content-center" style="display: none">
@@ -231,17 +208,6 @@
                     </div>
                     <div class="col text-left pl-2">
                         Beendet das Modul.
-                    </div>
-                </div>
-            </ul>
-            <ul class="pl-3">
-                <div class="row">
-                    <div class="col-auto pr-0">
-                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/account-logout.svg' %}"
-                             alt="Raum verlassen">
-                    </div>
-                    <div class="col text-left pl-2">
-                        Raum verlassen.
                     </div>
                 </div>
             </ul>
