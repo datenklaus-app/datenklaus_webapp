@@ -5,9 +5,9 @@ from student.models import Student
 
 
 class InitState(LessonState):
-    card = TextCard("Willkommen",
-                       "Heute lernen wir etwas über das Internet",
-                       "Das Internet ist sehr toll", INITSTATE)
+    card = TextCard(INITSTATE, "Willkommen",
+                    "Heute lernen wir etwas über das Internet",
+                    "Das Internet ist sehr toll")
 
     def state_number(self):
         return INITSTATE
