@@ -40,13 +40,13 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+    <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
         <div id="controlsRow" {% if not room_name %} style="display: none" {% endif %} >
             <div class="row justify-content-center pt-2 pb-2 bg-light">
                 <div class="col text-dark align-self-center">
                     <h4 class="m-0"> Modul: <span id="roomLesson">{{ lesson }}</span></h4>
                 </div>
-                <div class="col text-center m-1">
+                <div class="col text-right m-1">
                     <button class="btn" id="button-play">
                         <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 8 8">
                             <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)"/>
@@ -76,7 +76,7 @@
             <div class="row pt-2 justify-content-center d-flex" id="students">
             </div>
         </div>
-        <div class="row pt-2 justify-content-center align-items-center" id="roomStartText">
+        <div class="row pt-2 h-100 justify-content-center align-items-center" id="roomStartText">
             {% if not room_name %}
                 <div class="col-auto text-center text-black-50">
                     {{ start_text }}
