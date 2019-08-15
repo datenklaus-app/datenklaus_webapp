@@ -4,10 +4,10 @@ import pygal
 class DKBarChart(pygal.Bar):
     def __init__(self, dataset, labels):
         style = pygal.style.DefaultStyle()
-        style.background = "transparent"
-        style.plot_background = "transparent"
+        style.label_font_size = 16
+
         super().__init__(show_legend=False, show_y_labels=True,
-                         classes=(...,), height=400,
+                         classes=(...,"chart-card-chart", "img-fluid", "rounded"), height=400,
                          style=style)
         self.x_labels = labels
         self.y_labels = range(max(dataset) + 1)
