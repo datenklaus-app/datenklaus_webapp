@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'teacher',
     'student',
     'lesson',
-    'diceware',
 ]
 
 MIDDLEWARE = [
