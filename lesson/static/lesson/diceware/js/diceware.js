@@ -12,7 +12,6 @@ $(document).ready(function () {
         setDice(val)
     });
     $("#button-next").click(function () {
-        const diceInput = $("#dice-input");
         if (diceInput.val() === "") {
             // TODO: remove
             diceInput.val("12345")
@@ -25,24 +24,13 @@ $(document).ready(function () {
         findWord(input)
 
     });
-    $("#button-start").click(function () {
-        $("#topCont").show();
-        $("#bottomCont").show();
-        $("#introCont").hide();
-    })
-})
-;
+});
 
-let dicelist = null;
 let result = "";
 let rounds = 1;
 
 findWord = function (key) {
-    if (dicelist == null) {
-        getList(true, key);
-        return;
-    }
-    const word = dicelist[key];
+    const word = getDiceword(key)
     result += " " + word;
     rounds++;
     $("#round-text").text("Runde " + rounds)
@@ -75,19 +63,4 @@ setDice = function (str) {
             }
         }
     }
-};
-
-getList = function (recall, key) {
-    $.ajax({
-        url: "/diceware/list",
-        success: function (data) {
-            dicelist = data;
-            if (recall)
-                findWord(key)
-        },
-        error: function (data) {
-            // TODO: remove?
-            console.log(data.error)
-        }
-    })
 };
