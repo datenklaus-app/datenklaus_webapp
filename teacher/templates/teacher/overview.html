@@ -1,0 +1,99 @@
+{% extends "teacher/teacher_base.html" %}
+{% load static %}
+{% block teacher_content %}
+    {% load i18n %}
+    <!-- Strings -->
+    {% trans "Verbundene Schüler*innen" as connected_students_string %}
+    <!-- Strings end -->
+    <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+    <div id="controlsRow" {% if not room_name %} style="display: none" {% endif %} >
+        <div class="row justify-content-center pt-2 pb-2 bg-light">
+            <div class="col text-dark align-self-center">
+                <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span></h4>
+            </div>
+            <div class="col text-right m-1">
+                <button class="btn" id="button-play">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="btn" id="button-pause">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button class="btn" id="button-stop">
+                    <i class="fas fa-stop"></i>
+                </button>
+                <a tabindex="0" class="btn btn-sm text-secondary" style="cursor: pointer"
+                   role="button" id="control-popover" title="Steuerung">
+                    <i class="fas fa-question"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-center pt-3">
+            <div class="col-auto text-center text-info">
+                <h2>{{ connected_students_string }}</h2>
+            </div>
+        </div>
+        <div class="row pt-2 justify-content-center d-flex row-same-height" id="students">
+        </div>
+    </div>
+{% endblock %}
+
+{% block teacher-content-scripts %}
+    <script>
+        updateStudentList();
+        setInterval(updateStudentList, 2000);
+    </script>
+{% endblock %}
+
+{% block handlebars-template %}
+    <script id="connected-students" type="text/x-handlebars-template">
+        {% verbatim %}
+        <div class="col-auto bg-dark rounded m-2">
+            <div class="m1 card bg-dark" style="width: 250px">
+                <div class="card-body text-monospace text-left">
+                    <h2 class="mb-1 text-info">{{ name }}</h2>
+                    <h6 class="text-light">{{ progress }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endverbatim %}
+    </script>
+    <!-- Template for the controls popovers -->
+    <script id="popover-template" type="text/x-handlebars-template">
+        <div class="list-group pop overflow-hidden">
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-play.svg' %}"
+                             alt="Pause">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Startet oder setzt das Modul fort.
+                    </div>
+                </div>
+            </ul>
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-pause.svg' %}"
+                             alt="Pause">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Pausiert das Modul für alle Schüler*innen.
+                    </div>
+                </div>
+            </ul>
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-stop.svg' %}"
+                             alt="Stop">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Beendet das Modul.
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </script>
+    <!-- Template popover end -->
+{% endblock %}

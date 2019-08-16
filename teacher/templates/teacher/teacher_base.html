@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{# Load static files#}
+{% load static %}
+
+{# Load custom css (overwrites base.css) #}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/teacher/style.css' %}">
+{% endblock %}
+
+{# Translations #}
+{% load i18n %}
+<!-- Strings -->
+{% trans "Kein Raum ausgewählt" as no_room_selected %}
+
+{# Set page Title #}
+{% block title %}DK ☰ {{ room_name }}{% endblock %}
+
+{% block content %}
+    {# Teacher navbar #}
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">Datenklaus</span>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" id="button-overview" href="{% url "overview" %}">Übersicht <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if not room_name %}disabled{% endif %}" id="button-auswertung"
+                       href="#results">Auswertung</a>
+                </li>
+            </ul>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle text-dark" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if room_name %} {{ room_name }} {% else %} {{ no_room_selected }} {% endif %}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" id="dropDownRooms" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item" type="button" id="createNewRoom">Neuen Raum erstellen</button>
+                    <div id="dropdownDivider" class="dropdown-divider"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block teacher_content %}
+    {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        let roomName = '{% if not room_name %}{% else %}{{ room_name }}{% endif %}';
+        let state = {% if not state %}1{% else %}{{ state }}{% endif %};
+        getRooms = function () {
+            $.ajax({
+                url: "{% url "rooms" %}",
+                dataType: 'json',
+                success: function (data) {
+                    const list = $("#dropDownRooms");
+                    const l = $('.dropdown-item[data-delete="true"]');
+                    // Empty dropdown menu except static entries
+                    $.each(l, function (i, v) {
+                        v.remove();
+                    });
+                    /** @namespace data.rooms **/
+                    $.each(data.rooms, function (index, value) {
+                        list.append($('<button class="dropdown-item" data-delete="true"></button>').text(value).click(function () {
+                            $('#dropdownMenuButton').text(value);
+                            window.location.href = "{% url "overview" %}" + value
+                        }));
+                    })
+                }
+            })
+        };
+        getRooms();
+        setInterval(getRooms, 2000);
+    </script>
+    <script src="{% static "teacher/js/room.js" %}"></script>
+    {% block teacher-content-scripts %}
+    {% endblock %}
+{% endblock %}

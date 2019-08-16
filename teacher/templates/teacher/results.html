@@ -1,0 +1,199 @@
+{% extends "teacher/teacher_base.html" %}
+{% load static %}
+{% block teacher_content %}
+    <!-- Strings end -->
+    <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+        <div id="controlsRow" {% if not room_name %} style="display: none" {% endif %} >
+            <div class="row justify-content-center pt-2 pb-2 bg-light">
+                <div class="col text-dark align-self-center">
+                    <h4 class="m-0"> Modul: <span id="roomLesson">{{ lesson }}</span></h4>
+                </div>
+                <div class="col text-right m-1">
+                    <button class="btn" id="button-play">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 8 8">
+                            <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)"/>
+                        </svg>
+                    </button>
+                    <button class="btn" id="button-pause">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
+                            <path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)"/>
+                        </svg>
+                    </button>
+                    <button class="btn" id="button-stop">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 8 8">
+                            <path d="M0 0v6h6v-6h-6z" transform="translate(1 1)"/>
+                        </svg>
+                    </button>
+                    <a tabindex="0" class="btn btn-sm" style="cursor: pointer"
+                       role="button" id="control-popover" title="Steuerung">
+                        <i class="far fa-question-circle"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row justify-content-center pt-3">
+                <div class="col-auto text-center text-info">
+                    <h2>Verbundene Schüler*innen</h2>
+                </div>
+            </div>
+            <div class="row pt-2 justify-content-center d-flex row-same-height" id="students">
+            </div>
+        </div>
+        <div class="row pt-2 h-100 justify-content-center align-items-center" id="roomStartText">
+            {% if not room_name %}
+                <div class="col-auto text-center text-black-50">
+                    {{ start_text }}
+                </div>
+            {% endif %}
+        </div>
+        <form id="joinForm" method="post" style="display: none">
+            <div class="row justify-content-center pt-3 text-center">
+                <div class="col-md-6">
+                    <h3 class="text-dark" id="choose_lesson">Wähle ein Modul</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center">
+                <div class="col-md-6">
+                    <input type="hidden" name="lesson" id="module_choice">
+                    <div class="list-group overflow-auto list-group-scrollable" id="lessons">
+                        {% for m in lessons %}
+                            <button class="list-group-item list-group-item-action flex-column align-items-start"
+                                    type="button">
+                                <div class="d-flex w-100 justify-content-center">
+                                    <h5 id="lesson_name" data-name="{{ m.name }}"
+                                        class="mb-1">{{ m.name|lower|capfirst }}</h5>
+                                </div>
+                                <p class="mb-1"></p>
+                                <h6 class="mb-1">{{ m.description }}</h6>
+                                <p class="mb-1"></p>
+                            </button>
+                        {% empty %}
+                            <a href="#"
+                               class="list-group-item list-group-item-action flex-column align-items-start active">
+                                <div class="d-flex w-100 justify-content-center">
+                                    <h5 class="mb-1"> Keine Module verfügbar</h5>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    </input>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center">
+                <div class="col-md-6">
+                    <h3 id="room_name_text" class="text-dark">einen Raumnamen</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center" id="room_name_div">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <input id="room_name" type="text" name="room_name" maxlength="50" class="form-control"
+                               placeholder="{{ random_room }}"
+                               aria-label="room" aria-describedby="button-room">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-room">Erstellen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center" style="display: none" id="room_name_exists">
+                <div class="col-md-6">
+                    <h6 class="text-danger">{{ exists }}</h6>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display: none">
+                <div class="list-group overflow-auto" id="warnings">
+                </div>
+            </div>
+        </form>
+        <div class="" style="display: none" id="auswertung">
+            <div class="row justify-content-center pt-2">
+                <div class="col-auto">
+                    <h3>Ergebnisse</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-auto w-50">
+                    <div class="list-group overflow-auto list-group-scrollable" style="max-height: none"
+                         id="state_results">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block handlebars-template %}
+    <script id="connected-students" type="text/x-handlebars-template">
+        {% verbatim %}
+        <div class="col-4 col-same-height">
+            <div class="m1 card bg-dark" style="width: 250px">
+                <div class="card-body text-monospace text-left">
+                    <h2 class="mb-1 text-info">{{ name }}</h2>
+                    <h6 class="text-light">{{ progress }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endverbatim %}
+    </script>
+    <!-- Template for the controls popovers -->
+    <script id="popover-template" type="text/x-handlebars-template">
+        <div class="list-group pop overflow-hidden">
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-play.svg' %}"
+                             alt="Pause">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Startet oder setzt das Modul fort.
+                    </div>
+                </div>
+            </ul>
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-pause.svg' %}"
+                             alt="Pause">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Pausiert das Modul für alle Schüler*innen.
+                    </div>
+                </div>
+            </ul>
+            <ul class="pl-3">
+                <div class="row">
+                    <div class="col-auto pr-0">
+                        <img class="img-fluid border p-1" src="{% static 'open-iconic/svg/media-stop.svg' %}"
+                             alt="Stop">
+                    </div>
+                    <div class="col text-left pl-2">
+                        Beendet das Modul.
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </script>
+    <!-- Template popover end -->
+    <script id="resultItem" type="text/x-handlebars-template">
+        {% verbatim %}
+        <a class="list-group-item list-group-item-action flex-column align-items-start"
+           type="button">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-center">
+                        {{{ svg }}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="mb-1">{{ state_name }}</h6>
+                </div>
+                <div class="col-6 text-right">
+                    <h6>Bearbeitet {{ completed }}/{{ no_students }}</h6>
+                </div>
+            </div>
+        </a>
+        {% endverbatim %}
+    </script>
+{% endblock %}
