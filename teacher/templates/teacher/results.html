@@ -18,6 +18,29 @@
 {% endblock %}
 
 {% block teacher-content-scripts %}
+    <script id="resultItem" type="text/x-handlebars-template">
+        {% verbatim %}
+        <a class="list-group-item list-group-item-action flex-column align-items-start"
+           type="button">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-center">
+                        {{{ svg }}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="mb-1">{{ state_name }}</h6>
+                </div>
+                <div class="col-6 text-right">
+                    <h6>Bearbeitet {{ completed }}/{{ no_students }}</h6>
+                </div>
+            </div>
+        </a>
+        {% endverbatim %}
+    </script>
+
     <script>
         updateResults = function () {
             $.ajax({
@@ -41,31 +64,5 @@
         };
         updateResults();
         setInterval(updateResults, 5000)
-    </script>
-{% endblock %}
-
-{% block handlebars-template %}
-    <!-- Template popover end -->
-    <script id="resultItem" type="text/x-handlebars-template">
-        {% verbatim %}
-        <a class="list-group-item list-group-item-action flex-column align-items-start"
-           type="button">
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex w-100 justify-content-center">
-                        {{{ svg }}}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <h6 class="mb-1">{{ state_name }}</h6>
-                </div>
-                <div class="col-6 text-right">
-                    <h6>Bearbeitet {{ completed }}/{{ no_students }}</h6>
-                </div>
-            </div>
-        </a>
-        {% endverbatim %}
     </script>
 {% endblock %}
