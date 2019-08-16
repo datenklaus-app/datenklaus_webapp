@@ -56,6 +56,10 @@ setStates = function () {
 };
 
 initPopover = function () {
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    })
+
     $('#control-popover').popover({
         html: true,
         content: function () {
