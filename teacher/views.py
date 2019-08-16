@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonUtil import all_lessons, get_lesson
+from lesson.lessonUtil import get_lesson
 from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
@@ -12,16 +12,12 @@ from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResp
 
 
 def index(request):
-    room_name = request.GET.get("room_name", None)
-    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
-    context = {'lessons': lessons}
-    if room_name is not None:
-        try:
-            room = Room.objects.get(room_name=room_name)
-            context.update([('room_name', room_name), ('lesson', room.lesson), ('state', room.state)])
-        except Room.DoesNotExist:
-            pass
-    return render(request, 'teacher/index.html', context=context)
+    try:
+        room = request.session["room"]
+    except KeyError:
+        return render(request, 'teacher/index.html')
+
+    return HttpResponseRedirect(reverse("overview", args=[room]))
 
 
 def overview(request, room_name=None):
@@ -33,16 +29,13 @@ def overview(request, room_name=None):
     else:
         request.session["room"] = room_name
 
-    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
-    context = {'lessons': lessons}
-    if room_name is not None:
-        try:
-            room = Room.objects.get(room_name=room_name)
-            context.update([('room_name', room_name), ('lesson', room.lesson), ('state', room.state)])
-        except Room.DoesNotExist:
-            pass
-
-    return render(request, 'teacher/overview.html', context=context)
+    try:
+        room = Room.objects.get(room_name=room_name)
+        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state}
+        return render(request, 'teacher/overview.html', context=context)
+    except Room.DoesNotExist:
+        # TODO: Handle room deletion?
+        return HttpResponseRedirect(reverse("teacher_index"))
 
 
 def create_room(request):
