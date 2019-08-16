@@ -88,6 +88,36 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Template for the controls popovers -->
+    <script id="popover-template" type="text/x-handlebars-template">
+        <div class="list-group pop overflow-hidden">
+            <div class="row">
+                <div class="col-auto pb-1">
+                    <i class="fas fa-play text-success"></i>
+                </div>
+                <div class="col text-left pl-1">
+                    Startet oder setzt das Modul fort.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto pb-1">
+                    <i class="fas fa-pause text-info"></i>
+                </div>
+                <div class="col text-left pl-1">
+                    Pausiert das Modul für alle Schüler*innen.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <i class="fas fa-stop text-danger"></i>
+                </div>
+                <div class="col text-left pl-1">
+                    Beendet das Modul.
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script>
         const cmds = {
             PLAY: 0,

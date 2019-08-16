@@ -17,6 +17,18 @@
 {% endblock %}
 
 {% block teacher-content-scripts %}
+    <script id="connected-students" type="text/x-handlebars-template">
+        {% verbatim %}
+        <div class="col-auto bg-dark rounded m-2">
+            <div class="m1 card bg-dark" style="width: 250px">
+                <div class="card-body text-monospace text-left">
+                    <h2 class="mb-1 text-info">{{ name }}</h2>
+                    <h6 class="text-light">{{ progress }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endverbatim %}
+    </script>
     <script>
         updateStudentList = function () {
             $.ajax({
@@ -42,55 +54,4 @@
         updateStudentList();
         setInterval(updateStudentList, 2000);
     </script>
-{% endblock %}
-
-{% block handlebars-template %}
-    <script id="connected-students" type="text/x-handlebars-template">
-        {% verbatim %}
-        <div class="col-auto bg-dark rounded m-2">
-            <div class="m1 card bg-dark" style="width: 250px">
-                <div class="card-body text-monospace text-left">
-                    <h2 class="mb-1 text-info">{{ name }}</h2>
-                    <h6 class="text-light">{{ progress }}</h6>
-                </div>
-            </div>
-        </div>
-        {% endverbatim %}
-    </script>
-    <!-- Template for the controls popovers -->
-    <script id="popover-template" type="text/x-handlebars-template">
-        <div class="list-group pop overflow-hidden">
-            <ul class="pl-3">
-                <div class="row">
-                    <div class="col-auto pr-0">
-                        <i class="fas fa-play text-success"></i>
-                    </div>
-                    <div class="col text-left pl-2">
-                        Startet oder setzt das Modul fort.
-                    </div>
-                </div>
-            </ul>
-            <ul class="pl-3">
-                <div class="row">
-                    <div class="col-auto pr-0">
-                        <i class="fas fa-pause text-info"></i>
-                    </div>
-                    <div class="col text-left pl-2">
-                        Pausiert das Modul für alle Schüler*innen.
-                    </div>
-                </div>
-            </ul>
-            <ul class="pl-3">
-                <div class="row">
-                    <div class="col-auto pr-0">
-                        <i class="fas fa-stop text-danger"></i>
-                    </div>
-                    <div class="col text-left pl-2">
-                        Beendet das Modul.
-                    </div>
-                </div>
-            </ul>
-        </div>
-    </script>
-    <!-- Template popover end -->
 {% endblock %}
