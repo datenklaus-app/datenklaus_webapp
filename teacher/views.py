@@ -2,12 +2,12 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonUtil import get_lesson
+from lesson.lessonUtil import get_lesson, all_lessons
 from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
-from teacher.random_word_chain import random_word, random_word_chain
+from teacher.random_word_chain import random_word
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 

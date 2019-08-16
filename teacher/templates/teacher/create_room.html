@@ -64,16 +64,5 @@
     </div>
 {% endblock %}
 {% block teacher-content-scripts %}
-    <script>
-        $("#joinForm")[0].reset();
-        // Validate room with 1s delay
-        let wto;
-        $("#room_name").on('input', function () {
-            clearTimeout(wto);
-            wto = setTimeout(validateRoomName, 1000);
-        });
-        $("button.list-group-item").click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
-        });
-    </script>
+    <script src="{% static "teacher/js/create.js" %}"></script>
 {% endblock %}
