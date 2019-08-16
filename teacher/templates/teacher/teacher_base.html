@@ -32,7 +32,8 @@
             <ul class="navbar-nav mr-auto">
                 {% if room_name is not None %}
                     <li class="nav-item">
-                        <a class="nav-link {% if is_overview %}active{% endif %}" id="button-overview" href="{% url "overview" %}">Übersicht <span
+                        <a class="nav-link {% if is_overview %}active{% endif %}" id="button-overview"
+                           href="{% url "overview" %}">Übersicht <span
                                 class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
@@ -116,7 +117,7 @@
 
             $('.popover-dismiss').popover({
                 trigger: 'focus'
-            })
+            });
 
             $('#control-popover').popover({
                 html: true,
@@ -176,6 +177,22 @@
             })
         };
 
+        createTestStudents = function () {
+            $.ajax({
+                url: "/teacher/test-students",
+                data: {
+                    'room_name': "{{room_name}}"
+                },
+                dataType: 'json',
+                success: function () {
+                    console.log("Test students created")
+                },
+                error: function (data) {
+                    // TODO: remove?
+                    console.log(data.error)
+                }
+            })
+        };
     </script>
     <script src="{% static "teacher/js/room.js" %}"></script>
     {% block teacher-content-scripts %}
