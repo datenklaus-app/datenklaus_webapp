@@ -8,7 +8,6 @@ $(document).ready(function () {
     $("#button-stop").click(function () {
         controlCommand($(this), cmds.STOP, states.CLOSED)
     });
-    $("#button-room").click(createRoom);
     initPopover();
 });
 

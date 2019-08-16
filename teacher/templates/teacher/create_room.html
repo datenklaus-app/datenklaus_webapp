@@ -76,6 +76,7 @@
             $("button.list-group-item").click(function () {
                 $(this).addClass('active').siblings().removeClass('active');
             });
+            $("#button-room").click(createRoom);
         });
 
         function getRoomName() {
@@ -166,7 +167,7 @@
                 },
                 /** @namespace data.responseJSON.err **/
                 error: function (data) {
-                    console.log(data.responseJSON.err)
+                    console.log(data)
                 }
             });
         };

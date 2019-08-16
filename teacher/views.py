@@ -63,7 +63,7 @@ def create_room(request):
             return ajax_bad_request("Room already exist: " + room_name)
         except Room.DoesNotExist:
             Room.objects.create(room_name=room_name, lesson=lesson)
-            return reverse("overview", args=room_name)
+            return HttpResponseNoContent()
 
 
 def results(request, room_name):

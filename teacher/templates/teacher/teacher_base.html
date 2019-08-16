@@ -47,9 +47,9 @@
                     {% if room_name %} {{ room_name }} {% else %} {{ no_room_selected }} {% endif %}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" id="dropDownRooms" aria-labelledby="dropdownMenuButton">
-                    <button class="dropdown-item" type="button" href="location.href={% url 'create' %}" id="createNewRoom">
+                    <a class="dropdown-item" type="button" href="{% url 'create' %}" id="createNewRoom">
                         Neuen Raum erstellen
-                    </button>
+                    </a>
                     <div id="dropdownDivider" class="dropdown-divider"></div>
                 </div>
             </div>
