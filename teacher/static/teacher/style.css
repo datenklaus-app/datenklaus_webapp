@@ -72,7 +72,3 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
-
-.clickable-div.active:hover {
-    background: #007bff;
-}

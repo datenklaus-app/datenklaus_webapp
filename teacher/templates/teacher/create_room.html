@@ -15,7 +15,7 @@
                     <input type="hidden" name="lesson" id="module_choice">
                     <div class="list-group overflow-auto list-group-scrollable" id="lessons">
                         {% for m in lessons %}
-                            <div class="clickable-div unselectable list-group-item list-group-item-action flex-column align-items-start"
+                            <div class="btn-info unselectable list-group-item list-group-item-action flex-column align-items-start"
                                  type="button">
                                 <div class="d-flex w-100 justify-content-center">
                                     <h5 id="lesson_name" data-name="{{ m.name }}"
@@ -78,13 +78,13 @@
                 $(this).addClass('active').siblings().removeClass('active');
             });
             $("#button-room").click(createRoom);
-            $(".clickable-div").click(function () {
+            $(".unselectable").click(function () {
                 lessonItemClicked($(this))
             })
         });
 
         lessonItemClicked = function (item) {
-            $('.clickable-div').removeClass('active');
+            $('.unselectable').removeClass('active');
             item.toggleClass('active');
             removeLessonWarning();
         };
@@ -139,7 +139,7 @@
             const warnings = $('#warnings');
             warnings.empty();
             const room_name = getRoomName();
-            const lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
+            const lesson = $('#lessons').find('.unselectable.active').find('#lesson_name').data('name');
             let error = false;
             if (lesson == null) {
                 $('#choose_lesson').addClass('text-danger').removeClass('text-dark');
@@ -161,7 +161,7 @@
                 url: 'create-room',
                 type: 'post',
                 headers: {
-                    "X-CSRFToken": CSRF_TOKEN
+                    "X-CSRFToken": "{{ csrf_token }}"
                 },
                 dataType: 'json',
                 data: $("#joinForm").serialize(),
