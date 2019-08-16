@@ -6,27 +6,6 @@
     {% trans "Verbundene Schüler*innen" as connected_students_string %}
     <!-- Strings end -->
     <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
-    <div id="controlsRow" {% if not room_name %} style="display: none" {% endif %} >
-        <div class="row justify-content-center pt-2 pb-2 bg-light">
-            <div class="col text-dark align-self-center">
-                <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span></h4>
-            </div>
-            <div class="col text-right m-1">
-                <button class="btn state-btn-play" id="button-play">
-                    <i class="fas fa-play"></i>
-                </button>
-                <button class="btn state-btn-pause" id="button-pause">
-                    <i class="fas fa-pause"></i>
-                </button>
-                <button class="btn state-btn-stop" id="button-stop">
-                    <i class="fas fa-stop"></i>
-                </button>
-                <a tabindex="0" class="btn btn-sm text-secondary" style="cursor: pointer"
-                   role="button" id="control-popover" title="Steuerung" data-trigger="hover">
-                    <i class="fas fa-question"></i>
-                </a>
-            </div>
-        </div>
         <div class="row justify-content-center pt-3">
             <div class="col-auto text-center text-info">
                 <h2>{{ connected_students_string }}</h2>
@@ -39,10 +18,29 @@
 
 {% block teacher-content-scripts %}
     <script>
+        updateStudentList = function () {
+            $.ajax({
+                url: "/teacher/students",
+                data: {'room_name': "{{ room_name }}"},
+                dataType: 'json',
+                success: function (data) {
+                    const students = $("#students");
+                    students.empty(); // remove old options
+                    const source = document.getElementById("connected-students").innerHTML;
+                    const template = Handlebars.compile(source);
+                    /** @namespace data.students **/
+                    $.each(data.students, function (index, value) {
+                        students.append(template(value));
+                    },);
+                },
+                error: function (data) {
+                    // TODO: remove?
+                    console.log(data.error)
+                }
+            })
+        };
         updateStudentList();
         setInterval(updateStudentList, 2000);
-        let state = {{ state }};
-        setStates();
     </script>
 {% endblock %}
 

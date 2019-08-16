@@ -32,11 +32,11 @@
             <ul class="navbar-nav mr-auto">
                 {% if room_name is not None %}
                     <li class="nav-item">
-                        <a class="nav-link active" id="button-overview" href="{% url "overview" %}">Übersicht <span
+                        <a class="nav-link {% if is_overview %}active{% endif %}" id="button-overview" href="{% url "overview" %}">Übersicht <span
                                 class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="button-auswertung"
+                        <a class="nav-link {% if is_results %}active{% endif %}" id="button-auswertung"
                            href="{% url "results" room_name %}">Auswertung</a>
                     </li>
                 {% endif %}
@@ -56,13 +56,104 @@
         </div>
     </nav>
 
+    {% if room_name %}
+        <div class="container-fluid">
+            <div class="row justify-content-center pt-2 pb-2 bg-light">
+                <div class="col text-dark align-self-center">
+                    <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span>
+                    </h4>
+                </div>
+                <div class="col text-right m-1">
+                    <button class="btn state-btn-play" id="button-play">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="btn state-btn-pause" id="button-pause">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="btn state-btn-stop" id="button-stop">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                    <a tabindex="0" class="btn btn-sm text-secondary" style="cursor: pointer"
+                       role="button" id="control-popover" title="Steuerung" data-trigger="hover">
+                        <i class="fas fa-question"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     {% block teacher_content %}
     {% endblock %}
 {% endblock %}
 
 {% block scripts %}
     <script>
-        let roomName = '{% if not room_name %}{% else %}{{ room_name }}{% endif %}';
+        const cmds = {
+            PLAY: 0,
+            PAUSE: 1,
+            STOP: 2,
+        };
+
+        const states = {
+            CLOSED: 0,
+            WAITING: 1,
+            RUNNING: 2,
+            PAUSED: 3,
+        };
+
+        let state = {{ state }};
+
+        $(document).ready(function () {
+            $("#button-play").click(function () {
+                controlCommand($(this), cmds.PLAY, states.RUNNING)
+            });
+            $("#button-pause").click(function () {
+                controlCommand($(this), cmds.PAUSE, states.PAUSED)
+            });
+            $("#button-stop").click(function () {
+                controlCommand($(this), cmds.STOP, states.CLOSED)
+            });
+
+            $('.popover-dismiss').popover({
+                trigger: 'focus'
+            })
+
+            $('#control-popover').popover({
+                html: true,
+                content: function () {
+                    const template = Handlebars.compile($("#popover-template").html());
+                    return (template())
+                },
+            });
+
+            setStates();
+            getRooms();
+            setInterval(getRooms, 2000);
+        });
+
+        setStates = function () {
+            $('#button-play').prop('disabled', state === states.RUNNING);
+            $('#button-pause').prop('disabled', state === states.PAUSED);
+            $('#button-stop').prop('disabled', state === states.CLOSED);
+        };
+
+        controlCommand = function (el, cmd, s) {
+            el.blur();
+            $.ajax({
+                url: "/teacher/control",
+                data: {'room_name': "{{ room_name }}", 'cmd': cmd},
+                dataType: 'json',
+                success: function () {
+                    state = s;
+                    setStates()
+                },
+                error: function (jqXHR) {
+                    // TODO: remove?
+                    console.log(jqXHR.responseJSON.err)
+                }
+            })
+        };
+
         getRooms = function () {
             $.ajax({
                 url: "{% url "rooms" %}",
@@ -84,10 +175,11 @@
                 }
             })
         };
-        getRooms();
-        setInterval(getRooms, 2000);
+
     </script>
     <script src="{% static "teacher/js/room.js" %}"></script>
     {% block teacher-content-scripts %}
+    {% endblock %}
+    {% block teacher-room-control-scripts %}
     {% endblock %}
 {% endblock %}
