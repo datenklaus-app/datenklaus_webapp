@@ -1,14 +1,14 @@
 {% extends "teacher/teacher_base.html" %}
 {% load static %}
 {% block teacher_content %}
-    <div class="" style="display: none" id="auswertung">
+    <div id="auswertung">
         <div class="row justify-content-center pt-2">
             <div class="col-auto">
                 <h3>Ergebnisse</h3>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-auto w-50">
+            <div class="col-md-9 col-xl-7 col-sm-11">
                 <div class="list-group overflow-auto list-group-scrollable" style="max-height: none"
                      id="state_results">
                 </div>
@@ -16,6 +16,33 @@
         </div>
     </div>
     </div>
+{% endblock %}
+
+{% block teacher-content-scripts %}
+    <script>
+        updateResults = function () {
+            $.ajax({
+                url: "{% url "get_results" room_name %}",
+                dataType: 'json',
+                success: function (data) {
+                    const results = $("#state_results");
+                    results.empty(); // remove old options
+                    const source = document.getElementById("resultItem").innerHTML;
+                    const template = Handlebars.compile(source);
+                    /** @namespace data.results **/
+                    $.each(data.results, function (index, value) {
+                        value.no_students = data.no_students;
+                        results.append(template(value));
+                    },);
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR.responseJSON.err)
+                }
+            })
+        };
+        updateResults();
+        setInterval(updateResults, 5000)
+    </script>
 {% endblock %}
 
 {% block handlebars-template %}

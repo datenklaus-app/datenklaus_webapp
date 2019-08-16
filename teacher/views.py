@@ -31,10 +31,10 @@ def overview(request, room_name=None):
 
     try:
         room = Room.objects.get(room_name=room_name)
-        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state}
+        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state,  "is_overview": True}
         return render(request, 'teacher/overview.html', context=context)
     except Room.DoesNotExist:
-        # TODO: Handle room deletion?
+        del request.session["room"]
         return HttpResponseRedirect(reverse("teacher_index"))
 
 
@@ -69,6 +69,17 @@ def results(request, room_name):
     try:
         room = Room.objects.get(room_name=room_name)
     except Room.DoesNotExist:
+        del request.session["room"]
+        return HttpResponseRedirect(reverse("teacher_index"))
+
+    context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state, "is_results": True}
+    return render(request, "teacher/results.html", context)
+
+
+def get_results(request, room_name):
+    try:
+        room = Room.objects.get(room_name=room_name)
+    except Room.DoesNotExist:
         return ajax_bad_request("Room doesn't exist")
     no_students = Student.objects.filter(room=room).count()
     states = get_lesson(room.lesson).all_states()
@@ -79,12 +90,6 @@ def results(request, room_name):
             completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
             results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
     return JsonResponse({'results': results, 'no_students': no_students})
-
-
-def leave_room(request):
-    del request.session["room"]
-    request.session.save()
-    return HttpResponseRedirect(reverse("teacher_index"))
 
 
 def rooms(request):
