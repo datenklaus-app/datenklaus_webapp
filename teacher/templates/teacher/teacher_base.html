@@ -27,16 +27,18 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" id="button-overview" href="{% url "overview" %}">Übersicht <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if not room_name %}disabled{% endif %}" id="button-auswertung"
-                       href="#results">Auswertung</a>
-                </li>
-            </ul>
+                <ul class="navbar-nav mr-auto">
+                    {% if room_name is not None %}
+                    <li class="nav-item">
+                        <a class="nav-link active" id="button-overview" href="{% url "overview" %}">Übersicht <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="button-auswertung"
+                           href="{% url "results" room_name %}">Auswertung</a>
+                    </li>
+                    {% endif %}
+                </ul>
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle text-dark" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
