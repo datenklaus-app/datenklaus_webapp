@@ -12,13 +12,13 @@
                 <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span></h4>
             </div>
             <div class="col text-right m-1">
-                <button class="btn" id="button-play">
+                <button class="btn state-btn-play" id="button-play">
                     <i class="fas fa-play"></i>
                 </button>
-                <button class="btn" id="button-pause">
+                <button class="btn state-btn-pause" id="button-pause">
                     <i class="fas fa-pause"></i>
                 </button>
-                <button class="btn" id="button-stop">
+                <button class="btn state-btn-stop" id="button-stop">
                     <i class="fas fa-stop"></i>
                 </button>
                 <a tabindex="0" class="btn btn-sm text-secondary" style="cursor: pointer"
@@ -41,6 +41,8 @@
     <script>
         updateStudentList();
         setInterval(updateStudentList, 2000);
+        let state = {{ state }};
+        setStates();
     </script>
 {% endblock %}
 

@@ -28,7 +28,6 @@ $(document).ready(function () {
     });
 
     initPopover();
-    setStates();
 });
 
 var interval;
@@ -46,12 +45,9 @@ const states = {
 };
 
 setStates = function () {
-    $('#button-play').prop('disabled', state === states.RUNNING)
-        .find('path').css({fill: state === states.RUNNING ? "" : "#28a745"});
-    $('#button-pause').prop('disabled', state === states.PAUSED || state === states.WAITING || state === states.CLOSED)
-        .find('path').css({fill: state === states.PAUSED || state === states.WAITING || state === states.CLOSED ? "" : "#17a2b8"});
-    $('#button-stop').prop('disabled', state === states.CLOSED)
-        .find('path').css({fill: state === states.CLOSED ? "" : "#dc3545"});
+    $('#button-play').prop('disabled', state === states.RUNNING);
+    $('#button-pause').prop('disabled', state === states.PAUSED);
+    $('#button-stop').prop('disabled', state === states.CLOSED);
 };
 
 initPopover = function () {
