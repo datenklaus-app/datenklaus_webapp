@@ -10,13 +10,13 @@
 
 {# Translations #}
 {% load i18n %}
-<!-- Strings -->
-{% trans "Kein Raum ausgewählt" as no_room_selected %}
 
 {# Set page Title #}
 {% block title %}DK ☰ {{ room_name }}{% endblock %}
 
 {% block content %}
+    <!-- Strings -->
+    {% trans "Raum wählen" as no_room_selected %}
     {# Teacher navbar #}
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Datenklaus</span>
@@ -27,8 +27,8 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    {% if room_name is not None %}
+            <ul class="navbar-nav mr-auto">
+                {% if room_name is not None %}
                     <li class="nav-item">
                         <a class="nav-link active" id="button-overview" href="{% url "overview" %}">Übersicht <span
                                 class="sr-only">(current)</span></a>
@@ -37,8 +37,8 @@
                         <a class="nav-link" id="button-auswertung"
                            href="{% url "results" room_name %}">Auswertung</a>
                     </li>
-                    {% endif %}
-                </ul>
+                {% endif %}
+            </ul>
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle text-dark" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
