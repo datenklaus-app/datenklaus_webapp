@@ -30,9 +30,6 @@ $(document).ready(function () {
 
     initPopover();
     setStates();
-    getRooms();
-    setInterval(getRooms, 5000);
-    window.location.hash = 'overview';
 });
 
 var interval;
@@ -51,11 +48,11 @@ const states = {
 
 setStates = function () {
     $('#button-play').prop('disabled', state === states.RUNNING)
-        .find('path').css({fill: state === states.RUNNING ? "" : "#08e11f"});
+        .find('path').css({fill: state === states.RUNNING ? "" : "#28a745"});
     $('#button-pause').prop('disabled', state === states.PAUSED || state === states.WAITING || state === states.CLOSED)
-        .find('path').css({fill: state === states.PAUSED || state === states.WAITING || state === states.CLOSED ? "" : "#08e11f"});
+        .find('path').css({fill: state === states.PAUSED || state === states.WAITING || state === states.CLOSED ? "" : "#17a2b8"});
     $('#button-stop').prop('disabled', state === states.CLOSED)
-        .find('path').css({fill: state === states.CLOSED ? "" : "#FF0000"});
+        .find('path').css({fill: state === states.CLOSED ? "" : "#dc3545"});
 };
 
 initPopover = function () {
@@ -70,7 +67,7 @@ initPopover = function () {
 
 updateView = function () {
     if (window.location.hash) {
-       if (window.location.hash.substring(1) === 'results') {
+        if (window.location.hash.substring(1) === 'results') {
             dResults();
         } else {
             dOverview();
@@ -179,7 +176,7 @@ controlCommand = function (el, cmd, s) {
     })
 };
 
-updateStudentList = function update() {
+updateStudentList = function () {
     $.ajax({
         url: "/teacher/students",
         data: {'room_name': roomName},
@@ -260,46 +257,10 @@ createRoom = function () {
     });
 };
 
-joinRoom = function (roomName) {
-    $.ajax({
-        url: "/teacher/join-room/" + roomName,
-        dataType: 'json',
-        success: function (data) {
-            updateRoom(data)
-        },
-        error: function (jqXHR) {
-            // TODO: remove?
-            console.log(jqXHR.responseJSON.err)
-        }
-    })
-};
-
 updateRoom = function (data) {
     roomName = data.room_name;
     state = data.state;
     $('#roomLesson').text(data.lesson);
     $('#button-auswertung').removeClass('disabled');
     updateView();
-};
-
-getRooms = function () {
-    $.ajax({
-        url: "rooms",
-        dataType: 'json',
-        success: function (data) {
-            const list = $("#dropDownRooms");
-            const l = $('.dropdown-item[data-delete="true"]');
-            // Empty dropdown menu except static entries
-            $.each(l, function (i, v) {
-                v.remove();
-            });
-            /** @namespace data.rooms **/
-            $.each(data.rooms, function (index, value) {
-                list.append($('<button class="dropdown-item" data-delete="true"></button>').text(value).click(function () {
-                    $('#dropdownMenuButton').text(value);
-                    joinRoom(value)
-                }));
-            })
-        }
-    })
 };
