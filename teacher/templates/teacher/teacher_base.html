@@ -2,6 +2,8 @@
 
 {# Load static files#}
 {% load static %}
+{# Translations #}
+{% load i18n %}
 
 {# Load custom css (overwrites base.css) #}
 {% block css %}
@@ -42,10 +44,12 @@
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle text-dark" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if room_name %} {{ room_name }} {% else %} {{ no_room_selected }} {% endif %}
+                    {% if room_name and room.name.strip %} {{ room_name }} {% else %} {{ no_room_selected }} {% endif %}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" id="dropDownRooms" aria-labelledby="dropdownMenuButton">
-                    <button class="dropdown-item" type="button" id="createNewRoom">Neuen Raum erstellen</button>
+                    <button class="dropdown-item" type="button" onclick="location.href='./create'" id="createNewRoom">
+                        Neuen Raum erstellen
+                    </button>
                     <div id="dropdownDivider" class="dropdown-divider"></div>
                 </div>
             </div>

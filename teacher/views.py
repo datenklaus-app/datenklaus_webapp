@@ -7,7 +7,7 @@ from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
-from teacher.random_word_chain import random_word
+from teacher.random_word_chain import random_word, random_word_chain
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
@@ -36,6 +36,12 @@ def overview(request, room_name=None):
     except Room.DoesNotExist:
         # TODO: Handle room deletion?
         return HttpResponseRedirect(reverse("teacher_index"))
+
+
+def create(request):
+    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+    context = {'lessons': lessons}
+    return render(request, 'teacher/create_room.html', context=context)
 
 
 def create_room(request):

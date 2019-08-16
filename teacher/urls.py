@@ -15,4 +15,5 @@ urlpatterns = [
     path('', views.index, name='teacher_index'),
     path('overview/', views.overview, name="overview"),
     path('overview/<str:room_name>', views.overview, name="overview"),
+    path('create', views.create, name="create"),
 ]

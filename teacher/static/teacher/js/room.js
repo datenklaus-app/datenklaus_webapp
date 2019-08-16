@@ -8,25 +8,7 @@ $(document).ready(function () {
     $("#button-stop").click(function () {
         controlCommand($(this), cmds.STOP, states.CLOSED)
     });
-    $('#createNewRoom').click(function () {
-        $('#roomStartText').hide();
-        $('#controlsRow').hide();
-        $('#auswertung').hide();
-        $('#joinForm').show();
-        clearTimeout(interval);
-    });
-
     $("#button-room").click(createRoom);
-    // Validate room with 1s delay
-    let wto;
-    $("#room_name").on('input', function () {
-        clearTimeout(wto);
-        wto = setTimeout(validateRoomName, 1000);
-    });
-    $("button.list-group-item").click(function () {
-        $(this).addClass('active').siblings().removeClass('active');
-    });
-
     initPopover();
 });
 
@@ -88,17 +70,21 @@ updateResults = function () {
 getRoomName = function () {
     let roomName;
     const roomElem = $('#room_name');
-    if (!roomElem.val()) {
-        roomName = roomElem.attr('placeholder');
-    } else {
-        roomName = roomElem.val();
-    }
+    roomName = roomElem.val();
+//   if (!roomElem.val()) {
+//       roomName = roomElem.attr('placeholder');
+//   } else {
+//   }
     return roomName;
 };
 
 validateRoomName = function () {
     const room = $('#room_name');
-    if (!room) return;
+    if (!room) {
+        setRoomWarning();
+        return;
+    }
+    removeRoomWarning();
     $.ajax({
         url: "validate-room",
         data: room.serialize(),
@@ -112,7 +98,6 @@ validateRoomName = function () {
                 $('#room_name_exists').hide();
                 $('#button-room').prop('disabled', false);
             }
-
         }
     });
 };
@@ -172,6 +157,24 @@ createTestStudents = function () {
     })
 };
 
+function setRoomWarning() {
+    const warnings = $('#warnings');
+    $('#room_name_text').addClass('text-danger').removeClass('text-dark');
+    warnings.append('<li><h6 class="text-danger" id="room-warning">Bitte wähle einen Raumnamen</h6></li>');
+}
+
+function removeRoomWarning() {
+    const warnings = $('#warnings');
+    warnings.find('#room-warning').remove();
+    $('#room_name_text').removeClass('text-danger').addClass('text-dark');
+}
+
+function removeLessonWarning() {
+    const warnings = $('#warnings');
+    warnings.find("#lesson-warning").remove();
+    $('#choose_lesson').removeClass('text-danger').addClass('text-dark');
+}
+
 createRoom = function () {
     const warnings = $('#warnings');
     warnings.empty();
@@ -179,21 +182,17 @@ createRoom = function () {
     const lesson = $('#lessons').find('button.active').find('#lesson_name').data('name');
     let error = false;
     if (lesson == null) {
-        $('#choose_lesson').addClass('text-danger').removeClass('text-info');
-        warnings.append('<li><h6 class="text-danger">Kein Modul ausgewählt</h6></li>');
+        $('#choose_lesson').addClass('text-danger').removeClass('text-dark');
+        warnings.append('<li><h6 class="text-danger" id="lesson-warning">Kein Modul ausgewählt</h6></li>');
         error = true
     } else {
-        $('#choose_lesson').removeClass('text-danger').addClass('text-info');
+        $('#choose_lesson').removeClass('text-danger').addClass('text-dark');
     }
     if (!room_name.trim()) {
-        $('#room_name_text').addClass('text-danger').removeClass('text-info');
-        warnings.append('<li><h6 class="text-danger">Bitte wähle einen Raumnamen</h6></li>');
+        setRoomWarning();
         error = true
-    } else {
-        $('#room_name_text').removeClass('text-danger').addClass('text-info');
     }
     if (error) {
-        warnings.parent().show();
         return
     }
     $('#module_choice').val(lesson);
