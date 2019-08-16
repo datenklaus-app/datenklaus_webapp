@@ -15,8 +15,7 @@ $(document).ready(function () {
         $('#joinForm').show();
         clearTimeout(interval);
     });
-    $('#button-overview').click(dOverview);
-    $('#button-auswertung').click(dResults);
+
     $("#button-room").click(createRoom);
     // Validate room with 1s delay
     let wto;
@@ -67,46 +66,6 @@ initPopover = function () {
             return (template())
         },
     });
-};
-
-updateView = function () {
-    if (window.location.hash) {
-        if (window.location.hash.substring(1) === 'results') {
-            dResults();
-        } else {
-            dOverview();
-        }
-    }
-};
-
-dOverview = function () {
-    window.location.hash = '#overview';
-    $(this).addClass('active');
-    $('#button-auswertung').removeClass('active');
-    $('#auswertung').hide();
-    $('#joinForm').hide();
-    if (!roomName) {
-        $('#roomStartText').show();
-        $('#controlsRow').hide();
-    } else {
-        $('#roomStartText').hide();
-        $('#controlsRow').show();
-        updateStudentList();
-        clearInterval(interval);
-        interval = setInterval(updateStudentList, 2000);
-    }
-};
-
-dResults = function () {
-    $(this).addClass('active');
-    $('#button-overview').removeClass('active');
-    $('#roomStartText').hide();
-    $('#controlsRow').hide();
-    $('#joinForm').hide();
-    $('#auswertung').show();
-    updateResults();
-    clearInterval(interval);
-    interval = setInterval(updateResults, 2000);
 };
 
 updateResults = function () {
