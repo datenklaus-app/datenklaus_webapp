@@ -75,10 +75,10 @@
                         v.remove();
                     });
                     /** @namespace data.rooms **/
-                    $.each(data.rooms, function (index, value) {
-                        list.append($('<button class="dropdown-item" data-delete="true"></button>').text(value).click(function () {
-                            $('#dropdownMenuButton').text(value);
-                            window.location.href = "{% url "overview" %}" + value
+                    $.each(data.rooms, function (index, room_name) {
+                        list.append($('<button class="dropdown-item" data-delete="true"></button>').text(room_name).click(function () {
+                            $('#dropdownMenuButton').text(room_name);
+                            window.location.href = "{% url "overview" %}" + room_name
                         }));
                     })
                 }
