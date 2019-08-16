@@ -11,6 +11,40 @@ from teacher.random_word_chain import random_word
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
+def index(request):
+    room_name = request.GET.get("room_name", None)
+    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+    context = {'lessons': lessons}
+    if room_name is not None:
+        try:
+            room = Room.objects.get(room_name=room_name)
+            context.update([('room_name', room_name), ('lesson', room.lesson), ('state', room.state)])
+        except Room.DoesNotExist:
+            pass
+    return render(request, 'teacher/index.html', context=context)
+
+
+def overview(request, room_name=None):
+    if room_name is None:
+        try:
+            room_name = request.session["room"]
+        except KeyError:
+            return HttpResponseRedirect(reverse("teacher_index"))
+    else:
+        request.session["room"] = room_name
+
+    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+    context = {'lessons': lessons}
+    if room_name is not None:
+        try:
+            room = Room.objects.get(room_name=room_name)
+            context.update([('room_name', room_name), ('lesson', room.lesson), ('state', room.state)])
+        except Room.DoesNotExist:
+            pass
+
+    return render(request, 'teacher/overview.html', context=context)
+
+
 def create_room(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
@@ -29,19 +63,8 @@ def create_room(request):
             Room.objects.get(room_name=room_name)
             return ajax_bad_request("Room already exist: " + room_name)
         except Room.DoesNotExist:
-            room = Room.objects.create(room_name=room_name, lesson=lesson)
-            return join_room(request, room_name, room)
-
-
-def join_room(request, room_name, room: Room = None):
-    if not request.is_ajax():
-        return HttpResponseBadRequest()
-    if room is None:
-        try:
-            room = Room.objects.get(room_name=room_name)
-        except Room.DoesNotExist:
-            return ajax_bad_request("Room doesn't exist")
-    return JsonResponse({'room_name': room_name, 'lesson': room.lesson, 'state': room.state})
+            Room.objects.create(room_name=room_name, lesson=lesson)
+            return reverse("overview", args=room_name)
 
 
 def results(request, room_name):
@@ -58,19 +81,6 @@ def results(request, room_name):
             completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
             results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
     return JsonResponse({'results': results, 'no_students': no_students})
-
-
-def index(request):
-    room_name = request.GET.get("room_name", None)
-    lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
-    context = {'lessons': lessons}
-    if room_name is not None:
-        try:
-            room = Room.objects.get(room_name=room_name)
-            context.update([('room_name', room_name), ('lesson', room.lesson), ('state', room.state)])
-        except Room.DoesNotExist:
-            pass
-    return render(request, 'teacher/index.html', context=context)
 
 
 def leave_room(request):
