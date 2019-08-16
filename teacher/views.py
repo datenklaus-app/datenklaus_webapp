@@ -49,15 +49,14 @@ def create_room(request):
         return HttpResponseBadRequest()
     if request.method == "POST":
         room_name = request.POST.get("room_name", None)
-        if room_name is None:
-            return HttpResponseBadRequest()
+        if room_name.strip() is None:
+            return ajax_bad_request("Error: empty room name")
         lesson = request.POST.get("lesson", None)
         if lesson is None:
-            return HttpResponseBadRequest()
+            return ajax_bad_request("Error: no lesson set")
         # TODO: Sanitizing and Error Handling
         #    if lesson is None or lesson not in get_lessons_list():
         #       return HttpResponseBadRequest('Invalid Lesson')
-        # TODO: Password
         try:
             Room.objects.get(room_name=room_name)
             return ajax_bad_request("Room already exist: " + room_name)

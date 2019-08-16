@@ -33,18 +33,19 @@ body {
     color: #28a745;
     pointer-events: none;
 }
+
 .state-btn-pause {
     color: #6c757d;
     font-size: 24px;
 }
 
 .state-btn-pause:hover {
-    color: #ffc416!important;
+    color: #ffc416 !important;
 }
 
 .state-btn-pause:disabled {
     opacity: 1 !important;
-    color: #ffc416!important;
+    color: #ffc416 !important;
     pointer-events: none;
 }
 
@@ -54,11 +55,24 @@ body {
 }
 
 .state-btn-stop:hover {
-    color: #dc3545!important;
+    color: #dc3545 !important;
 }
 
 .state-btn-stop:disabled {
     opacity: 1 !important;
-    color: #dc3545!important;
+    color: #dc3545 !important;
     pointer-events: none;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.clickable-div.active:hover {
+    background: #007bff;
 }

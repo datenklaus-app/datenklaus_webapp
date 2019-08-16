@@ -1,7 +1,8 @@
 {% extends "teacher/teacher_base.html" %}
 {% load static %}
+{% load i18n %}
 {% block teacher_content %}
-    {% load i18n %}
+    {% trans "Raum existiert bereits" as room_exists %}
     <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
         <form id="joinForm" method="post">
             <div class="row justify-content-center pt-3 text-center">
@@ -14,8 +15,8 @@
                     <input type="hidden" name="lesson" id="module_choice">
                     <div class="list-group overflow-auto list-group-scrollable" id="lessons">
                         {% for m in lessons %}
-                            <button class="list-group-item list-group-item-action flex-column align-items-start"
-                                    type="button" onclick="removeLessonWarning()">
+                            <div class="clickable-div unselectable list-group-item list-group-item-action flex-column align-items-start"
+                                 type="button">
                                 <div class="d-flex w-100 justify-content-center">
                                     <h5 id="lesson_name" data-name="{{ m.name }}"
                                         class="mb-1">{{ m.name|lower|capfirst }}</h5>
@@ -23,7 +24,7 @@
                                 <p class="mb-1"></p>
                                 <h6 class="mb-1">{{ m.description }}</h6>
                                 <p class="mb-1"></p>
-                            </button>
+                            </div>
                         {% empty %}
                             <a href="#"
                                class="list-group-item list-group-item-action flex-column align-items-start active">
@@ -53,7 +54,7 @@
             </div>
             <div class="row justify-content-center text-center" style="display: none" id="room_name_exists">
                 <div class="col-md-6">
-                    <h6 class="text-danger">{{ exists }}</h6>
+                    <h6 class="text-danger">{{ room_exists }}</h6>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -77,22 +78,24 @@
                 $(this).addClass('active').siblings().removeClass('active');
             });
             $("#button-room").click(createRoom);
+            $(".clickable-div").click(function () {
+                lessonItemClicked($(this))
+            })
         });
 
+        lessonItemClicked = function (item) {
+            $('.clickable-div').removeClass('active');
+            item.toggleClass('active');
+            removeLessonWarning();
+        };
+
         function getRoomName() {
-            let roomName;
-            const roomElem = $('#room_name');
-            roomName = roomElem.val();
-//   if (!roomElem.val()) {
-//       roomName = roomElem.attr('placeholder');
-//   } else {
-//   }
-            return roomName;
+            return $('#room_name').val();
         }
 
         validateRoomName = function () {
             const room = $('#room_name');
-            if (!room) {
+            if (!room.val().trim()) {
                 setRoomWarning();
                 return;
             }
@@ -162,12 +165,12 @@
                 },
                 dataType: 'json',
                 data: $("#joinForm").serialize(),
-                success: function (data) {
+                success: function () {
                     location.href = "{% url 'overview' %}" + room_name;
                 },
                 /** @namespace data.responseJSON.err **/
                 error: function (data) {
-                    console.log(data)
+                    console.log(data.responseJSON.err)
                 }
             });
         };
