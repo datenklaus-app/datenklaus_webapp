@@ -3,13 +3,20 @@
     Gleich geht es weiter..
 {% endblock %}
 
-
+{% load static %}
 {% block content %}
-    <div class="container-fluid h-100 bg-dark">
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <div class="container-fluid h-100">
         <div class="row h-100">
-            <div class="col text-center align-self-center">
-                <h1 class="text-danger display-1">Pause...</h1>
-            </div>
+            <img class="img-fluid" src="{% static "lesson/pause.png" %}">
         </div>
     </div>
 {% endblock %}
