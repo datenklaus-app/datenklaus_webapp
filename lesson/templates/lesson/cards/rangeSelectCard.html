@@ -9,11 +9,11 @@
 
     <div class="row">
         <div class="col text-center">
-            <h1 class="text-light">{{ title|safe }}</h1>
+            <h1 class="text-light bg-dark p-2 rounded">{{ title|safe }}</h1>
         </div>
     </div>
     <div class="row flex-grow-1 justify-content-center">
-        <div class="col-6 align-self-center">
+        <div class="col-9 align-self-center">
             <div class="btn-group-toggle btn-group-lg" data-toggle="buttons">
                 {% for choice in form.value %}
                     <label class="btn btn-info btn-block" for="{{ choice.for_id_label }}">
