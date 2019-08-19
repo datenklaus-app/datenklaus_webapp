@@ -3,15 +3,24 @@ from lesson.lessonState import LessonState
 
 class Lesson:
     @staticmethod
-    def description():
+    def description() -> str:
+        """
+        :return: A string containing a user readable description of the lesson
+        """
         raise NotImplementedError()
 
     @staticmethod
-    def short_description():
+    def short_description() -> str:
+        """
+        :return: A string containing a short user readable description of the lesson
+        """
         raise NotImplementedError()
 
     @staticmethod
-    def duration():
+    def duration() -> int:
+        """
+        :return: The approximate duration of this lesson
+        """
         raise NotImplementedError()
 
     @staticmethod

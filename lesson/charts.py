@@ -2,6 +2,9 @@ import pygal
 
 
 class DKBarChart(pygal.Bar):
+    """
+    Pygal Bar chart with global styling for internal use
+    """
     def __init__(self, dataset, labels):
         style = pygal.style.DefaultStyle()
         style.label_font_size = 16

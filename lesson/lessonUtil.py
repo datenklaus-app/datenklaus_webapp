@@ -13,7 +13,11 @@ def all_lessons() -> {str: Lesson}:
     return {"Internet": Internet, "Diceware": Diceware}
 
 
-def get_lesson(name: str):
+def get_lesson(name: str) -> Lesson:
+    """
+    :param name: A string representing the lessons name
+    :return: The Class representing the lesson given by name parameter
+    """
     try:
         return all_lessons()[name]
     except KeyError:
