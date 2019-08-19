@@ -1,5 +1,5 @@
 from lesson.cards.textCard import TextCard
-from lesson.diceware.states import INITSTATE, DSTATE, ESTATE
+from lesson.diceware.states import DSTATE, ESTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 

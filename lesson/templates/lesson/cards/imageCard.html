@@ -1,6 +1,7 @@
 {% extends 'lesson/lesson.html' %}
 {% load staticfiles %}
 {% block lesson_card %}
+    <!--suppress UnterminatedStatementJS -->
     <style>
         .carousel-control-prev-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
@@ -11,7 +12,7 @@
         }
 
         .image-card-carousel {
-        {% if title != None %}
+        {% if title %}
             height: calc(100% - 56px)
         {% else %}
             height: 100%
@@ -76,13 +77,13 @@
 
                 $('#carouselFade').on('slide.bs.carousel', function (event) {
                     if (event.to === ({{ images|length }}-1)) {
-                        $('#lesson-continue-state').css('visibility', 'visible')
+                        $('#lesson-continue-state').css('visibility', 'visible');
                         $('#carousel_next').hide()
                     } else
-                        $('#carousel_next').show()
+                        $('#carousel_next').show();
 
                     if (event.to !== 0)
-                        $('#carousel_back').show()
+                        $('#carousel_back').show();
                     else
                         $('#carousel_back').hide()
                 })

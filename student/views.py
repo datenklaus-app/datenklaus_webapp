@@ -39,7 +39,8 @@ def join_room(request):
         return HttpResponseNotFound()
 
     form = JoinRoomForm(request.POST)
-    # TODO: add proper server side invalid form handling
+
+    # Note: Maybe add notification if form was invalid
     if not form.is_valid():
         return HttpResponseRedirect(reverse('student'))
 
@@ -54,7 +55,6 @@ def join_room(request):
         current_state=0,
     )
 
-    context = {'sname': form.cleaned_data['username'], 'rname': form.cleaned_data['room']}
     return HttpResponseRedirect(reverse('lesson'))
 
 

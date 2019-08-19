@@ -6,6 +6,7 @@ from lesson.internet.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
 from lesson.models import LessonSateModel
 from student.models import Student
+from teacher.models import Room
 
 
 class AState(LessonState):
@@ -37,18 +38,20 @@ class AState(LessonState):
         s.save()
 
     @staticmethod
-    def result(room, student) -> int:
+    def result(room, student) -> []:
+        if student is None:
+            return []
+
         try:
-            if student is not None:
-                obj = LessonSateModel.objects.get(state=ASTATE, student=student, room=room)
-                res = [int(obj.choice)]
+            obj = LessonSateModel.objects.get(state=ASTATE, student=student, room=room)
+            res = [int(obj.choice)]
         except (ObjectDoesNotExist, KeyError):
             raise LessonState.LessonStateError(ASTATE)
 
         return res
 
     @staticmethod
-    def result_svg(room: str) -> str:
+    def result_svg(room: Room) -> str:
         objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
         data = [0] * 5
         for o in objs:

@@ -6,11 +6,6 @@ from lesson.cards.card import Card
 class ChartCard(Card):
 
     def __init__(self, state, title="Ergebnisse", template='lesson/cards/chartCard.html'):
-        """
-        :param labels: List of labels
-        :param title: Card title
-        :param colors: Optional color list
-        """
         self.state = state
         self.title = title
         self.template = template

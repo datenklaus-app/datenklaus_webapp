@@ -2,7 +2,7 @@ import random
 
 
 def random_word_chain():
-    return "".join([nouns[random.randrange(0, len(nouns))].capitalize() for i in range(2)])
+    return "".join([nouns[random.randrange(0, len(nouns))].capitalize() for _ in range(2)])
 
 
 def random_word():

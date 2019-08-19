@@ -1,5 +1,6 @@
 from lesson.models import LessonSateModel
 from student.models import Student
+from teacher.models import Room
 
 
 class LessonState:
@@ -70,22 +71,22 @@ class LessonState:
         raise NotImplementedError()
 
     @staticmethod
-    def result(room: str, student: Student):
+    def result(room: str, student: Student) -> []:
         """
         :param room: Room to get results for
         :param student: Student for which to get results for
         :return: Result(s) for given student and room (Type is defined by the state)
         :raises LessonSateError: If state has not been finished yet
         """
-        return None
+        pass
 
     @staticmethod
-    def result_svg(room: str) -> str:
+    def result_svg(room: Room) -> str:
         """
         Returns the results for the given room as svg string
         :param room: Room to get result
         """
-        return None
+        pass
 
     @staticmethod
     def name():

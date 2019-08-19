@@ -182,7 +182,7 @@
                 dataType: 'json',
                 data: $("#joinForm").serialize(),
                 success: function () {
-                    location.href = "{% url 'overview' %}" + room_name;
+                    location.href = "{% url 'overview' room_name %}";
                 },
                 /** @namespace data.responseJSON.err **/
                 error: function (data) {
