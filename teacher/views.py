@@ -1,3 +1,5 @@
+import re
+
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
@@ -31,7 +33,7 @@ def overview(request, room_name=None):
 
     try:
         room = Room.objects.get(room_name=room_name)
-        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state,  "is_overview": True}
+        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state, "is_overview": True}
         return render(request, 'teacher/overview.html', context=context)
     except Room.DoesNotExist:
         del request.session["room"]
@@ -49,8 +51,11 @@ def create_room(request):
         return HttpResponseBadRequest()
     if request.method == "POST":
         room_name = request.POST.get("room_name", None)
-        if room_name.strip() is None:
+        room_name = room_name.strip()
+        if room_name is None:
             return ajax_bad_request("Error: empty room name")
+        if re.search("[^A-Za-z0-9\-.]", room_name):
+            return ajax_bad_request("Error: room name contains special characters")
         lesson = request.POST.get("lesson", None)
         if lesson is None:
             return ajax_bad_request("Error: no lesson set")

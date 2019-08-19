@@ -2,12 +2,17 @@
 {% load static %}
 {% load i18n %}
 {% block teacher_content %}
+    {% trans "Wähle ein Modul" as choose_lesson %}
+    {% trans "und einen Raumnamen" as choose_room_name %}
+    {% trans "Erstellen" as create_room %}
     {% trans "Raum existiert bereits" as room_exists %}
+    {% trans "Kein Modul verfügbar" as no_module %}
+
     <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
         <form id="joinForm" method="post">
             <div class="row justify-content-center pt-3 text-center">
                 <div class="col-md-6">
-                    <h3 class="text-dark" id="choose_lesson">Wähle ein Modul</h3>
+                    <h3 class="text-dark" id="warn_choose_lesson">{{ choose_lesson }}</h3>
                 </div>
             </div>
             <div class="row justify-content-center text-center">
@@ -29,7 +34,7 @@
                             <a href="#"
                                class="list-group-item list-group-item-action flex-column align-items-start active">
                                 <div class="d-flex w-100 justify-content-center">
-                                    <h5 class="mb-1"> Keine Module verfügbar</h5>
+                                    <h5 class="mb-1">{{ no_module }}</h5>
                                 </div>
                             </a>
                         {% endfor %}
@@ -38,7 +43,7 @@
             </div>
             <div class="row justify-content-center text-center">
                 <div class="col-md-6">
-                    <h3 id="room_name_text" class="text-dark">einen Raumnamen</h3>
+                    <h3 id="warn_room" class="text-dark">{{ choose_room_name }}</h3>
                 </div>
             </div>
             <div class="row justify-content-center text-center" id="room_name_div">
@@ -47,7 +52,8 @@
                         <input id="room_name" type="text" name="room_name" maxlength="50" class="form-control"
                                aria-label="room" aria-describedby="button-room">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-room">Erstellen</button>
+                            <button class="btn btn-outline-secondary" type="button"
+                                    id="button-room">{{ create_room }}</button>
                         </div>
                     </div>
                 </div>
@@ -65,6 +71,9 @@
     </div>
 {% endblock %}
 {% block teacher-content-scripts %}
+    {% trans "Bitte wähle ein Modul" as lesson_heading %}
+    {% trans "Bitte wähle einen Raumnamen" as room_choose %}
+    {% trans "Der Raumname darf nur Buchstaben, Zahlen, - und . enthalten" as room_invalid_input %}
     <script>
         $(document).ready(function () {
             $("#joinForm")[0].reset();
@@ -86,7 +95,7 @@
         lessonItemClicked = function (item) {
             $('.unselectable').removeClass('active');
             item.toggleClass('active');
-            removeLessonWarning();
+            removeLessonWarning()
         };
 
         function getRoomName() {
@@ -94,14 +103,10 @@
         }
 
         validateRoomName = function () {
+            if (!showRoomWarnings()) return;
             const room = $('#room_name');
-            if (!room.val().trim()) {
-                setRoomWarning();
-                return;
-            }
-            removeRoomWarning();
             $.ajax({
-                url: "validate-room",
+                url: "{% url 'validate_room' %}",
                 data: room.serialize(),
                 dataType: 'json',
                 /** @namespace data.exists **/
@@ -117,48 +122,59 @@
             });
         };
 
-        function setRoomWarning() {
+        function showLessonWarning() {
+            removeLessonWarning();
             const warnings = $('#warnings');
-            $('#room_name_text').addClass('text-danger').removeClass('text-dark');
-            warnings.append('<li><h6 class="text-danger" id="room-warning">Bitte wähle einen Raumnamen</h6></li>');
+            if (!getLesson()) {
+                $('#warn_choose_lesson').addClass('text-danger').removeClass('text-dark');
+                warnings.append('<li><h6 class="text-danger" id="lesson-warning">{{ lesson_heading }}</h6></li>');
+                return true;
+            }
+            return false;
         }
 
-        function removeRoomWarning() {
+        function showRoomWarnings() {
+            removeRoomWarnings();
             const warnings = $('#warnings');
-            warnings.find('#room-warning').remove();
-            $('#room_name_text').removeClass('text-danger').addClass('text-dark');
+            const roomName = $('#room_name').val().trim();
+            if (!roomName) {
+                $('#warn_room').addClass('text-danger').removeClass('text-dark');
+                warnings.append('<li><h6 class="text-danger" id="room-warning-empty">{{ room_choose }}</h6></li>');
+                return true;
+            } else if (roomName.match(/[^A-Za-z0-9.\-]/)) {
+                $('#warn_room').addClass('text-danger').removeClass('text-dark');
+                warnings.append('<li><h6 class="text-danger" id="room-warning-input">{{ room_invalid_input }}</h6></li>');
+                return true;
+            }
+            return false;
+        }
+
+        function removeRoomWarnings() {
+            const warnings = $('#warnings');
+            warnings.find("[id^=room-warning").parent().remove();
+            $('#warn-room').removeClass('text-danger').addClass('text-dark');
         }
 
         function removeLessonWarning() {
             const warnings = $('#warnings');
-            warnings.find("#lesson-warning").remove();
-            $('#choose_lesson').removeClass('text-danger').addClass('text-dark');
+            warnings.find("#lesson-warning").parent().remove();
+            $('#warn_choose_lesson').removeClass('text-danger').addClass('text-dark');
+        }
+
+        function getLesson() {
+            return $('#lessons').find('.unselectable.active').find('#lesson_name').data('name');
         }
 
         createRoom = function () {
-            const warnings = $('#warnings');
-            warnings.empty();
             const room_name = getRoomName();
-            const lesson = $('#lessons').find('.unselectable.active').find('#lesson_name').data('name');
-            let error = false;
-            if (lesson == null) {
-                $('#choose_lesson').addClass('text-danger').removeClass('text-dark');
-                warnings.append('<li><h6 class="text-danger" id="lesson-warning">Kein Modul ausgewählt</h6></li>');
-                error = true
-            } else {
-                $('#choose_lesson').removeClass('text-danger').addClass('text-dark');
-            }
-            if (!room_name.trim()) {
-                setRoomWarning();
-                error = true
-            }
-            if (error) {
-                return
-            }
+            const lesson = getLesson();
+            const lessonWarning = showLessonWarning();
+            const roomWarning = showRoomWarnings();
+            if (lessonWarning || roomWarning) return;
             $('#module_choice').val(lesson);
             $('#room_name').val(room_name);
             $.ajax({
-                url: 'create-room',
+                url: "{% url 'teacher_create_room' %}",
                 type: 'post',
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
@@ -173,6 +189,7 @@
                     console.log(data.responseJSON.err)
                 }
             });
-        };
+        }
+        ;
     </script>
 {% endblock %}
