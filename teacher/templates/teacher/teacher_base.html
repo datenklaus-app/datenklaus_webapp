@@ -132,9 +132,14 @@
             PAUSED: 3,
         };
 
-        let state = {{ state }};
+        let state = {% if state %}{{ state }} {% else %} null {% endif %};
 
         $(document).ready(function () {
+            getRooms();
+            setInterval(getRooms, 2000);
+            if (state == null)
+                return;
+
             $("#button-play").click(function () {
                 controlCommand($(this), cmds.PLAY, states.RUNNING)
             });
@@ -158,8 +163,6 @@
             });
 
             setStates();
-            getRooms();
-            setInterval(getRooms, 2000);
         });
 
         setStates = function () {
