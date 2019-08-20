@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="row row-v-h-centered lesson-content">
+        <div class="row justify-content-center align-items-center lesson-content">
             <form class="h-100" id="card-form" action="{% url 'lesson' state %}" method="post">
                 <div class="col h-100 d-flex flex-column">
                     {% csrf_token %}
@@ -54,13 +54,14 @@
         <div class="row lesson-footer">
             <div class="col">
                 {% if previous_state is not None %}
-                    <input type="button" class='btn btn-warning btn-block btn-lg' value="Zurück"
+                    <input type="button" class='btn btn-outline-warning bg-dark-st btn-block btn-lg'
+                           value="Zurück"
                            onClick="window.location.href = '{% url 'lesson' previous_state %}'">
                 {% endif %}
             </div>
             <div class="col">
                 <button id="lesson-continue-state" type="submit" form="card-form"
-                        class="btn btn-success btn-lg btn-block">Weiter
+                        class="btn btn-outline-success bg-dark-st btn-lg btn-block">Weiter
                 </button>
             </div>
         </div>
@@ -91,6 +92,7 @@
                 }
             })
         }
+
         check_room_status();
         setInterval(check_room_status, 5000);
     </script>
