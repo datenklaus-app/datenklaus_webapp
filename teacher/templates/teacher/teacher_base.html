@@ -34,12 +34,12 @@
                 {% if room_name is not None %}
                     <li class="nav-item">
                         <a class="nav-link {% if is_overview %}active{% endif %}" id="button-overview"
-                           href="{% url "overview" %}">Übersicht <span
+                           href="{% url 'overview' %}">Übersicht <span
                                 class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if is_results %}active{% endif %}" id="button-auswertung"
-                           href="{% url "results" room_name %}">Auswertung</a>
+                           href="{% url 'results' room_name %}">Auswertung</a>
                     </li>
                 {% endif %}
             </ul>
