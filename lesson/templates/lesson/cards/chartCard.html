@@ -3,9 +3,11 @@
     <style>
         .img-wrapper {
         {% if title %}
-            height: calc(100% - 56px)
+            height: calc(100% - 82px);
+            max-height: calc(100% - 82px);
         {% else %}
-            height: 100%
+            height: 100%;
+            min-height: 100%;
         {% endif %}
         }
 
@@ -17,7 +19,10 @@
         }
 
     </style>
-
-    <h1 class="text-center text-light">{{ title }}</h1>
-    <div class="text-center img-wrapper">{{ cht|safe }}</div>
+    <div class="row row-v-h-centered">
+        <div class="col lesson-card-bg">
+            <div class="lesson-card-title">{{ title }}</div>
+            <div class="lesson-card-body img-wrapper">{{ cht|safe }}</div>
+        </div>
+    </div>
 {% endblock %}

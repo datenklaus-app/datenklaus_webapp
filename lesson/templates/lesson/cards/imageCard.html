@@ -13,7 +13,7 @@
 
         .image-card-carousel {
         {% if title %}
-            height: calc(100% - 56px)
+            height: calc(100% - 66px)
         {% else %}
             height: 100%
         {% endif %}
@@ -28,12 +28,12 @@
         }
     </style>
 
-    <div class="row h-100">
-        <div class="col h-100 text-center">
+    <div class="row row-v-h-centered">
+        <div class="col lesson-card-bg">
             {% if title != None %}
-                <h1 class="text-light">{{ title }}</h1>
+                <h1 class="lesson-card-title">{{ title }}</h1>
             {% endif %}
-            <div id="carouselFade" class="image-card-carousel carousel slide carousel-fade" data-interval="false"
+            <div id="carouselFade" class="lesson-card-body image-card-carousel carousel slide carousel-fade" data-interval="false"
                  data-wrap=false
                  data-touch=true>
                 <div class="carousel-inner h-100">
