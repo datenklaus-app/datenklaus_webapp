@@ -86,7 +86,7 @@ def get_results(request, room_name):
         room = Room.objects.get(room_name=room_name)
     except Room.DoesNotExist:
         return ajax_bad_request("Room doesn't exist")
-    no_students = Student.objects.filter(room=room).count()
+    num_students = Student.objects.filter(room=room).count()
     states = get_lesson(room.lesson).all_states()
     state_results = []
     for state in states:
@@ -94,7 +94,7 @@ def get_results(request, room_name):
         if r is not None:
             completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
             state_results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
-    return JsonResponse({'results': state_results, 'no_students': no_students})
+    return JsonResponse({'results': state_results, 'no_students': num_students})
 
 
 def get_rooms(request):

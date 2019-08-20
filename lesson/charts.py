@@ -11,7 +11,7 @@ class DKBarChart(pygal.Bar):
         style.label_font_size = 16
 
         super().__init__(show_legend=False, show_y_labels=True,
-                         classes=(..., "chart-card-chart", "img-fluid", "rounded"), height=400,
+                         classes=(..., "chart-card-chart", "img-fluid", "w-100", "rounded"), height=400,
                          style=style)
         self.x_labels = labels
         self.y_labels = range(max(dataset) + 1)
