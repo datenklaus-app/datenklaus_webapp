@@ -1,6 +1,8 @@
 
 *, *:before, *:after {
     box-sizing: border-box;
+    -moz-appearance: none!important;
+    -webkit-appearance: none!important;
 }
 
 
@@ -11,8 +13,8 @@ html {
 body {
     height: 100%;
     background-color: #f5f5f5;
-    min-width: 160px!important;
-    min-height: 140px!important;
+    min-width: 160px !important;
+    min-height: 140px !important;
 }
 
 
