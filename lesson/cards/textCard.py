@@ -16,7 +16,7 @@ class TextCard(Card):
         form = TextCardForm()
         context["title"] = self.title
         context["subtitle"] = self.subtitle
-        context["text"] = self.text
+        context["body"] = self.text
         context["form"] = form
         context["state"] = self.state
         return render(request, self.template, context=context)
