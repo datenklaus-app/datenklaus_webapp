@@ -57,3 +57,12 @@ def save(request):
         file.write(word.string + "\n")
 
     return HttpResponseRedirect(reverse("index"))
+
+
+def load(request):
+    file = open("wordlist/wortliste_final", "r")
+
+    for word in file.read().split():
+        Words.objects.get_or_create(string=word)
+
+    return HttpResponseRedirect(reverse("index"))
