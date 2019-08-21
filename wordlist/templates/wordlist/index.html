@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid h-100 bg-dark">
+        <div class="container-fluid h-100 w-75">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-info display-1">{{ word }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-danger btn-lg btn-block"
+                                    onclick="window.location.href='{% url "no" word %}'">Nein
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-success btn-lg btn-block"
+                                    onclick="window.location.href='{% url "yes" word %}'">Ja
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="display-2 text-light">{{ count }}</div>
+                        </div>
+                    </div>
+                    <div class="row pt-5">
+                        <div class="col">
+                            <button class="btn btn-outline-warning btn-lg btn-block"
+                                    onclick="window.location.href='{% url "save" %}'">Speichern
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
