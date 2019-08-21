@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="row justify-content-center align-items-center lesson-content ">
-            <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column">
+            <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
                 <form id="card-form" action="{% url 'lesson' state %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
