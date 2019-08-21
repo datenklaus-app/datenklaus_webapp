@@ -22,5 +22,5 @@ def get_lesson(name: str):
     """
     try:
         return _lessons[name]
-    except KeyError:
-        raise NotImplementedError("Lesson does not exist: " + name)
+    except KeyError as e:
+        raise KeyError("Lesson does not exist: " + name) from e

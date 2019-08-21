@@ -153,7 +153,7 @@
         }
 
         function removeRoomWarnings() {
-            $(".room-warning").parent().remove()
+            $(".room-warning").parent().remove();
             $('#warn-room').removeClass('text-danger').addClass('text-dark');
         }
 
@@ -187,7 +187,7 @@
                 },
                 /** @namespace data.responseJSON.err **/
                 error: function (data) {
-                    console.log(data.responseJSON.err)
+                    console.log(data.responseJSON.err);
                 }
             });
         }

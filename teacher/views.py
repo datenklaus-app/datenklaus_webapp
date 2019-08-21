@@ -13,6 +13,8 @@ from teacher.random_word_chain import random_word
 from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
 
 
+# Regular requests
+
 def index(request):
     try:
         room = request.session["room"]
@@ -46,30 +48,6 @@ def create(request):
     return render(request, 'teacher/create_room.html', context=context)
 
 
-def create_room(request):
-    if not request.is_ajax():
-        return HttpResponseBadRequest()
-    if request.method == "POST":
-        room_name = request.POST.get("room_name", None)
-        room_name = room_name.strip()
-        if room_name is None:
-            return ajax_bad_request("Error: empty room name")
-        if re.search("[^A-Za-z0-9\-.]", room_name):
-            return ajax_bad_request("Error: room name contains special characters")
-        lesson = request.POST.get("lesson", None)
-        if lesson is None:
-            return ajax_bad_request("Error: no lesson set")
-        # TODO: Sanitizing and Error Handling
-        #    if lesson is None or lesson not in get_lessons_list():
-        #       return HttpResponseBadRequest('Invalid Lesson')
-        try:
-            Room.objects.get(room_name=room_name)
-            return ajax_bad_request("Room already exist: " + room_name)
-        except Room.DoesNotExist:
-            Room.objects.create(room_name=room_name, lesson=lesson)
-            return HttpResponseNoContent()
-
-
 def results(request, room_name):
     try:
         room = Room.objects.get(room_name=room_name)
@@ -81,7 +59,36 @@ def results(request, room_name):
     return render(request, "teacher/results.html", context)
 
 
+# Ajax requests
+
+def create_room(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    if request.method == "POST":
+        room_name = request.POST.get("room_name", None)
+        room_name = room_name.strip()
+        if room_name is None:
+            return ajax_bad_request("Error: empty room name")
+        if re.search("[^A-Za-z0-9.-]", room_name):
+            return ajax_bad_request("Error: room name contains unallowed characters")
+        lesson = request.POST.get("lesson", None)
+        if lesson is None:
+            return ajax_bad_request("Error: no lesson set")
+        try:
+            get_lesson(lesson)
+        except KeyError:
+            return ajax_bad_request("Error: unknown lesson")
+        try:
+            Room.objects.get(room_name=room_name)
+            return ajax_bad_request("Error: room already exist: " + room_name)
+        except Room.DoesNotExist:
+            Room.objects.create(room_name=room_name, lesson=lesson)
+            return HttpResponseNoContent()
+
+
 def get_results(request, room_name):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
     try:
         room = Room.objects.get(room_name=room_name)
     except Room.DoesNotExist:
@@ -108,16 +115,34 @@ def validate_room_name(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
-    # TODO: Validate and sanitize
     data = {'exists': Room.objects.filter(room_name=room_name).exists()}
     return JsonResponse(data)
+
+
+def remove_student(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    # TODO: Check auth / permission
+    room_name = request.GET.get("room_name", None)
+    try:
+        r = Room.objects.get(room_name=room_name)
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room " + room_name + " not found")
+    student = request.GET.get("student", None)
+    if not student:
+        return ajax_bad_request("Error: no such student")
+    try:
+        s = Student.objects.get(user_name=student, room=r)
+        s.delete()
+    except Student.DoesNotExist:
+        return ajax_bad_request("Error: student not in room")
+    return HttpResponseNoContent()
 
 
 def get_students(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
-    # TODO: Validate and sanitize
     try:
         r = Room.objects.get(room_name=room_name)
         students = get_students_for_room(r)
@@ -153,6 +178,7 @@ def control_cmd(request):
     return HttpResponseNoContent()
 
 
+# Debugging Only
 def create_test_students(request):
     if not request.is_ajax():
         return HttpResponseBadRequest
