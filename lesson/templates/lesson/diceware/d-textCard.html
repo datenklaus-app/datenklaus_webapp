@@ -1,88 +1,58 @@
 {% extends 'lesson/lesson.html' %}
 {% load static %}
 {% block lesson_card %}
-    <div class="container-fluid" id="topCont">
-        <div class="row mt-3 justify-content-center align-items-center h-100">
-            <div class="col text-center h-100">
-                <div class="row">
-                    <div class="col text-center">
-                        <h1 class="text-primary" id="round-text">Runde 1</h1>
+    <div class="row row-v-h-centered" id="topCont">
+        <div class="col lesson-card-bg">
+            <div class="lesson-card-subtitle-light">
+                <ol>
+                    <li>Werfe fünf Würfel und gebe das Ergebnis in das untenstehende Eingabefeld ein.</li>
+                    <li>Wiederhole diesen Vorgang bis du fünf Wörter - deine Passphrase -
+                        angezeigt bekommst.
+                    </li>
+                    <li>Dein neues, sicheres Passwort ist nun bereit für die weitere Verwendung!</li>
+                </ol>
+            </div>
+            <div class="lesson-card-subtitle-light text-center" id="">
+                <div class="lesson-card-title-light" id="round-text">Runde 1</div>
+                <i class="fas fa-dice-one fa-2x" id="dice-1" style="display: none"></i>
+                <i class="fas fa-dice-two fa-2x" id="dice-2" style="display: none;"></i>
+                <i class="fas fa-dice-three fa-2x" id="dice-3" style="display: none;"></i>
+                <i class="fas fa-dice-four fa-2x" id="dice-4" style="display: none"></i>
+                <i class="fas fa-dice-five fa-2x" id="dice-5" style="display: none"></i>
+                <i class="fas fa-dice-six fa-2x" id="dice-6" style="display: none"></i>
+                <div class="row pt-3 justify-content-center pb-4">
+                    <div class="col-auto text-center" id="dice-holder-1">
+                        <i class="fas fa-dice-one fa-2x" id="dice-pl" style="visibility: hidden "></i>
+                    </div>
+                    <div class="col-auto text-center" id="dice-holder-2">
+                    </div>
+                    <div class="col-auto text-center" id="dice-holder-3">
+                    </div>
+                    <div class="col-auto text-center" id="dice-holder-4">
+                    </div>
+                    <div class="col-auto text-center" id="dice-holder-5">
                     </div>
                 </div>
-                <div class="row mt-3 justify-content-center align-items-center">
-                    <div class="col-auto text-left">
-                        <h3>Kurzerklärung:</h3>
-                        <ol>
-                            <li>Werfe fünf Würfel und gebe das Ergebnis in das untenstehende Eingabefeld ein.</li>
-                            <li>Wiederhole diesen Vorgang bis du fünf unterschiedliche Wörter - deine Passphrase -
-                                angezeigt bekommst.
-                            </li>
-                            <li>Dein neues, sicheres Passwort ist nun bereit für die weitere Verwendung!</li>
-                        </ol>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" id="bottomCont">
-        <i class="fas fa-dice-one fa-2x" id="dice-1" style="display: none"></i>
-        <i class="fas fa-dice-two fa-2x" id="dice-2" style="display: none;"></i>
-        <i class="fas fa-dice-three fa-2x" id="dice-3" style="display: none;"></i>
-        <i class="fas fa-dice-four fa-2x" id="dice-4" style="display: none"></i>
-        <i class="fas fa-dice-five fa-2x" id="dice-5" style="display: none"></i>
-        <i class="fas fa-dice-six fa-2x" id="dice-6" style="display: none"></i>
-        <div class="row pt-3 justify-content-center pb-4">
-            <div class="col-auto text-center" id="dice-holder-1">
-                <i class="fas fa-dice-one fa-2x" id="dice-pl" style="visibility: hidden "></i>
-            </div>
-            <div class="col-auto text-center" id="dice-holder-2">
-            </div>
-            <div class="col-auto text-center" id="dice-holder-3">
-            </div>
-            <div class="col-auto text-center" id="dice-holder-4">
-            </div>
-            <div class="col-auto text-center" id="dice-holder-5">
-            </div>
-        </div>
-        <div class="row justify-content-center mt-1">
-            <div class="col-lg-6 col-md-8 col-sm-10">
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <input type="text" maxlength="5" pattern="[0-6]{5}"
                            title="Bitte gib dein Würfelergebnis ein (z.B. 24243)" class="form-control"
                            placeholder="12345" id="dice-input"
                            aria-label="Würfelergebnis" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" id="button-next" type="button">Weiter</button>
+                        <button class="btn btn-outline-light" id="button-next" type="button">Weiter
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-6 col-md-8 col-sm-10">
-                <h4>Passwort:</h4>
-            </div>
-        </div>
-        <div class="row justify-content-center align-items-center">
-            <div class="col-lg-6 col-md-8 col-sm-10">
-                <h4 id="password-sentence"></h4>
+                <div class="lesson-card-body-light">
+                    Passwort: <span class="text-right text-capitalize text-dk-primary " id="password-sentence"></span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid h-100" id="resultCont" style="display: none">
-        <div class="row h-100 justify-content-center align-items-center">
-            <div class="col">
-                <div class="row justify-content-center text-center">
-                    <div class="col-lg-6 col-sm-12">
-                        <h3>Dein neues Passwort lautet:</h3>
-                    </div>
-                </div>
-                <div class="row pt-4 justify-content-center">
-                    <div class="col-auto rounded border m-2" style="border-width: 3px!important;">
-                        <h4 class="d-inline" id="passwordResult"></h4>
-                    </div>
-                </div>
-            </div>
+    <div class="row row-v-h-centered flex-grow-1" id="resultCont" style="display: none">
+        <div class="col-auto lesson-card-bg lesson-card-subtitle-light text-center">
+            <div class="lesson-card-title-light text-light border-0">Dein neues Passwort lautet:</div>
+            <div class="text-dk-primary lesson-card-body-light text-center" id="passwordResult"></div>
         </div>
     </div>
 {% endblock %}

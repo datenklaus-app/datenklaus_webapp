@@ -36,20 +36,22 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Zurück</button>
-                                <button type="button" class="btn btn-danger" onClick="window.location.href = '{% url 'leave' %}'">Ja</button>
+                                <button type="button" class="btn btn-danger"
+                                        onClick="window.location.href = '{% url 'leave' %}'">Ja
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center lesson-content">
-            <form class="h-100" id="card-form" action="{% url 'lesson' state %}" method="post">
-                <div class="col h-100 d-flex flex-column">
+        <div class="row justify-content-center align-items-center lesson-content ">
+            <div class="col-md-11 col-lg-10 d-flex flex-column">
+                <form id="card-form" action="{% url 'lesson' state %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
         <div class="row lesson-footer">
             <div class="col">

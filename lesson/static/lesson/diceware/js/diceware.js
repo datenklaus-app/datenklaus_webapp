@@ -30,7 +30,7 @@ let result = "";
 let rounds = 1;
 
 findWord = function (key) {
-    const word = getDiceword(key);
+    const word = getDiceword(key).toUpperCase();
     result += " " + word;
     rounds++;
     $("#round-text").text("Runde " + rounds);

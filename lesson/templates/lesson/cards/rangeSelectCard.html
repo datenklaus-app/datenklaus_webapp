@@ -2,7 +2,7 @@
 {% block lesson_card %}
     <div class="row row-v-h-centered">
         <div class="col lesson-card-bg">
-            <h1 class="lesson-card-title text-light border-light">{{ title|safe }}</h1>
+            <h1 class="lesson-card-title-light">{{ title|safe }}</h1>
             <div class="btn-group-toggle btn-group-lg lesson-card-body" data-toggle="buttons">
                 {% for choice in form.value %}
                     <label class="btn btn-info btn-block" for="{{ choice.for_id_label }}" onclick="void(0)">
