@@ -52,9 +52,13 @@ def init(request):
 
 def save(request):
     file = open("wordlist/wortliste_final", "w")
-
+    lst = []
     for word in Words.objects.all():
-        file.write(word.string + "\n")
+        lst.append(word.string)
+
+    lst = sorted(lst , key=str.lower)
+    for w in lst:
+        file.write(w  + "\n")
 
     return HttpResponseRedirect(reverse("index"))
 
