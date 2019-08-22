@@ -20,7 +20,8 @@
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-danger btn-lg btn-block"
-                                        onclick="window.location.href='{% url "no" word %}'">Nein
+                                        onclick=" window.location.href='{% url "no" word %}'
+                                                ">Nein
                                 </button>
                             </div>
                             <div class="col">
@@ -47,4 +48,15 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(document).on("keyup", function () {
+            if (event.which == 78) {
+                window.location.href = '{% url "no" word %}'
+            } else if (event.which == 74) {
+                window.location.href = '{% url "yes" word %}'
+            }
+        })
+    </script>
 {% endblock %}
