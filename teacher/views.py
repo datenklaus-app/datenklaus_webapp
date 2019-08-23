@@ -132,7 +132,7 @@ def remove_student(request):
     if not student:
         return ajax_bad_request("Error: no such student")
     try:
-        s = Student.objects.get(user_name=student, room=r)
+        s = Student.objects.get(pk=student, room=r)
         s.delete()
     except Student.DoesNotExist:
         return ajax_bad_request("Error: student not in room")
