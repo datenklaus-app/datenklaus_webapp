@@ -1,11 +1,11 @@
-from lesson.cards.textCard import TextCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.diceware.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class AState(LessonState):
-    card = TextCard(ASTATE, template="lesson/diceware/a-textCard.html")
+    card = TemplateCard(ASTATE, template="lesson/diceware/a-textCard.html")
 
     def state_number(self) -> int:
         return ASTATE

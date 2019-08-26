@@ -1,4 +1,4 @@
-from lesson.cards.chartCard import ChartCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.internet.aState import AState
 from lesson.internet.states import CSTATE, BSTATE
 from lesson.lessonState import LessonState
@@ -6,7 +6,7 @@ from student.models import Student
 
 
 class BState(LessonState):
-    card = ChartCard(BSTATE, title="So schätzt ihr euch ein:")
+    card = TemplateCard(BSTATE, template="lesson/internet/b-textCard.html")
 
     def state_number(self) -> int:
         return BSTATE
@@ -15,12 +15,11 @@ class BState(LessonState):
         return CSTATE
 
     def render(self, request, student: Student, context) -> str:
-        chart = AState.result_svg(student.room)
-        return self.card.render(request, context, chart=chart)
+        return self.card.render(request, context)
 
     def post(self, post, student: Student):
         pass
 
     @staticmethod
     def name():
-        return "Selbsteinschätzung: Ergebnis"
+        return "Internet Basics 1"
