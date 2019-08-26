@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center lesson-content ">
+        <div id="lesson-content-container"  class="row lesson-content justify-content-center align-items-center">
             <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
                 <form id="card-form" action="{% url 'lesson' state %}" method="post">
                     {% csrf_token %}
@@ -63,7 +63,7 @@
             </div>
             <div class="col">
                 <button id="lesson-continue-state" type="submit" form="card-form"
-                        class="btn btn-outline-success bg-dark-st btn-lg btn-block">Weiter
+                        class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter
                 </button>
             </div>
         </div>
@@ -71,8 +71,8 @@
 {% endblock %}
 
 {% block scripts %}
-    {% block card_scripts %}{% endblock %}
     <script>
+
         function check_room_status() {
             $.ajax({
                 method: "POST",
@@ -95,7 +95,23 @@
             })
         }
 
-        check_room_status();
-        setInterval(check_room_status, 5000);
+        $("#lesson-content-container").on("scroll", check_scroll_height);
+
+        function check_scroll_height() {
+            var lCC = $("#lesson-content-container")[0];
+            console.log(lCC.clientHeight);
+            console.log(lCC.scrollTop);
+            console.log(lCC.scrollHeight);
+            if (lCC.clientHeight + lCC.scrollTop >= lCC.scrollHeight) {
+                $("#lesson-continue-state").prop("disabled", false);
+            }
+        }
+
+        $(document).ready(function () {
+            check_scroll_height();
+            check_room_status();
+            setInterval(check_room_status, 5000);
+        });
     </script>
+    {% block card_scripts %}{% endblock %}
 {% endblock %}
