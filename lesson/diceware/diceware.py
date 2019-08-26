@@ -11,12 +11,12 @@ from lesson.lessonState import LessonState
 
 class Diceware(Lesson):
     _lessonStates = {
-        states.INITSTATE: InitState,
-        states.ASTATE: AState,
-        states.BSTATE: BState,
-        states.CSTATE: CState,
-        states.DSTATE: DState,
-        states.ESTATE: EState,
+        states.INITSTATE: InitState(),
+        states.ASTATE: AState(),
+        states.BSTATE: BState(),
+        states.CSTATE: CState(),
+        states.DSTATE: DState(),
+        states.ESTATE: EState(),
     }
 
     @staticmethod
@@ -34,7 +34,7 @@ class Diceware(Lesson):
     @staticmethod
     def state(s: int) -> LessonState:
         try:
-            return Diceware._lessonStates[s]()
+            return Diceware._lessonStates[s]
         except KeyError:
             NotImplementedError("State does not exist: " + str(s))
 
@@ -43,5 +43,5 @@ class Diceware(Lesson):
 
         ls = []
         for s in Diceware._lessonStates.values():
-            ls.append(s())
+            ls.append(s)
         return ls
