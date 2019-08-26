@@ -52,6 +52,19 @@
     margin: 0.25rem;
 }
 
+.lesson-card-rememberme {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: left;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin: 0.75rem 0.25rem 0.25rem;
+    color: #fa629a;
+    border: 2px solid #fa629a;
+    text-align: center;
+}
+
 .lesson-card-title-light {
     color: #f8f9fa;
     border: 1px solid #f8f9fa;

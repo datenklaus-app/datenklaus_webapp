@@ -1,11 +1,12 @@
 from lesson.cards.imageCard import ImageCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.internet.states import CSTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class CState(LessonState):
-    card = ImageCard(CSTATE, ["/lesson/internet/anm-1.png", "/lesson/internet/anm-2.png"])
+    card = TemplateCard(CSTATE,  "lesson/internet/c-textCard.html")
 
     def state_number(self):
         return CSTATE

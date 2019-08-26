@@ -1,0 +1,40 @@
+{% extends 'lesson/lesson.html' %}
+{% load static %}
+{% block lesson_card %}
+    <div class="row row-v-h-centered lesson-card-bg">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="lesson-card-body-light">
+                        <img class="img-fluid  rounded"
+                             src="{% static "lesson/internet/Internet1.png" %}">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="lesson-card-body-light">
+                        Unter dem Begriff „Internet“ versteht man unzählige Computernetzwerke oder
+                        Server,
+                        die zu einem großen Verbund zusammengeschlossen sind und zwischen den
+                        einzelnen
+                        Netzwerken Datenpakete austauschen können. Diese Netzwerke kommunizieren auf
+                        der
+                        Basis verschiedener Internetprotokolle miteinander. Verbunden sind sie über
+                        Kabel
+                        und "Knotenpunkte", die die Pakete zum Zielort weiterleiten. Diese
+                        materielle
+                        Infrastruktur des Internets wird auch "Backbone" genannt.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="lesson-card-rememberme">2. Regel des Internets: Das Internet besteht
+                        aus
+                        einer großen Anzahl von Netzwerken über die Daten ausgetauscht werden
+                        können.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,11 +1,11 @@
-from lesson.cards.textCard import TextCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.diceware.states import INITSTATE, ESTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class EState(LessonState):
-    card = TextCard(ESTATE, template='lesson/diceware/e-textCard.html')
+    card = TemplateCard(ESTATE, template='lesson/diceware/e-textCard.html')
 
     def state_number(self):
         return ESTATE

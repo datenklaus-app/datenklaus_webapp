@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from lesson.cards.rangeSelectCard import RangeSelectCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.charts import DKBarChart
 from lesson.internet.states import ASTATE, BSTATE
 from lesson.lessonState import LessonState
@@ -10,14 +11,8 @@ from teacher.models import Room
 
 
 class AState(LessonState):
-    _OPTIONS = [(0, "Sehr schlecht"),
-                (1, "Eher schlecht"),
-                (2, "Naja"),
-                (3, "Eher gut"),
-                (4, "Sehr gut")]
 
-    card = RangeSelectCard("Wie schätzt du dein Wissen zum Thema Internet <nobr>ein ?</nobr>",
-                           _OPTIONS, ASTATE)
+    card = TemplateCard(ASTATE, template="lesson/internet/a-textCard.html")
 
     def state_number(self) -> int:
         return ASTATE
@@ -29,39 +24,8 @@ class AState(LessonState):
         return self.card.render(request, context)
 
     def post(self, post, student):
-        result = self.card.post(post)
-        try:
-            s = LessonSateModel.objects.get(state=ASTATE, student=student, room=student.room)
-        except ObjectDoesNotExist:
-            raise LessonState.LessonStateError(ASTATE)
-        s.choice = result['value']
-        s.save()
-
-    @staticmethod
-    def result(room, student) -> []:
-        if student is None:
-            return []
-
-        try:
-            obj = LessonSateModel.objects.get(state=ASTATE, student=student, room=room)
-            res = [int(obj.choice)]
-        except (ObjectDoesNotExist, KeyError):
-            raise LessonState.LessonStateError(ASTATE)
-
-        return res
-
-    @staticmethod
-    def result_svg(room: Room) -> str:
-        objs = LessonSateModel.objects.filter(state=ASTATE, room=room)
-        data = [0] * 5
-        for o in objs:
-            if o.choice is None:
-                continue
-            data[int(o.choice)] += 1
-
-        return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], AState._OPTIONS))).render(
-            disable_xml_declaration=True)
+        return
 
     @staticmethod
     def name():
-        return "Selbsteinschätzung"
+        return "Hinführung"

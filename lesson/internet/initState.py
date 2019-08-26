@@ -1,13 +1,11 @@
-from lesson.cards.textCard import TextCard
+from lesson.cards.templateCard import TemplateCard
 from lesson.internet.states import ASTATE, INITSTATE
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class InitState(LessonState):
-    card = TextCard(INITSTATE, "Willkommen",
-                    "Heute lernen wir etwas über das Internet",
-                    "Das Internet ist sehr toll")
+    card = TemplateCard(INITSTATE, template="lesson/internet/initState.html")
 
     def state_number(self):
         return INITSTATE
