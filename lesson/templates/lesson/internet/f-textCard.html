@@ -2,23 +2,31 @@
 {% load static %}
 {% block lesson_card %}
     <div class="row row-v-h-centered ">
-        <div class="col">
-            <div class="row lesson-card-body-light">
-                <div class="col align-self-center">
-                    <img class="img-fluid  rounded"
-                         src="{% static "lesson/internet/Internet-animation.gif" %}">
-                </div>
-
+        <div class="col lesson-card-body-light">
+            <div class="lesson-card-rememberme mb-2">
+                Du erinnerst dich an die erste Regel des Internets: Bei der Internetnutzung werden Daten
+                verarbeitet. Immer!
             </div>
-            <div class="row lesson-card-body-light">
-                <div class="col align-self-center">
-                    Du benötigst also neben einem Gerät auch eine Verbindung zum Gerät. Dies ermöglicht dir einen
-                    Zugriff auf alle, öffentlich zugänglichen, Punkte im Netzwerkverbund "Internet" - meist sind dies
-                    Server, auf denen Webseiten oder andere Dienstleistungen wie z.B. Appinhalte gelagert sind. Möchtest
-                    du z.B. die Webseite "www.klicksafe.de" aufrufen, schickt dein Gerät zuerst eine Anfrage an den
-                    Server (auf dem der Quellcode der Webseite gelagert wird) und erhält daraufhin alle Daten, die zur
-                    Darstellung der Seite im Browser notwendig sind.
-                </div>
+            <div class="lesson-card-body-light">
+                Für die Internetnutzung ist eine Verarbeitung von Daten notwendig: Mithilfe von Internetprotokollen
+                wird unter anderem eine korrekte Übermittlung und Darstellung der angeforderten Inhalte ermöglicht.
+                Dabei werden verschiedene Informationen zwischen deinem Gerät und dem Server ausgetauscht. Dazu
+                gehören unter anderem:
+                <br/>
+                <ul>
+                    <li> Datum und Uhrzeit der Anfrage
+                    <li> Deine IP-Adresse (sozusagen deine virtuelle Adresse)
+                    <li> Geräteinformationen und Browserinformationen, damit sichergestellt werden kann, dass
+                        Inhalte korrekt angezeigt werden
+                </ul>
+
+                Diese Daten werden, gebündelt in sogenannten Datenpaketen, auf ihre Reise durch das Internet zum
+                Zielort geschickt. Jedes internetfähige Gerät, sowie Server oder Rechner hat eine ihm zugewiesene,
+                individuelle Adresse. So wird sichergestellt, dass die Pakete am richtigen Ort ankommen.
+
+                Wie aus diesen technischen Daten personalisierte Daten werden können, erfährst du im folgenden Modul
+                "Trackingmethoden".
+
             </div>
         </div>
     </div>
