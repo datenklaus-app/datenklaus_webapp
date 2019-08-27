@@ -1,6 +1,6 @@
 from django.contrib.sessions.models import Session
 from django.db import models
-from django.db.models import CharField, ForeignKey, CASCADE, IntegerField
+from django.db.models import CharField, ForeignKey, CASCADE, IntegerField, BooleanField
 
 from teacher.models import Room
 
@@ -11,3 +11,4 @@ class Student(models.Model):
     session = ForeignKey(Session, on_delete=CASCADE, blank=True, null=True)
     room = ForeignKey(Room, on_delete=CASCADE)
     current_state = IntegerField(default=0)
+    is_syncing = BooleanField(default=False)

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+    Warte auf andere...
+{% endblock %}
+{% load static %}
+{% block content %}
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <div class="container-fluid h-100">
+        <div class="row row-v-h-centered h-100">
+            <div class="col display-1 text-light">
+                Warte auf andere...
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "lesson/js/room.js" %}"></script>
+{% endblock %}
