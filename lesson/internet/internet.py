@@ -12,7 +12,7 @@ class Internet(Lesson):
         2: TemplateState("lesson/internet/b-textCard.html", 2, 3,
                          "Internet Basics 1 / INTERNET"),
         3: TemplateState("lesson/internet/c-textCard.html", 3, 4,
-                         "Internet-Basics 2 / Rechner, Laptop, Smartphone, Tablet"),
+                         "Internet-Basics 2 / Rechner, Laptop, Smartphone, Tablet", is_sync=True),
         4: TemplateState("lesson/internet/d-textCard.html", 4, 5,
                          "Internet-Basics 3 / WLAN oder Mobilfunk?"),
         5: TemplateState("lesson/internet/e-textCard.html", 5, 6,
