@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonUtil import get_lesson, all_lessons
+from lesson.lessonUtil import get_lesson, all_lessons, all_synced
 from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
@@ -35,7 +35,9 @@ def overview(request, room_name=None):
 
     try:
         room = Room.objects.get(room_name=room_name)
-        context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state, "is_overview": True}
+        lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+        context = {'room_name': room_name, 'lessons': lessons, 'lesson': room.lesson, 'state': room.state,
+                   "is_overview": True}
         return render(request, 'teacher/overview.html', context=context)
     except Room.DoesNotExist:
         del request.session["room"]
@@ -51,11 +53,13 @@ def create(request):
 def results(request, room_name):
     try:
         room = Room.objects.get(room_name=room_name)
+        lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
     except Room.DoesNotExist:
         del request.session["room"]
         return HttpResponseRedirect(reverse("teacher_index"))
 
-    context = {'room_name': room_name, 'lesson': room.lesson, 'state': room.state, "is_results": True}
+    context = {'room_name': room_name, 'lessons': lessons, 'lesson': room.lesson, 'state': room.state,
+               "is_results": True}
     return render(request, "teacher/results.html", context)
 
 
@@ -147,6 +151,20 @@ def get_students(request):
         r = Room.objects.get(room_name=room_name)
         students = get_students_for_room(r)
         return JsonResponse({"students": students})
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room " + room_name + " not found")
+
+
+def get_sync_state(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    room_name = request.GET.get("room_name", None)
+    try:
+        r = Room.objects.get(room_name=room_name)
+        a = all_synced(room_name)
+        state_name = "next state"
+        # TODO: endState / Finished
+        return JsonResponse({"allSynced": a, "stateName": state_name, "endState": False})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
 
