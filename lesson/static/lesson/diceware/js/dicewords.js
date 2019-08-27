@@ -1,6 +1,6 @@
-getDiceword = function (key) {
+function getDiceword(key) {
     return dicewords[key];
-};
+}
 
 const dicewords = {
     11111: "0",
