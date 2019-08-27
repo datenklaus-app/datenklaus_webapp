@@ -185,6 +185,9 @@ def control_cmd(request):
     cmd = Cmd(int(b))
     if cmd == Cmd.START:
         r.state = RoomStates.RUNNING.value
+        for student in Student.objects.all():
+            student.is_syncing = False
+            student.save()
     elif cmd == Cmd.STOP:
         r.state = RoomStates.CLOSED.value
     elif cmd == Cmd.PAUSE:
