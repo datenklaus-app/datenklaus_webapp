@@ -27,19 +27,16 @@ def get_lesson(name: str):
         raise KeyError("Lesson does not exist: " + name) from e
 
 
-def in_sync_state(lesson: str, state: int):
-    return get_lesson(lesson).state(state).is_sync()
-
-
-def in_final_state(lesson: str, state: int):
-    return get_lesson(lesson).state(state).is_final()
-
-
 def all_synced(room):
     for student in Student.objects.filter(room=room):
-        if not in_sync_state(student.room.lesson, student.current_state):
+        if not student.is_syncing:
             return False
     return True
+
+
+# FIXME/TODO this will not work
+def in_final_state(lesson: str, state: int):
+    return get_lesson(lesson).state(state).is_final()
 
 
 def all_finished(room):
