@@ -5,14 +5,12 @@ from lesson.cards.card import Card
 
 
 class TemplateCard(Card):
-    def __init__(self, state,  template):
-        self.state = state
+    def __init__(self, template):
         self.template = template
 
     def render(self, request, context):
         form = TemplateCardForm()
         context["form"] = form
-        context["state"] = self.state
         return render(request, self.template, context=context)
 
     def post(self, post):

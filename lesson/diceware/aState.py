@@ -5,7 +5,7 @@ from student.models import Student
 
 
 class AState(LessonState):
-    card = TemplateCard(ASTATE, template="lesson/diceware/a-textCard.html")
+    card = TemplateCard(template="lesson/diceware/a-textCard.html")
 
     def state_number(self) -> int:
         return ASTATE

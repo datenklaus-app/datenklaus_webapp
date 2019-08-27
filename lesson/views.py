@@ -2,6 +2,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
+from django.urls import reverse
 
 from lesson.lessonState import LessonState
 from lesson.lessonUtil import get_lesson
@@ -21,52 +22,88 @@ def room_status(request):
     if student.room.state == RoomStates.CLOSED.value:
         return JsonResponse({"running": False, "redirect": "/"})
 
-    return JsonResponse({"running": student.room.state == RoomStates.RUNNING.value, "redirect": None})
+    return JsonResponse({"running": student.room.state == RoomStates.RUNNING.value,
+                         "redirect": None})
 
 
-def lesson(request, state_num=None):
+def lesson(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
         return HttpResponseRedirect("/")
 
     room_state = RoomStates(student.room.state)
-
     if room_state == RoomStates.PAUSED:
-        return render(request, "lesson/room/room_pause.html")
+        return render(request, "lesson/room/pause.html")
     elif room_state == RoomStates.WAITING:
-        return render(request, "lesson/room/room_waiting.html",
+        return render(request, "lesson/room/waiting.html",
                       context={"sname": student.user_name, "rname": student.room.room_name})
     elif room_state == RoomStates.CLOSED:
         return HttpResponseRedirect("/")
 
-    if state_num is not None:
-        student.current_state = state_num
+    if student.is_syncing:
+        return render(request, "lesson/room/sync.html")
+
     current_lesson = get_lesson(student.room.lesson)
-
-    try:
-        state = current_lesson.state(student.current_state)
-        if request.method == 'POST':
-            # FIXME : clean up this mess!
-            state.post(request.POST, student)
-            student.current_state = state.next_state(student)
-            state = current_lesson.state(student.current_state)
-            state.set_previous_state(student, state_num)
-            student.save()
-        else:  # FIXME: Handle potential error cases?
-            student.save()  # Resend current card  if we receive a GET request
-
-    except LessonState.LessonStateError as e:
-        student.current_state = e.fallback_state
-        state = current_lesson.state(e.fallback_state)
+    current_state = current_lesson.state(student.current_state)
 
     context = {"lname": student.room.lesson, "rname": student.room}
 
-    prev_state = current_lesson.state(state.previous_state(student))
-
-    if state.is_first() or prev_state.is_sync():
-        context["previous_state"] = None
+    if current_state.previous_state(student) is None:
+        context["has_previous"] = False
     else:
-        context["previous_state"] = prev_state.state_number()
+        context["has_previous"] = True
 
-    return state.render(request, student, context)
+    return current_state.render(request, student, context)
+
+
+def lesson_previous(request):
+    # Must NOT a post request
+    if request.method == 'POST':
+        return HttpResponseNotFound()
+
+    try:
+        student = Student.objects.get(session=request.session.session_key)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect("/")
+
+    current_lesson = get_lesson(student.room.lesson)
+    current_state = current_lesson.state(student.current_state)
+
+    student.current_state = current_state.previous_state(student)
+    student.save()
+    return HttpResponseRedirect(reverse("lesson"))
+
+
+def lesson_next(request):
+    # Must be a post request
+    if not request.method == 'POST':
+        return HttpResponseNotFound()
+
+    try:
+        student = Student.objects.get(session=request.session.session_key)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect("/")
+
+    current_lesson = get_lesson(student.room.lesson)
+    current_state = current_lesson.state(student.current_state)
+
+    # Handle post received from current state
+    try:
+        current_state.post(request.POST, student)
+    except LessonState.LessonStateError as e:
+        student.current_state = e.fallback_state
+        return HttpResponseRedirect(reverse("lesson"))
+
+    # Transition to next state
+    student.current_state = current_state.next_state(student)
+    next_state = current_lesson.state(student.current_state)
+    # Check if next state is sync state
+    if next_state.is_sync():
+        student.is_syncing = True
+    else:
+        next_state.set_previous_state(student, current_state.state_number())
+
+    student.save()
+
+    return HttpResponseRedirect(reverse("lesson"))
