@@ -60,5 +60,13 @@ def lesson(request, state_num=None):
         student.current_state = e.fallback_state
         state = current_lesson.state(e.fallback_state)
 
-    context = {"lname": student.room.lesson, "rname": student.room, "previous_state": state.previous_state(student)}
+    context = {"lname": student.room.lesson, "rname": student.room}
+
+    prev_state = current_lesson.state(state.previous_state(student))
+
+    if state.is_first() or prev_state.is_sync():
+        context["previous_state"] = None
+    else:
+        context["previous_state"] = prev_state.state_number()
+
     return state.render(request, student, context)

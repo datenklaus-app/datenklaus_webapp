@@ -13,6 +13,9 @@ class InitState(LessonState):
     def previous_state(self, student: Student):
         return None  # Initial state has no previous
 
+    def is_first(self) -> bool:
+        return self.__is_initial
+
     def next_state(self, student: Student) -> int:
         return ASTATE
 

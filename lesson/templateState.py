@@ -16,6 +16,9 @@ class TemplateState(LessonState):
             return None
         return super(TemplateState, self).previous_state(student)
 
+    def is_first(self) -> bool:
+        return self.__is_initial
+
     def state_number(self) -> int:
         return self.__state
 

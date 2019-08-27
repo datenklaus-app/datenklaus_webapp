@@ -95,6 +95,27 @@ class LessonState:
         """
         raise NotImplementedError()
 
+    @staticmethod
+    def is_sync() -> bool:
+        """
+        :return: Whether this state is a sync state
+        """
+        return False
+
+    @staticmethod
+    def is_final() -> bool:
+        """
+        :return: Whether this state is the lesson's final state
+        """
+        return False
+
+    @staticmethod
+    def is_first() -> bool:
+        """
+        :return: Whether this state is the lesson's first state
+        """
+        return False
+
     class LessonStateError(Exception):
         """
         Raised when the state is missing information from a previous
