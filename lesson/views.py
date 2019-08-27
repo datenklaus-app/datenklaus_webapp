@@ -17,12 +17,13 @@ def room_status(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
-        return JsonResponse({"running": False, "redirect": "/"})
+        return JsonResponse({"running": False, "redirect": "/", "syncing": student.is_syncing, })
 
     if student.room.state == RoomStates.CLOSED.value:
-        return JsonResponse({"running": False, "redirect": "/"})
+        return JsonResponse({"running": False, "redirect": "/", "syncing": student.is_syncing, })
 
     return JsonResponse({"running": student.room.state == RoomStates.RUNNING.value,
+                         "syncing": student.is_syncing,
                          "redirect": None})
 
 

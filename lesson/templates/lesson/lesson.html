@@ -76,7 +76,7 @@
         function check_room_status() {
             $.ajax({
                 method: "POST",
-                url: '/lesson/room_status',
+                url: '/lesson/status',
                 dataType: 'json',
                 contentType: 'json',
                 headers: {
@@ -89,7 +89,7 @@
                     }
                     if (!data.running) {
                         // data.redirect contains the string URL to redirect to
-                        window.location.href = "/lesson/";
+                        window.location.href = {% url 'lesson' %};
                     }
                 }
             })

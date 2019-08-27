@@ -34,5 +34,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static "lesson/js/room.js" %}"></script>
+    {% include "lesson/check_status_script.html" %}
 {% endblock %}
