@@ -270,14 +270,13 @@
                     // TODO: button to choose new lesson if end state in current lesson
                     if (data.allSynced) {
                         state = states.PAUSED;
+                        setStates()
                         $("#state-text").text("Alle Schüler*innen haben " + data.stateName + " bearbeitet. Drücke Play zum Starten des nächsten Abschnitts").removeClass("text-warning").addClass("text-success")
                     } else if (data.stateName) {
-                        state = states.RUNNING;
                         $("#state-text").text("Der Raum pausiert wenn alle Schüler*innen " + data.stateName + "  erreicht haben.").removeClass("text-success").addClass("text-secondary")
                     } else {
                         $("#state-text").text("")
                     }
-                    setStates()
                 },
                 error: function (data) {
                     // TODO: remove?
