@@ -12,3 +12,4 @@ class Student(models.Model):
     room = ForeignKey(Room, on_delete=CASCADE)
     current_state = IntegerField(default=0)
     is_syncing = BooleanField(default=False)
+    is_finished = BooleanField(default=False)
