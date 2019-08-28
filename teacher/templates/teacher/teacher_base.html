@@ -62,14 +62,12 @@
 
     {% if room_name %}
         <div class="container-fluid">
-            <div class="row justify-content-center pt-2 pb-2 bg-light">
+            <div class="row justify-content-center pt-2 bg-light">
                 <div class="col text-dark align-self-center">
                     <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span>
                     </h4>
                 </div>
-                <div class="col align-self-center">
-                    <h4 id="state-text" class="m-0 text-secondary"></h4>
-                </div>
+
                 <div class="col text-right m-1">
                     <button class="btn state-btn-play" id="button-play">
                         <i class="fas fa-play"></i>
@@ -84,6 +82,11 @@
                        role="button" id="control-popover" title="Steuerung" data-trigger="hover">
                         <i class="fas fa-question"></i>
                     </a>
+                </div>
+            </div>
+            <div class="row justify-content-end bg-light pb-2">
+                <div class="col text-right" >
+                    <span id="state-text" class="m-0 text-secondary"></span>
                 </div>
             </div>
         </div>

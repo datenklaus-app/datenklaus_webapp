@@ -35,13 +35,13 @@
 {% block teacher-content-scripts %}
     <script id="connected-students" type="text/x-handlebars-template">
         {% verbatim %}
-        <div class="unselectable col-auto bg-dark rounded m-2">
+        <div class="unselectable bg-dark col-sm-11 col-md-3 col-xl-2 m-1 rounded">
             <!--suppress SyntaxError -->
-            <div class="m1 card bg-dark" style="width: 250px">
-                <i type="button" id="removeButton" onclick="removeButtonClicked('{{ id }}')"
-                class="fas fa-user-times position-absolute"
-                style="top: 8px; right: 0px; color: #e14423"></i>
+            <div class="card bg-dark border-0">
                 <div class="card-body text-monospace text-left">
+                    <i type="button" id="removeButton" onclick="removeButtonClicked('{{ id }}')"
+                       class="fas fa-user-times position-absolute"
+                       style="top: 0.75rem; right: 0rem; color: #e14423"></i>
                     <h2 class="mb-1 text-info">{{ name }}</h2>
                     <h6 class="text-light">{{ progress }}</h6>
                 </div>
