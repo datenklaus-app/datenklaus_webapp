@@ -1,6 +1,7 @@
 from lesson.diceware.diceware import Diceware
 from lesson.internet.internet import Internet
 from lesson.lesson import Lesson
+from student.models import Student
 
 _lessons = {"Internet": Internet, "Diceware": Diceware}
 
@@ -24,3 +25,17 @@ def get_lesson(name: str):
         return _lessons[name]
     except KeyError as e:
         raise KeyError("Lesson does not exist: " + name) from e
+
+
+def all_synced(room):
+    for student in Student.objects.filter(room=room):
+        if not student.is_syncing:
+            return False
+    return True
+
+
+def all_finished(room):
+    for student in Student.objects.filter(room=room):
+        if not student.is_finished:
+            return False
+    return True

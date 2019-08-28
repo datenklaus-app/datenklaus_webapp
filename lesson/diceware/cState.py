@@ -5,7 +5,7 @@ from student.models import Student
 
 
 class CState(LessonState):
-    card = TemplateCard(CSTATE, template='lesson/diceware/c-textCard.html')
+    card = TemplateCard(template='lesson/diceware/c-textCard.html')
 
     def state_number(self):
         return CSTATE

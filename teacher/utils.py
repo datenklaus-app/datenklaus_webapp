@@ -18,7 +18,11 @@ def get_students_for_room(room_name):
     student_info = []
     for student in students:
         lesson_state = lesson.state(student.current_state).name()
-        student_info.append({"name": student.user_name, "id": student.pk, "progress": lesson_state})
+        student_info.append({"name": student.user_name,
+                             "id": student.pk,
+                             "progress": lesson_state,
+                             "is_syncing": student.is_syncing,
+                             "is_finished": student.is_finished})
     return student_info
 
 

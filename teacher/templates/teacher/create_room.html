@@ -86,9 +86,6 @@
                     validateRoomName();
                 }, 1000);
             });
-            $("button.list-group-item").click(function () {
-                $(this).addClass('active').siblings().removeClass('active');
-            });
             $("#button-room").click(createRoom);
             $(".unselectable").click(function () {
                 lessonItemClicked($(this))

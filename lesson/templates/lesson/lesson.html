@@ -47,7 +47,7 @@
         </div>
         <div id="lesson-content-container" class="row lesson-content justify-content-center align-items-center">
             <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
-                <form id="card-form" action="{% url 'lesson' state %}" method="post">
+                <form id="card-form" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
                 </form>
@@ -55,10 +55,10 @@
         </div>
         <div class="row lesson-footer">
             <div class="col">
-                {% if previous_state is not None %}
+                {% if has_previous %}
                     <input type="button" class='btn btn-outline-warning bg-dark-st btn-block btn-lg'
                            value="Zurück"
-                           onClick="window.location.href = '{% url 'lesson' previous_state %}'">
+                           onClick="window.location.href = '{% url 'lesson_previous' %}'">
                 {% endif %}
             </div>
             <div class="col">
@@ -76,7 +76,7 @@
         function check_room_status() {
             $.ajax({
                 method: "POST",
-                url: '/lesson/room_status',
+                url: '/lesson/status',
                 dataType: 'json',
                 contentType: 'json',
                 headers: {
@@ -89,7 +89,7 @@
                     }
                     if (!data.running) {
                         // data.redirect contains the string URL to redirect to
-                        window.location.href = "/lesson/";
+                        window.location.href = {% url 'lesson' %};
                     }
                 }
             })

@@ -17,4 +17,5 @@ urlpatterns = [
     path('overview/', views.overview, name="overview"),
     path('overview/<str:room_name>', views.overview, name="overview"),
     path('create', views.create, name="create"),
+    path('sync', views.get_sync_state, name="sync"),
 ]

@@ -5,9 +5,8 @@ from lesson.cards.card import Card
 
 
 class ImageCard(Card):
-    def __init__(self, state, images=None, template='lesson/cards/imageCard.html', title=None):
+    def __init__(self, images=None, template='lesson/cards/imageCard.html', title=None):
         self.images = images
-        self.state = state
         self.template = template
         self.title = title
 
@@ -15,7 +14,6 @@ class ImageCard(Card):
         form = ImageCardForm()
         context["images"] = self.images
         context["form"] = form
-        context["state"] = self.state
         context["title"] = self.title
         return render(request, self.template, context=context)
 

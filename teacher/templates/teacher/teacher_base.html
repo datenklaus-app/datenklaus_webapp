@@ -20,7 +20,9 @@
 {% block content %}
     <!-- Strings -->
     {% trans "Raum wählen" as no_room_selected %}
-    {# Teacher navbar #}
+    {% trans "Modul abgeschlossen" as lesson_finished %}
+    {% trans "Um ein weiteres Modul zu starten, wähle eines aus der folgenden Liste" as choose_module %}
+    {# Teacher navbar #}    {% trans "Modul abgeschlossen" as lesson_finished %}
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Datenklaus</span>
 
@@ -60,11 +62,12 @@
 
     {% if room_name %}
         <div class="container-fluid">
-            <div class="row justify-content-center pt-2 pb-2 bg-light">
+            <div class="row justify-content-center pt-2 bg-light">
                 <div class="col text-dark align-self-center">
                     <h4 class="m-0 text-secondary"> Modul: <span id="roomLesson" class="text-dark">{{ lesson }}</span>
                     </h4>
                 </div>
+
                 <div class="col text-right m-1">
                     <button class="btn state-btn-play" id="button-play">
                         <i class="fas fa-play"></i>
@@ -79,6 +82,43 @@
                        role="button" id="control-popover" title="Steuerung" data-trigger="hover">
                         <i class="fas fa-question"></i>
                     </a>
+                </div>
+            </div>
+            <div class="row justify-content-end bg-light pb-2">
+                <div class="col text-right" >
+                    <span id="state-text" class="m-0 text-secondary"></span>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="lessonFinishedModal" tabindex="-1" role="dialog"
+             aria-labelledby="lessonFinished" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h4 class="modal-title" id="exampleModalCenterTitle">{{ lesson_finished }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h5>{{ choose_module }}</h5>
+                        <div class="list-group overflow-auto list-group-scrollable" id="lessons">
+                            {% for m in lessons %}
+                                <div class="btn-info unselectable lesson-list-item list-group-item list-group-item-action flex-column align-items-start"
+                                     type="button">
+                                    <div class="d-flex w-100 justify-content-center">
+                                        <h5 id="lesson_name" data-name="{{ m.name }}"
+                                            class="mb-1">{{ m.name|lower|capfirst }}</h5>
+                                    </div>
+                                    <p class="mb-1"></p>
+                                    <h6 class="mb-1 text-center">{{ m.description }}</h6>
+                                    <p class="mb-1"></p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Später</button>
+                        <button type="button" id="lesson-modal-start" disabled class="btn btn-primary">Start</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,8 +203,19 @@
                 },
             });
 
+            $(".lesson-list-item").click(function () {
+                lessonItemClicked($(this))
+            });
+
             setStates();
+            setInterval(updateSyncState, 2000);
         });
+
+        lessonItemClicked = function (item) {
+            $('.lesson-list-item').removeClass('active');
+            item.toggleClass('active');
+            $('#lesson-modal-start').prop('disabled', false)
+        };
 
         setStates = function () {
             $('#button-play').prop('disabled', state === states.RUNNING);
@@ -207,6 +258,32 @@
                             window.location.href = "{% url "overview" %}" + room_name
                         }));
                     })
+                }
+            })
+        };
+
+        updateSyncState = function () {
+            $.ajax({
+                url: "{% url 'sync' %}",
+                data: {'room_name': "{{ room_name }}"},
+                dataType: 'json',
+                /** @namespace data.allSynced **/
+                /** @namespace data.stateName **/
+                success: function (data) {
+                    // TODO: button to choose new lesson if end state in current lesson
+                    if (data.allSynced) {
+                        state = states.PAUSED;
+                        setStates()
+                        $("#state-text").text("Alle Schüler*innen haben " + data.stateName + " bearbeitet. Drücke Play zum Starten des nächsten Abschnitts").removeClass("text-warning").addClass("text-success")
+                    } else if (data.stateName) {
+                        $("#state-text").text("Der Raum pausiert wenn alle Schüler*innen " + data.stateName + "  erreicht haben.").removeClass("text-success").addClass("text-secondary")
+                    } else {
+                        $("#state-text").text("")
+                    }
+                },
+                error: function (data) {
+                    // TODO: remove?
+                    console.log(data.error)
                 }
             })
         };

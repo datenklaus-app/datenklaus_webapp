@@ -35,13 +35,19 @@
 {% block teacher-content-scripts %}
     <script id="connected-students" type="text/x-handlebars-template">
         {% verbatim %}
-        <div class="unselectable col-auto bg-dark rounded m-2">
+        {{#if is_finished}}
+        <div class="unselectable bg-danger col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
+        {{else if is_syncing}}
+        <div class="unselectable bg-warning col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
+        {{else}}
+        <div class="unselectable bg-success col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
+        {{/if}}
             <!--suppress SyntaxError -->
-            <div class="m1 card bg-dark" style="width: 250px">
-                <i type="button" id="removeButton" onclick="removeButtonClicked('{{ id }}')"
-                class="fas fa-user-times position-absolute"
-                style="top: 8px; right: 0px; color: #e14423"></i>
+            <div class="card w-100 h-100 bg-dark border-0">
                 <div class="card-body text-monospace text-left">
+                    <i type="button" id="removeButton" onclick="removeButtonClicked('{{ id }}')"
+                       class="fas fa-user-times position-absolute"
+                       style="top: 0.75rem; right: 0.75rem; color: #e14423"></i>
                     <h2 class="mb-1 text-info">{{ name }}</h2>
                     <h6 class="text-light">{{ progress }}</h6>
                 </div>

@@ -3,6 +3,14 @@ from lesson.lessonState import LessonState
 
 class Lesson:
     @staticmethod
+    def title() -> str:
+        """
+        :return: A string containing a user readable title of the lesson
+        """
+        raise NotImplementedError()
+
+
+    @staticmethod
     def description() -> str:
         """
         :return: A string containing a user readable description of the lesson

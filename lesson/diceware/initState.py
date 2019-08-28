@@ -5,13 +5,16 @@ from student.models import Student
 
 
 class InitState(LessonState):
-    card = ImageCard(INITSTATE, template="lesson/diceware/init-imageCard.html")
+    card = ImageCard(template="lesson/diceware/init-imageCard.html")
 
     def state_number(self):
         return INITSTATE
 
     def previous_state(self, student: Student):
         return None  # Initial state has no previous
+
+    def is_first(self) -> bool:
+        return self.__is_initial
 
     def next_state(self, student: Student) -> int:
         return ASTATE

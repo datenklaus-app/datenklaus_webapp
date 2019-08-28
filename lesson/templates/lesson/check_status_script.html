@@ -1,0 +1,23 @@
+<script>
+    function check_status() {
+        $.ajax({
+            method: "POST",
+            url: '/lesson/status',
+            dataType: 'json',
+            contentType: 'json',
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function (data) {
+                if (data.redirect)
+                    window.location.replace(data.redirect);
+
+                console.log(data.syncing)
+                if (data.running && !data.syncing)
+                    window.location.replace('/lesson/');
+            }
+        })
+    }
+
+    setInterval(check_status, 1000);
+</script>
