@@ -34,13 +34,8 @@ def all_synced(room):
     return True
 
 
-# FIXME/TODO this will not work
-def in_final_state(lesson: str, state: int):
-    return get_lesson(lesson).state(state).is_final()
-
-
 def all_finished(room):
     for student in Student.objects.filter(room=room):
-        if not in_final_state(student.room.lesson, student.current_state):
+        if not student.is_finished:
             return False
     return True
