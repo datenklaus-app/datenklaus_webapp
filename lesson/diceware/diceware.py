@@ -20,6 +20,10 @@ class Diceware(Lesson):
     }
 
     @staticmethod
+    def title() -> str:
+        return "Diceware"
+
+    @staticmethod
     def description():
         return "Diceware"
 

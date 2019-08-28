@@ -21,6 +21,11 @@ class Internet(Lesson):
                          "Daten - Hinführung"),
     }
 
+
+    @staticmethod
+    def title() -> str:
+        return "Internet"
+
     @staticmethod
     def description():
         return "Eine Einführung in das Internet"
