@@ -17,8 +17,7 @@ class Internet(Lesson):
                          "Internet-Basics 3 / WLAN oder Mobilfunk?"),
         5: TemplateState("lesson/internet/e-textCard.html", 5, 6,
                          "Internet-Basics 4 / Zugriff auf Webseiten, Apps oder andere Dienstleistungen"),
-        6: TemplateState("lesson/internet/f-textCard.html", 6, None,
-                         "Daten - Hinführung"),
+        6: TemplateState("lesson/internet/f-textCard.html", 6, None, "Daten - 'Überleitung", is_final=True),
     }
 
 
