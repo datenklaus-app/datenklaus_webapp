@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div id="lesson-content-container" class="row lesson-content justify-content-center align-items-center">
+        <div id="lesson-content-container"  class="row lesson-content justify-content-center align-items-center">
             <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
                 <form id="card-form" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
@@ -95,7 +95,20 @@
             })
         }
 
+        $("#lesson-content-container").on("scroll", check_scroll_height);
+
+        function check_scroll_height() {
+            var lCC = $("#lesson-content-container")[0];
+            console.log(lCC.clientHeight);
+            console.log(lCC.scrollTop);
+            console.log(lCC.scrollHeight);
+            if (lCC.clientHeight + lCC.scrollTop >= lCC.scrollHeight) {
+                $("#lesson-continue-state").prop("disabled", false);
+            }
+        }
+
         $(document).ready(function () {
+            check_scroll_height();
             check_room_status();
             setInterval(check_room_status, 5000);
         });
