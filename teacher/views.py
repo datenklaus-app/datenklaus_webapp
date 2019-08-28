@@ -211,5 +211,5 @@ def create_test_students(request):
     except Room.DoesNotExist:
         return ajax_bad_request("Room" + room_name + " doesn't exist")
     for _ in range(0, 10):
-        Student(user_name=random_word(), session=None, room=room).save()
+        Student(user_name=random_word()[:6], session=None, room=room).save()
     return HttpResponseNoContent()
