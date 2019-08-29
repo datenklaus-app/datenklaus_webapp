@@ -1,10 +1,11 @@
+import json
 import re
 
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonUtil import get_lesson, all_lessons, all_synced
+from lesson.lessonUtil import get_lesson, all_lessons, all_synced, all_finished
 from lesson.models import LessonSateModel
 from student.models import Student
 from teacher.constants import RoomStates
@@ -54,11 +55,18 @@ def results(request, room_name):
     try:
         room = Room.objects.get(room_name=room_name)
         lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+        prev_string = room.previous_lessons
+        if prev_string:
+            tmp = json.loads(room.previous_lessons)
+            prev_lessons = [{'name': l} for l in tmp]
+        else:
+            prev_lessons = []
     except Room.DoesNotExist:
         del request.session["room"]
         return HttpResponseRedirect(reverse("teacher_index"))
 
-    context = {'room_name': room_name, 'lessons': lessons, 'lesson': room.lesson, 'state': room.state,
+    context = {'room_name': room_name, 'lessons': lessons, 'lesson': room.lesson, 'prev_lessons': prev_lessons,
+               'state': room.state,
                "is_results": True}
     return render(request, "teacher/results.html", context)
 
@@ -97,15 +105,21 @@ def get_results(request, room_name):
         room = Room.objects.get(room_name=room_name)
     except Room.DoesNotExist:
         return ajax_bad_request("Room doesn't exist")
+    lesson = request.GET.get("lesson", None)
+    try:
+        get_lesson(lesson)
+    except KeyError:
+        return ajax_bad_request("Error: unknown lesson")
     num_students = Student.objects.filter(room=room).count()
-    states = get_lesson(room.lesson).all_states()
+    states = get_lesson(lesson).all_states()
     state_results = []
     for state in states:
         r = state.result_svg(room_name)
         if r is not None:
             completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
             state_results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
-    return JsonResponse({'results': state_results, 'no_students': num_students})
+    return JsonResponse({'results': state_results, 'no_students': num_students, 'current_lesson': room.lesson,
+                         'prev_lessons': json.loads(room.previous_lessons)})
 
 
 def get_rooms(request):
@@ -148,8 +162,7 @@ def get_students(request):
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
     try:
-        r = Room.objects.get(room_name=room_name)
-        students = get_students_for_room(r)
+        students = get_students_for_room(room_name)
         return JsonResponse({"students": students})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
@@ -160,13 +173,42 @@ def get_sync_state(request):
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
     try:
-        r = Room.objects.get(room_name=room_name)
-        a = all_synced(room_name)
-        state_name = "next state"
-        # TODO: endState / Finished
-        return JsonResponse({"allSynced": a, "stateName": state_name, "endState": False})
+        Room.objects.get(room_name=room_name)
+        synced = all_synced(room_name)
+        finished = all_finished(room_name)
+        return JsonResponse({"finished": finished, "synced": synced})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
+
+
+def change_lesson(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    room_name = request.GET.get("room_name", None)
+    try:
+        r = Room.objects.get(room_name=room_name)
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room " + room_name + " not found")
+    lesson = request.GET.get("lesson", None)
+    if lesson is None:
+        return ajax_bad_request("Error: no lesson set")
+    try:
+        get_lesson(lesson)
+    except KeyError:
+        return ajax_bad_request("Error: unknown lesson")
+    if not r.previous_lessons:
+        prev_lessons = []
+    else:
+        prev_lessons = json.loads(r.previous_lessons)
+    prev_lessons.append(r.lesson)
+    r.previous_lessons = json.dumps(prev_lessons)
+    r.lesson = lesson
+    r.save()
+    students = Student.objects.filter(room=r)
+    for student in students:
+        student.current_state = 0
+        student.save()
+    return HttpResponseNoContent()
 
 
 def control_cmd(request):
@@ -187,6 +229,7 @@ def control_cmd(request):
         r.state = RoomStates.RUNNING.value
         for student in Student.objects.all():
             student.is_syncing = False
+            student.is_finished = False
             student.save()
     elif cmd == Cmd.STOP:
         r.state = RoomStates.CLOSED.value

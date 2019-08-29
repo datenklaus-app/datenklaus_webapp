@@ -2,9 +2,17 @@
 {% load static %}
 {% block teacher_content %}
     <div id="auswertung" class="container-fluid">
-        <div class="row justify-content-center pt-2">
+        <div id="lesson-list" class="row pt-2">
             <div class="col-auto">
-                <h3>Ergebnisse</h3>
+                <div class="btn-group btn-group-toggle" id="radioLessons" data-toggle="buttons">
+                    <label class="btn btn-secondary active">{{ lesson }}<input type="radio" name="options"
+                                                                               autocomplete="off" checked></label>
+                    {% for prev_lesson in prev_lessons %}
+                        <label class="btn btn-secondary">{{ prev_lesson.name }}<input type="radio" name="options"
+                                                                                      autocomplete="off">
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -41,12 +49,39 @@
         {% endverbatim %}
     </script>
 
+    <script id="lessonItem" type="text/x-handlebars-template">
+        {% verbatim %}
+        <label class="btn btn-secondary {{#if active  }}active {{/if }}">{{ name }}<input type="radio" name="options"
+                                                                                          id="active-lesson"
+                                                                                          autocomplete="off" {{#if
+                                                                                          active
+                                                                                          }} checked
+                                                                                          {{/if}}></label>
+        {% endverbatim %}
+    </script>
+
     <script>
         updateResults = function () {
+            const lesson = $('input:checked').parent().text()
             $.ajax({
-                url: "{% url "get_results" room_name %}",
+                url: "{% url "get_results" room_name%}",
+                data: {'lesson': lesson},
                 dataType: 'json',
+                /** @namespace data.current_lesson **/
+                /** @namespace data.prev_lessons **/
                 success: function (data) {
+                    const radioSource = document.getElementById('lessonItem').innerHTML
+                    const radioTemplate = Handlebars.compile(radioSource);
+                    const radioLessons = $('#radioLessons')
+                    const activeRadio = $('input:checked').parent().text()
+                    radioLessons.empty();
+                    radioLessons.append(radioTemplate({
+                        name: data.current_lesson,
+                        active: activeRadio === data.current_lesson
+                    }))
+                    $.each(data.prev_lessons, function (_, value) {
+                        radioLessons.append(radioTemplate({name: value, active: activeRadio === value}))
+                    })
                     const results = $("#state_results");
                     results.empty(); // remove old options
                     const source = document.getElementById("resultItem").innerHTML;
@@ -58,7 +93,7 @@
                     },);
                 },
                 error: function (jqXHR) {
-                    console.log(jqXHR.responseJSON.err)
+                    console.log(jqXHR)
                 }
             })
         };

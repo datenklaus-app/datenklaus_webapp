@@ -21,6 +21,7 @@
     <!-- Strings -->
     {% trans "Raum wählen" as no_room_selected %}
     {% trans "Modul abgeschlossen" as lesson_finished %}
+    {% trans "Alle haben den nächsten Abschnitt erreicht" as section_synced %}
     {% trans "Um ein weiteres Modul zu starten, wähle eines aus der folgenden Liste" as choose_module %}
     {# Teacher navbar #}    {% trans "Modul abgeschlossen" as lesson_finished %}
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -85,7 +86,7 @@
                 </div>
             </div>
             <div class="row justify-content-end bg-light pb-2">
-                <div class="col text-right" >
+                <div class="col text-right">
                     <span id="state-text" class="m-0 text-secondary"></span>
                 </div>
             </div>
@@ -116,12 +117,37 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Später</button>
+                        <button type="button" class="btn btn-secondary" id="lesson-modal-dismiss" onclick=""
+                                data-dismiss="modal">Später
+                        </button>
                         <button type="button" id="lesson-modal-start" disabled class="btn btn-primary">Start</button>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="lessonSyncedModal" tabindex="-1" role="dialog"
+             aria-labelledby="lessonFinished" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h4 class="modal-title" id="exampleModalCenterTitle">{{ section_synced }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        Session Synced
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="button-next-session-dismiss" onclick=""
+                                ondata-dismiss="modal">Später
+                        </button>
+                        <button type="button" id="button-next-section" onclick="" id="lesson-modal-start"
+                                class="btn btn-primary">Starte nächsten Abschnitt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
     {% block teacher_content %}
@@ -172,6 +198,8 @@
             RUNNING: 2,
             PAUSED: 3,
         };
+        let syncModalDismissed = false;
+        let finishedModalDismissed = false;
 
         let state = {% if state %}{{ state }} {% else %} null {% endif %};
 
@@ -184,6 +212,29 @@
             $("#button-play").click(function () {
                 controlCommand($(this), cmds.PLAY, states.RUNNING)
             });
+            $("#button-next-section").click(function () {
+                controlCommand($("#button-play"), cmds.PLAY, states.RUNNING)
+                syncModalDismissed = false
+                $("#lessonSyncedModal").modal('hide')
+            });
+
+            $("#button-next-session-dismiss").click(function () {
+                syncModalDismissed = true
+                $("#lessonSyncedModal").modal('hide')
+            });
+            $("#lesson-modal-dismiss").click(function () {
+                finishedModalDismissed = true
+                $("#lessonFinishedModal").modal('hide')
+            });
+
+            $("#lesson-modal-start").click(function () {
+                const lesson = $('#lessons').find('.unselectable.active').find('#lesson_name').data('name');
+                startNewLesson(lesson)
+                finishedModalDismissed = true
+                $("#lessonFinishedModal").modal('hide')
+            });
+
+
             $("#button-pause").click(function () {
                 controlCommand($(this), cmds.PAUSE, states.PAUSED)
             });
@@ -226,7 +277,7 @@
         controlCommand = function (el, cmd, s) {
             el.blur();
             $.ajax({
-                url: "/teacher/control",
+                url: "{% url 'control' %}",
                 data: {'room_name': "{{ room_name }}", 'cmd': cmd},
                 dataType: 'json',
                 success: function () {
@@ -239,6 +290,24 @@
                 }
             })
         };
+
+        startNewLesson = function (lesson) {
+            $.ajax({
+                url: "{% url "change_lesson" %}",
+                data: {'room_name': "{{ room_name }}", 'lesson': lesson},
+                dataType: 'json',
+                success: function () {
+                    $('#roomLesson').text(lesson)
+                    controlCommand($("#button-play"), cmds.PLAY, states.RUNNING)
+                    finishedModalDismissed = false
+                },
+                error: function (data) {
+                    // TODO: remove?
+                    console.log(data)
+                }
+            })
+        };
+
 
         getRooms = function () {
             $.ajax({
@@ -267,23 +336,25 @@
                 url: "{% url 'sync' %}",
                 data: {'room_name': "{{ room_name }}"},
                 dataType: 'json',
-                /** @namespace data.allSynced **/
+                /** @namespace data.synced **/
+                /** @namespace data.finished **/
                 /** @namespace data.stateName **/
                 success: function (data) {
-                    // TODO: button to choose new lesson if end state in current lesson
-                    if (data.allSynced) {
+                    if (data.synced || data.finished) {
                         state = states.PAUSED;
-                        setStates()
-                        $("#state-text").text("Alle Schüler*innen haben " + data.stateName + " bearbeitet. Drücke Play zum Starten des nächsten Abschnitts").removeClass("text-warning").addClass("text-success")
-                    } else if (data.stateName) {
-                        $("#state-text").text("Der Raum pausiert wenn alle Schüler*innen " + data.stateName + "  erreicht haben.").removeClass("text-success").addClass("text-secondary")
+                        setStates();
+                        if (data.finished && !finishedModalDismissed) {
+                            $('#lessonFinishedModal').modal('show')
+                        } else if (data.synced && !syncModalDismissed) {
+                            $('#lessonSyncedModal').modal('show')
+                        }
                     } else {
                         $("#state-text").text("")
                     }
                 },
                 error: function (data) {
                     // TODO: remove?
-                    console.log(data.error)
+                    console.log(data)
                 }
             })
         };
