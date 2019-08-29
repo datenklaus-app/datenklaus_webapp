@@ -13,8 +13,7 @@
                 </ol>
             </div>
             <div class="lesson-card-subtitle-light text-center" id="">
-                <div class="lesson-card-title-light" id="round-text">Runde 1</div>
-                <div class="row pt-3 justify-content-center pb-4">
+                <div class="row pt-3 justify-content-center mb-4">
                     <div class="col-1 text-center" id="dice-slh-1">
                         <i class="fas fa-dice-one fa-2x clickable-dice" id="dice-sl-1" data-dice="one"
                            style="cursor: pointer"></i>
@@ -40,22 +39,51 @@
                            style="cursor: pointer"></i>
                     </div>
                 </div>
-                <div class="row pt-3 justify-content-center pb-4">
+                <div class="row mt-3 justify-content-center">
                     <div class="col-auto text-center" id="dice-holder-1">
-                        1.<i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-1" style="visibility: hidden "></i>
+                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-1" style="visibility: hidden "></i>
                     </div>
                     <div class="col-auto text-center" id="dice-holder-2">
-                        2.<i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-2"
-                             style="visibility: hidden "> </i>
+                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-2"
+                           style="visibility: hidden "> </i>
                     </div>
                     <div class="col-auto text-center" id="dice-holder-3">
-                        3.<i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-3" style="visibility: hidden "></i>
+                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-3" style="visibility: hidden "></i>
                     </div>
                     <div class="col-auto text-center" id="dice-holder-4">
-                        4.<i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-4" style="visibility: hidden "></i>
+                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-4" style="visibility: hidden "></i>
                     </div>
                     <div class="col-auto text-center" id="dice-holder-5">
-                        5.<i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-5" style="visibility: hidden "></i>
+                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-5" style="visibility: hidden "></i>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col" id="result-col">
+                        <div class="row mt-2" id="result-1">
+                            <div class="col-3 text-right align-self-start">
+                                <h4>Runde 1</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-2" id="result-2">
+                            <div class="col-3 text-right align-self-start">
+                                <h4>Runde 2</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-2" id="result-3">
+                            <div class="col-3 text-right align-self-start">
+                                <h4>Runde 3</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-2" id="result-4">
+                            <div class="col-3 text-right align-self-start">
+                                <h4>Runde 4</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-2" id="result-5">
+                            <div class="col-3 text-right align-self-start">
+                                <h4>Runde 5</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="lesson-card-body-light">Passwort: <span class="text-right text-capitalize text-dk-primary "
@@ -72,6 +100,25 @@
     </div>
 {% endblock %}
 {% block card_scripts %}
+    <script id="resultDice" type="text/x-handlebars-template">
+        {% verbatim %}
+        <div class="col-auto text-center">
+            <i class="fas fa-dice-{{ d1 }} fa-lg"></i>
+        </div>
+        <div class="col-auto text-center">
+            <i class="fas fa-dice-{{ d2 }} fa-lg"> </i>
+        </div>
+        <div class="col-auto text-center">
+            <i class="fas fa-dice-{{ d3 }} fa-lg"></i>
+        </div>
+        <div class="col-auto text-center">
+            <i class="fas fa-dice-{{ d4 }} fa-lg"></i>
+        </div>
+        <div class="col-auto text-center">
+            <i class="fas fa-dice-{{ d5 }} fa-lg"></i>
+        </div>
+        {% endverbatim %}
+    </script>
     <script src="{% static "lesson/diceware/js/dicewords.js" %}"></script>
     <script>
         let dicePos = 0;
@@ -97,30 +144,44 @@
             elem.parent().data("value", d);
             if (dicePos === 5) {
                 $(".clickable-dice").prop("disabled", true)
-                findWord(getSelectedDice())
+                const res = getSelectedDice()
+                findWord(res[0], res[1]);
             }
         };
 
         getSelectedDice = function () {
             let key = "";
+            let words = []
             $(".selected-dice").each(function () {
-                key += diceMap[$(this).parent().data("value")]
+                const value = $(this).parent().data("value")
+                words.push(value);
+                key += diceMap[value]
             });
-            return key
+            return [key, words];
         };
 
-        findWord = function (key) {
+        findWord = function (key, words) {
             const word = getDiceword(key).toUpperCase();
             result += " " + word;
-            rounds++;
-            $("#round-text").text("Runde " + rounds);
             $("#password-sentence").append(" " + word);
+            const r = rounds;
             setTimeout(function () {
                 $(".selected-dice").css('visibility', 'hidden');
-                $(".clickable-dice").prop("disabled", false)
+                $(".clickable-dice").prop("disabled", false);
+                const template = Handlebars.compile(document.getElementById("resultDice").innerHTML);
+                const buf = {
+                    'word': word,
+                    'd1': words[0],
+                    'd2': words[1],
+                    'd3': words[2],
+                    'd4': words[3],
+                    'd5': words[4],
+                };
+                $('#result-' + r).append(template(buf));
                 dicePos = 0;
             }, 1000);
-            if (rounds >= 7) {
+            rounds++;
+            if (rounds >= 6) {
                 $("#topCont").hide();
                 $("#bottomCont").hide();
                 $("#introCont").hide();
