@@ -28,14 +28,20 @@ def get_lesson(name: str):
 
 
 def all_synced(room):
-    for student in Student.objects.filter(room=room):
+    students = Student.objects.filter(room=room)
+    if len(students) == 0:
+        return False
+    for student in students:
         if not student.is_syncing:
             return False
     return True
 
 
 def all_finished(room):
-    for student in Student.objects.filter(room=room):
+    students = Student.objects.filter(room=room)
+    if len(students) == 0:
+        return False
+    for student in students:
         if not student.is_finished:
             return False
     return True
