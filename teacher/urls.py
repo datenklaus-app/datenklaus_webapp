@@ -11,11 +11,12 @@ urlpatterns = [
     path('rooms', views.get_rooms, name='rooms'),
     path('results/<str:room_name>', views.results, name='results'),
     path('get_results/<str:room_name>', views.get_results, name='get_results'),
-    path('control', views.control_cmd, name='pause'),
+    path('control', views.control_cmd, name='control'),
     path('test-students', views.create_test_students, name='test-students'),
     path('', views.index, name='teacher_index'),
     path('overview/', views.overview, name="overview"),
     path('overview/<str:room_name>', views.overview, name="overview"),
     path('create', views.create, name="create"),
     path('sync', views.get_sync_state, name="sync"),
+    path('change-lesson', views.change_lesson, name="change_lesson"),
 ]
