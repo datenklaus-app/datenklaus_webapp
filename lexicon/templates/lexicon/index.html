@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load lexicon_tags %}
+
+
+{% block title %}
+    DatenKLAUs Lexicon
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
+
+    {% load widget_tweaks %}
+    <div class="container w-75 bg-dark-st p-5">
+        <div class="row">
+            <div class="col text-center">
+                <span class="display-1 text-light">Lexikon</span>
+                <hr class="border-light">
+            </div>
+        </div>
+        {% for letter, entries in lexicon %}
+            {% if entries|length > 0 %}
+                <div class="row pb-5">
+                    <div class="col text-center">
+                        <span class="display-2 text-light">{{ letter }}</span>
+                        {% for entry in entries %}
+                            <div class="row pb-2">
+                                <div class="col-auto bg-light rounded">
+                                    <a class="text-dark display-4"
+                                       href="{% url 'lex_entry' entry.title %}">
+                                        {{ entry.title }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

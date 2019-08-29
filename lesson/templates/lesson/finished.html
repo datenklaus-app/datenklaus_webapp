@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}
+    Warte auf andere...
+{% endblock %}
+{% load static %}
+{% block content %}
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
+    <div class="container-fluid h-100">
+        <div class="row h-100 row-v-h-centered">
+            <div class="col-auto lesson-card-bg">
+                <div class="row">
+                    <div class="col display-1 text-light">
+                        Du hast das Modul <span class="text-dk-primary">{{ lesson_title }} </span> erfolgreich
+                        abgeschlossen!
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mt-5 display-4 text-dk-primary text-right">
+                        Warte auf Mitschüler*innen..
+                    </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="col text-light">
+                        <span class="text-danger display-1"> {{ entry.title }} </span>
+                        <hr class="border-light">
+                        <span class="display-4">
+                    {% for word in entry.description %}
+                        {{ word| cut:'#' }}
+                    {% endfor %}
+                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {% include "lesson/check_status_script.html" %}
+{% endblock %}
