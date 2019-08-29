@@ -15,14 +15,16 @@
     </style>
     <div class="container-fluid h-100">
         <div class="row h-100 justify-content-center align-items-center">
-            <div class="col-9 bg-dark-st">
-                <div class="row">
+            <div class="col-9 h-100 pt-5 pb-5">
+                <div class="row bg-dark-st">
                     <div class="col display-1 text-light">
                         Warte auf andere...
                     </div>
                 </div>
-                <div class="row pt-5">
+                <div class="row pt-5 bg-dark-st ">
                     <div class="col text-light">
+                        <a class="position-absolute" style="top: 2.75rem; right: 1.5rem; color: #e14423" href="{% url 'lesson' %}">
+                            <i class="fa fa-redo display-4 text-info"></i></a>
                         <span class="text-danger display-1"> {{ entry.title }} </span>
                         <hr class="border-light"/>
                         <span class="display-4">
