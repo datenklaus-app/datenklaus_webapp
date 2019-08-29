@@ -50,6 +50,7 @@
     </script>
 
     <script id="lessonItem" type="text/x-handlebars-template">
+        <!--suppress SyntaxError, HtmlUnknownAttribute -->
         {% verbatim %}
         <label class="btn btn-secondary {{#if active  }}active {{/if }}">{{ name }}<input type="radio" name="options"
                                                                                           id="active-lesson"
@@ -62,7 +63,7 @@
 
     <script>
         updateResults = function () {
-            const lesson = $('input:checked').parent().text()
+            const lesson = $('input:checked').parent().text();
             $.ajax({
                 url: "{% url "get_results" room_name%}",
                 data: {'lesson': lesson},
@@ -70,18 +71,18 @@
                 /** @namespace data.current_lesson **/
                 /** @namespace data.prev_lessons **/
                 success: function (data) {
-                    const radioSource = document.getElementById('lessonItem').innerHTML
+                    const radioSource = document.getElementById('lessonItem').innerHTML;
                     const radioTemplate = Handlebars.compile(radioSource);
-                    const radioLessons = $('#radioLessons')
-                    const activeRadio = $('input:checked').parent().text()
+                    const radioLessons = $('#radioLessons');
+                    const activeRadio = $('input:checked').parent().text();
                     radioLessons.empty();
                     radioLessons.append(radioTemplate({
                         name: data.current_lesson,
                         active: activeRadio === data.current_lesson
-                    }))
+                    }));
                     $.each(data.prev_lessons, function (_, value) {
                         radioLessons.append(radioTemplate({name: value, active: activeRadio === value}))
-                    })
+                    });
                     const results = $("#state_results");
                     results.empty(); // remove old options
                     const source = document.getElementById("resultItem").innerHTML;
@@ -92,8 +93,8 @@
                         results.append(template(value));
                     },);
                 },
-                error: function (jqXHR) {
-                    console.log(jqXHR)
+                error: function (data) {
+                    console.log(data.error)
                 }
             })
         };

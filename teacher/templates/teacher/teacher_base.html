@@ -85,6 +85,15 @@
                     </a>
                 </div>
             </div>
+            <div class="row justify-content-center pt-2 bg-light">
+                <div class="col text-dark text-right" style="display: none" id="col-all-finished">
+                    <h5 class="m-0 text-dark">Alle Schüler*innen haben das aktuelle Modul
+                        abgeschlossen. Klicke <i class="text-warning" id="button-restart-lesson" onclick=""
+                                                 style="cursor: pointer">hier</i> um ein
+                        neues zu starten.
+                    </h5>
+                </div>
+            </div>
             <div class="row justify-content-end bg-light pb-2">
                 <div class="col text-right">
                     <span id="state-text" class="m-0 text-secondary"></span>
@@ -213,25 +222,31 @@
                 controlCommand($(this), cmds.PLAY, states.RUNNING)
             });
             $("#button-next-section").click(function () {
-                controlCommand($("#button-play"), cmds.PLAY, states.RUNNING)
-                syncModalDismissed = false
+                controlCommand($("#button-play"), cmds.PLAY, states.RUNNING);
+                syncModalDismissed = false;
                 $("#lessonSyncedModal").modal('hide')
             });
 
             $("#button-next-session-dismiss").click(function () {
-                syncModalDismissed = true
+                syncModalDismissed = true;
                 $("#lessonSyncedModal").modal('hide')
             });
             $("#lesson-modal-dismiss").click(function () {
-                finishedModalDismissed = true
-                $("#lessonFinishedModal").modal('hide')
+                finishedModalDismissed = true;
+                $("#lessonFinishedModal").modal('hide');
+                $('#col-all-finished').show()
             });
 
             $("#lesson-modal-start").click(function () {
                 const lesson = $('#lessons').find('.unselectable.active').find('#lesson_name').data('name');
-                startNewLesson(lesson)
-                finishedModalDismissed = true
-                $("#lessonFinishedModal").modal('hide')
+                startNewLesson(lesson);
+                finishedModalDismissed = true;
+                $("#lessonFinishedModal").modal('hide');
+                $('#col-all-finished').hide()
+            });
+
+            $('#button-restart-lesson').click(function () {
+                $("#lessonFinishedModal").modal('show')
             });
 
 
@@ -297,8 +312,8 @@
                 data: {'room_name': "{{ room_name }}", 'lesson': lesson},
                 dataType: 'json',
                 success: function () {
-                    $('#roomLesson').text(lesson)
-                    controlCommand($("#button-play"), cmds.PLAY, states.RUNNING)
+                    $('#roomLesson').text(lesson);
+                    controlCommand($("#button-play"), cmds.PLAY, states.RUNNING);
                     finishedModalDismissed = false
                 },
                 error: function (data) {
@@ -346,10 +361,12 @@
                         if (data.finished && !finishedModalDismissed) {
                             $('#lessonFinishedModal').modal('show')
                         } else if (data.synced && !syncModalDismissed) {
+                            $('#col-all-finished').hide();
                             $('#lessonSyncedModal').modal('show')
                         }
                     } else {
-                        $("#state-text").text("")
+                        $("#state-text").text("");
+                        $('#col-all-finished').hide()
                     }
                 },
                 error: function (data) {
