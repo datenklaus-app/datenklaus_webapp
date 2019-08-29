@@ -14,23 +14,25 @@
         }
     </style>
     <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
-    <div class="container-fluid h-100">
-        <div class="row h-100 row-v-h-centered">
-            <div class="col-auto lesson-card-bg">
-                <div class="row">
-                    <div class="col display-1 text-light">
+    <div class="container-fluid pt-3 h-100">
+        <div class="row h-auto justify-content-center">
+            <div class="col-11 m-1 lesson-card-bg">
+                <div class="row m-1">
+                    <div class="col h1 text-light">
                         Du hast das Modul <span class="text-dk-primary">{{ lesson_title }} </span> erfolgreich
                         abgeschlossen!
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col mt-5 display-4 text-dk-primary text-right">
+                <div class="row m-1">
+                    <div class="col h1 text-dk-primary text-right">
                         Warte auf Mitschüler*innen..
                     </div>
                 </div>
-                <div class="row pt-5">
+                <div class="row m-1">
                     <div class="col text-light">
-                        <span class="text-danger display-1"> {{ entry.title }} </span>
+                        <a class="position-absolute" style="top: 1.75rem; right: 1.5rem; color: #e14423" href="{% url 'lesson' %}"><i
+                                class="fa fa-redo display-4 text-info"></i></a>
+                        <span class="text-danger display-3"> {{ entry.title }}</span>
                         <hr class="border-light">
                         <span class="display-4">
                     {% for word in entry.description %}
