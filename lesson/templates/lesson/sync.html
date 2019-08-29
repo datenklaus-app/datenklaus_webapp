@@ -13,25 +13,23 @@
             background-size: cover;
         }
     </style>
-    <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
     <div class="container-fluid h-100">
-        <div class="row h-100 row-v-h-centered">
-            <div class="col-auto lesson-card-bg">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-9 bg-dark-st">
                 <div class="row">
                     <div class="col display-1 text-light">
-                        Du hast das Modul <span class="text-dk-primary">{{ lesson_title }} </span> erfolgreich
-                        abgeschlossen!
+                        Warte auf andere...
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col mt-5 display-4 text-dk-primary text-right">
-                        Warte auf Mitschüler*innen..
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mt-5 display-3 text-light text-left">
-                        Fun fact:<br/>
-                        <span class="text-dk-primary">Autos fahren auf der Straße!</span>
+                <div class="row pt-5">
+                    <div class="col text-light">
+                        <span class="text-danger display-1"> {{ entry.title }} </span>
+                        <hr class="border-light"/>
+                        <span class="display-4">
+                            {% for word in entry.description %}
+                                {{ word| cut:'#' }}
+                            {% endfor %}
+                        </span>
                     </div>
                 </div>
             </div>

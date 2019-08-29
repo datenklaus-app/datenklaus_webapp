@@ -52,6 +52,10 @@ body {
     background-color: rgba(52, 58, 64, 0.8) !important;
 }
 
+.bg-light-st {
+    background-color: rgba(248, 249, 250, 0.8) !important;
+}
+
 .unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from lesson.lessonState import LessonState
 from lesson.lessonUtil import get_lesson
+from lexicon.lexicon import dummy
 from student.models import Student
 from teacher.constants import RoomStates
 
@@ -35,9 +36,9 @@ def lesson(request):
 
     room_state = RoomStates(student.room.state)
     if room_state == RoomStates.PAUSED:
-        return render(request, "lesson/room/pause.html")
+        return render(request, "lesson/pause.html")
     elif room_state == RoomStates.WAITING:
-        return render(request, "lesson/room/waiting.html",
+        return render(request, "lesson/waiting.html",
                       context={"sname": student.user_name, "rname": student.room.room_name})
     elif room_state == RoomStates.CLOSED:
         return HttpResponseRedirect("/")
@@ -45,11 +46,14 @@ def lesson(request):
     current_lesson = get_lesson(student.room.lesson)
 
     if student.is_finished:
-        context = {"lesson_title": current_lesson.title()}
-        return render(request, "lesson/room/finished.html", context=context)
+        entry = dummy.get_random()
+        context = {"lesson_title": current_lesson.title(), "entry": entry}
+        return render(request, "lesson/finished.html", context=context)
 
     if student.is_syncing:
-        return render(request, "lesson/room/sync.html")
+        entry = dummy.get_random()
+        context = {"entry": entry}
+        return render(request, "lesson/sync.html", context=context)
 
     current_state = current_lesson.state(student.current_state)
 
