@@ -1,11 +1,13 @@
-from lesson.cards.templateCard import TemplateCard
+from django.shortcuts import render
+
+from lesson.forms import TemplateCardForm
 from lesson.lessonState import LessonState
 from student.models import Student
 
 
 class TemplateState(LessonState):
     def __init__(self, template, state, next_state, description, is_initial=False, is_final=False, is_sync=False):
-        self.__card = TemplateCard(template=template)
+        self.__template = template
         self.__description = description
         self.__state = state
         self.__next_state = next_state
@@ -34,10 +36,16 @@ class TemplateState(LessonState):
         return self.__next_state
 
     def render(self, request, student: Student, context) -> str:
-        return self.__card.render(request, context)
+        form = TemplateCardForm()
+        context["form"] = form
+        return render(request, self.__template, context=context)
 
     def post(self, post, student):
+        form = TemplateCardForm(post)
+        if not form.is_valid():
+            raise LessonState.LessonStateError("Invalid Form")
         return
 
     def name(self):
         return self.__description
+

@@ -109,6 +109,8 @@ def lesson_next(request):
     try:
         current_state.post(request.POST, student)
     except LessonState.LessonStateError as e:
+        if e.fallback_state is None:
+            return HttpResponseNotFound()
         student.current_state = e.fallback_state
         return HttpResponseRedirect(reverse("lesson"))
 
