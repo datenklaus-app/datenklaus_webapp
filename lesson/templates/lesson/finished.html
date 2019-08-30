@@ -14,16 +14,16 @@
         }
     </style>
     <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
-    <div class="container-fluid pt-2 pb-2 h-100">
-        <div class="row h-100 justify-content-center overflow-auto">
-            <div class="col-11 bg-dark-st">
-                <div class="row h-auto">
+    <div class="container-fluid pt-2 pb-2 h-100 bg-dark-st overflow-auto">
+        <div class="row justify-content-center">
+            <div class="col-11 ">
+                <div class="row ">
                     <div class="col h1 text-light">
                         Du hast das Modul <span class="text-dk-primary">{{ lesson_title }} </span> erfolgreich
                         abgeschlossen!
                     </div>
                 </div>
-                <div class="row h-auto">
+                <div class="row">
                     <div class="col h1 text-warning text-right">
                         Warte auf Mitschüler*innen
                         <div class="spinner-border h2" role="status">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row h-auto pt-4">
+                <div class="row pt-4">
                     <div class="col text-light">
                         <a class="position-absolute" style="top: 0.75rem; right: 1.5rem; color: #e14423"
                            href="{% url 'lesson' %}"><i
