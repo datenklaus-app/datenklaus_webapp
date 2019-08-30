@@ -1,0 +1,3 @@
+#Open Educational Resource
+
+„Open Educational Resourcs“ (kurz: OER) bedeutet übersetzt „Offen zugängliche Lehrmaterialien“. OER sind unter bestimmten Lizenzen zur Verfügung gestellte, oftmals editierbare, mediale Inhalte aller Art. Darunter fallen sowohl Text-, als auch Audio- und Videoinhalte, zudem Programme, Tools und Techniken zur Wissenssteigerung. Eine Beispiel-OER, die jeder kennt, ist Wikipedia. Unter jedem Artikel ist die Lizenzgebung eingetragen, die den Rahmen einer weiteren Verwendung von Inhalten bestimmt.
