@@ -37,40 +37,40 @@
         {% verbatim %}
         {{#if is_finished}}
         <div class="unselectable bg-danger col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
-        {{else if is_syncing}}
-        <div class="unselectable bg-warning col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
-        {{else}}
-        <div class="unselectable bg-success col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
-        {{/if}}
-            <!--suppress SyntaxError -->
-            <div class="card w-100 h-100 bg-dark border-0">
-                <div class="card-body text-monospace text-left">
-                    <i type="button" id="removeButton" onclick="removeButtonClicked('{{ id }}')"
-                       class="fas fa-user-times position-absolute"
-                       style="top: 0.75rem; right: 0.75rem; color: #e14423"></i>
-                    <h2 class="mb-1 text-info">{{ name }}</h2>
-                    <h6 class="text-light">{{ progress }}</h6>
+            {{else if is_syncing}}
+            <div class="unselectable bg-warning col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
+                {{else}}
+                <div class="unselectable bg-success col-sm-11 col-md-3 col-xl-2 p-1 m-1 rounded">
+                    {{/if}}
+                    <!--suppress SyntaxError -->
+                    <div class="card w-100 h-100 bg-dark border-0">
+                        <div class="card-body text-monospace text-left">
+                            <i type="button" id="removeButton" onclick="removeButtonClicked('{{ name }}','{{ id }}')"
+                               class="fas fa-user-times position-absolute"
+                               style="top: 0.75rem; right: 0.75rem; color: #e14423"></i>
+                            <h2 class="mb-1 text-info">{{ name }}</h2>
+                            <h6 class="text-light">{{ progress }}</h6>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        {% endverbatim %}
+                {% endverbatim %}
     </script>
     <script>
         // noinspection JSUnusedGlobalSymbols
-        function removeButtonClicked(name) {
+        function removeButtonClicked(name, id) {
             const modal = $("#removeStudentModal");
             $("#removeModalTitle").html("Bist du dir sicher dass du " + name.bold() + " aus dem Raum werfen willst?");
             modal.modal();
             $("#removeButtonYes").click(function () {
-                removeStudent(name);
+                removeStudent(id);
                 modal.modal("hide");
             });
         }
 
-        function removeStudent(student) {
+        function removeStudent(studentId) {
             $.ajax({
                 url: "{% url 'remove_student' %}",
-                data: {'room_name': "{{room_name }}", 'student': student},
+                data: {'room_name': "{{room_name }}", 'student': studentId},
                 dataType: 'json',
                 success: function () {
                     updateStudentList();
