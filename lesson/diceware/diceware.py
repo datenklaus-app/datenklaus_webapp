@@ -1,22 +1,23 @@
-from lesson.diceware import states
-from lesson.diceware.aState import AState
-from lesson.diceware.bState import BState
-from lesson.diceware.cState import CState
-from lesson.diceware.dState import DState
-from lesson.diceware.eState import EState
-from lesson.diceware.initState import InitState
 from lesson.lesson import Lesson
 from lesson.lessonState import LessonState
+from lesson.templateState import TemplateState
 
 
 class Diceware(Lesson):
     _lessonStates = {
-        states.INITSTATE: InitState(),
-        states.ASTATE: AState(),
-        states.BSTATE: BState(),
-        states.CSTATE: CState(),
-        states.DSTATE: DState(),
-        states.ESTATE: EState(),
+        0: TemplateState("lesson/diceware/init-imageCard.html", 0, 1,
+                         "Einleitung"),
+        1: TemplateState("lesson/diceware/a-textCard.html", 1, 2,
+                         "Hinführung zum Spiel"),
+        2: TemplateState("lesson/diceware/b-textCard.html", 2, 3,
+                         "Erklärung: Spielprinzip"),
+        3: TemplateState("lesson/diceware/c-textCard.html", 3, 4,
+                         "Erklärung: Spielt"),
+        4: TemplateState("lesson/diceware/d-diceGameCard.html", 4, 5,
+                         "Würfelspiel", is_sync=True),
+        5: TemplateState("lesson/diceware/e-textCard.html", 5, 6,
+                         "Abschluss",
+                         is_final=True),
     }
 
     @staticmethod

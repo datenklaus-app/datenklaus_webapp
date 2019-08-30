@@ -1,7 +1,7 @@
 from django.http import HttpRequest
 
 
-class Card:
+class Cacdrd:
     def render(self, request: HttpRequest, context: {}):
         """
         Mirrors https://docs.djangoproject.com/en/2.2/topics/templates/#django.template.backends.base.Template.render
