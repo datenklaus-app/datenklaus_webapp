@@ -13,48 +13,30 @@
                 </ol>
             </div>
             <div class="lesson-card-subtitle-light text-center" id="">
-                <div class="row pt-3 justify-content-center mb-4">
-                    <div class="col-1 text-center" id="dice-slh-1">
+                <div class="row mt-3 justify-content-center mb-4">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-1">
                         <i class="fas fa-dice-one fa-2x clickable-dice" id="dice-sl-1" data-dice="one"
                            style="cursor: pointer"></i>
                     </div>
-                    <div class="col-1 text-center" id="dice-slh-2">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-2">
                         <i class="fas fa-dice-two fa-2x clickable-dice" id="dice-sl-2" data-dice="two"
                            style="cursor: pointer"></i>
                     </div>
-                    <div class="col-1 text-center" id="dice-slh-3">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-3">
                         <i class="fas fa-dice-three fa-2x clickable-dice" id="dice-sl-3" data-dice="three"
                            style="cursor: pointer"></i>
                     </div>
-                    <div class="col-1 text-center" id="dice-slh-4">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-4">
                         <i class="fas fa-dice-four fa-2x clickable-dice" id="dice-sl-4" data-dice="four"
                            style="cursor: pointer"></i>
                     </div>
-                    <div class="col-1 text-center" id="dice-slh-5">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-5">
                         <i class="fas fa-dice-five fa-2x clickable-dice" id="dice-sl-5" data-dice="five"
                            style="cursor: pointer"></i>
                     </div>
-                    <div class="col-1 text-center" id="dice-slh-6">
+                    <div class="col-1 mr-1 text-center" id="dice-slh-6">
                         <i class="fas fa-dice-six fa-2x clickable-dice" id="dice-sl-6" data-dice="six"
                            style="cursor: pointer"></i>
-                    </div>
-                </div>
-                <div class="row mt-3 justify-content-center">
-                    <div class="col-auto text-center" id="dice-holder-1">
-                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-1" style="visibility: hidden "></i>
-                    </div>
-                    <div class="col-auto text-center" id="dice-holder-2">
-                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-2"
-                           style="visibility: hidden "> </i>
-                    </div>
-                    <div class="col-auto text-center" id="dice-holder-3">
-                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-3" style="visibility: hidden "></i>
-                    </div>
-                    <div class="col-auto text-center" id="dice-holder-4">
-                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-4" style="visibility: hidden "></i>
-                    </div>
-                    <div class="col-auto text-center" id="dice-holder-5">
-                        <i class="fas fa-dice-one fa-2x selected-dice" id="dice-pl-5" style="visibility: hidden "></i>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -105,18 +87,6 @@
         <div class="col-auto text-center">
             <i class="fas fa-dice-{{ d1 }} fa-lg"></i>
         </div>
-        <div class="col-auto text-center">
-            <i class="fas fa-dice-{{ d2 }} fa-lg"> </i>
-        </div>
-        <div class="col-auto text-center">
-            <i class="fas fa-dice-{{ d3 }} fa-lg"></i>
-        </div>
-        <div class="col-auto text-center">
-            <i class="fas fa-dice-{{ d4 }} fa-lg"></i>
-        </div>
-        <div class="col-auto text-center">
-            <i class="fas fa-dice-{{ d5 }} fa-lg"></i>
-        </div>
         {% endverbatim %}
     </script>
     <script src="{% static "lesson/diceware/js/dicewords.js" %}"></script>
@@ -124,6 +94,7 @@
         let dicePos = 0;
         let result = "";
         let rounds = 1;
+        let dice = "";
         const diceMap = {'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6'};
 
         $(document).ready(function () {
@@ -132,55 +103,29 @@
         });
 
         diceClick = function () {
-            if (dicePos > 6 || rounds >= 6)
+            if (dicePos > 5 || rounds >= 6)
                 return;
             dicePos++;
-            console.log('test');
             const d = $(this).data("dice");
-            const elem = $("#dice-pl-" + dicePos);
-            elem.removeClass(function (index, className) {
-                return (className.match(/(^|\s)fas-dice-\S+/g) || []).join(' ');
-            }).addClass("fa-dice-" + d).css("visibility", "visible");
-            elem.parent().data("value", d);
+            dice += diceMap[d];
+            $(".clickable-dice").prop("disabled", false);
+            console.log("click")
+            const template = Handlebars.compile(document.getElementById("resultDice").innerHTML);
+            $('#result-' + rounds).append(template({'d1': d}));
             if (dicePos === 5) {
                 $(".clickable-dice").prop("disabled", true)
-                const res = getSelectedDice()
-                findWord(res[0], res[1]);
+                findWord();
+                dicePos = 0;
             }
         };
 
-        getSelectedDice = function () {
-            let key = "";
-            let words = []
-            $(".selected-dice").each(function () {
-                const value = $(this).parent().data("value")
-                words.push(value);
-                key += diceMap[value]
-            });
-            return [key, words];
-        };
-
-        findWord = function (key, words) {
-            const word = getDiceword(key).toUpperCase();
+        findWord = function () {
+            const word = getDiceword(dice).toUpperCase();
             result += " " + word;
             $("#password-sentence").append(" " + word);
-            const r = rounds;
             rounds++;
-            setTimeout(function () {
-                $(".selected-dice").css('visibility', 'hidden');
-                $(".clickable-dice").prop("disabled", false);
-                const template = Handlebars.compile(document.getElementById("resultDice").innerHTML);
-                const buf = {
-                    'word': word,
-                    'd1': words[0],
-                    'd2': words[1],
-                    'd3': words[2],
-                    'd4': words[3],
-                    'd5': words[4],
-                };
-                $('#result-' + r).append(template(buf));
-                dicePos = 0;
-            }, 1000);
+            dice = "";
+            $(".clickable-dice").prop("disabled", false);
             if (rounds >= 6) {
                 setTimeout(function () {
                     $("#topCont").hide();
@@ -189,7 +134,7 @@
                     $("#resultCont").show();
                     $("#passwordResult").append(result);
                     $("#lesson-continue-state").prop("disabled", false);
-                }, 3000);
+                }, 1000);
             }
         };
     </script>
