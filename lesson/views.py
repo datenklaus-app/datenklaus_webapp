@@ -82,8 +82,10 @@ def lesson_previous(request):
     current_lesson = get_lesson(student.room.lesson)
     current_state = current_lesson.state(student.current_state)
 
-    student.current_state = current_state.previous_state(student)
-    student.save()
+    prev_state = current_state.previous_state(student)
+    if prev_state is not None:
+        student.current_state = prev_state
+        student.save()
     return HttpResponseRedirect(reverse("lesson"))
 
 
