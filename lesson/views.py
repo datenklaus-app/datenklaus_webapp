@@ -1,4 +1,5 @@
 # Create your views here.
+import markdown
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
@@ -6,7 +7,7 @@ from django.urls import reverse
 
 from lesson.lessonState import LessonState
 from lesson.lessonUtil import get_lesson
-from lexicon.lexicon import dummy
+from lexicon import lexiconUtils
 from student.models import Student
 from teacher.constants import RoomStates
 
@@ -46,13 +47,14 @@ def lesson(request):
     current_lesson = get_lesson(student.room.lesson)
 
     if student.is_finished:
-        entry = dummy.get_random()
-        context = {"lesson_title": current_lesson.title(), "entry": entry}
+        entry = lexiconUtils.get_random_entry()
+        context = {"lesson_title": current_lesson.title(),
+                   "entry": entry.as_html()}
         return render(request, "lesson/finished.html", context=context)
 
     if student.is_syncing:
-        entry = dummy.get_random()
-        context = {"entry": entry}
+        entry = lexiconUtils.get_random_entry()
+        context = {"entry": entry.as_html()}
         return render(request, "lesson/sync.html", context=context)
 
     current_state = current_lesson.state(student.current_state)

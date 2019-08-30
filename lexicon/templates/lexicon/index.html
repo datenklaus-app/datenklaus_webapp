@@ -23,8 +23,8 @@
     <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
 
     {% load widget_tweaks %}
-    <div class="container w-75 bg-dark-st mt-5 pt-3 mb-5 pb-3">
-        <div class="row ">
+    <div class="container-fluid bg-dark-st" style="min-height: 100vh">
+        <div class="row">
             <div class="col text-right">
                 <a class="btn btn-outline-danger btn-lg" href="{% url "index" %}">Zurück zur Raumwahl</a>
             </div>
@@ -35,24 +35,22 @@
                 <hr class="border-light">
             </div>
         </div>
-        {% for letter, entries in lexicon %}
-            {% if entries|length > 0 %}
-                <div class="row pb-5">
-                    <div class="col text-center">
-                        <span class="display-2 text-light">{{ letter }}</span>
-                        {% for entry in entries %}
-                            <div class="row pb-2">
-                                <div class="col-auto bg-light rounded">
-                                    <a class="text-dark display-4"
-                                       href="{% url 'lex_entry' entry.title %}">
-                                        {{ entry.title }}
-                                    </a>
-                                </div>
+        <div class="row justify-content-center">
+            {% for letter, titles in lexicon %}
+                <div class="col-auto text-center border border-secondary rounded m-1">
+                    <span class="display-4 text-light">{{ letter }}</span>
+                    {% for title in titles %}
+                        <div class="row p-2">
+                            <div class="m-1 col-auto bg-light rounded">
+                                <a class="text-dark h1 text-capitalize"
+                                   href="{% url 'lex_entry' title %}">
+                                    {{ title }}
+                                </a>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
