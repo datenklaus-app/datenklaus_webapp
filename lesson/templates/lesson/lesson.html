@@ -99,8 +99,6 @@
             })
         }
 
-        $("#lesson-content-container").on("scroll", check_scroll_height);
-
         function check_scroll_height() {
             var lCC = $("#lesson-content-container")[0];
             console.log(lCC.clientHeight);
@@ -112,6 +110,7 @@
         }
 
         $(document).ready(function () {
+            $("#lesson-content-container").on("scroll", check_scroll_height);
             check_scroll_height();
             check_room_status();
             setInterval(check_room_status, 5000);
