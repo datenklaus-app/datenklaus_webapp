@@ -61,27 +61,27 @@
                     <div class="col" id="result-col">
                         <div class="row mt-2" id="result-1">
                             <div class="col-3 text-right align-self-start">
-                                <h4>Runde 1</h4>
+                                <h4 class="font-weight-bold text-dk-primary">Runde 1</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-2">
                             <div class="col-3 text-right align-self-start">
-                                <h4>Runde 2</h4>
+                                <h4 class="font-weight-bold text-dk-primary">Runde 2</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-3">
                             <div class="col-3 text-right align-self-start">
-                                <h4>Runde 3</h4>
+                                <h4 class="text-dk-primary font-weight-bold">Runde 3</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-4">
                             <div class="col-3 text-right align-self-start">
-                                <h4>Runde 4</h4>
+                                <h4 class="font-weight-bold text-dk-primary">Runde 4</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-5">
                             <div class="col-3 text-right align-self-start">
-                                <h4>Runde 5</h4>
+                                <h4 class="font-weight-bold text-dk-primary">Runde 5</h4>
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
         });
 
         diceClick = function () {
-            if (dicePos > 6)
+            if (dicePos > 6 || rounds >= 6)
                 return;
             dicePos++;
             console.log('test');
@@ -165,6 +165,7 @@
             result += " " + word;
             $("#password-sentence").append(" " + word);
             const r = rounds;
+            rounds++;
             setTimeout(function () {
                 $(".selected-dice").css('visibility', 'hidden');
                 $(".clickable-dice").prop("disabled", false);
@@ -180,14 +181,15 @@
                 $('#result-' + r).append(template(buf));
                 dicePos = 0;
             }, 1000);
-            rounds++;
             if (rounds >= 6) {
-                $("#topCont").hide();
-                $("#bottomCont").hide();
-                $("#introCont").hide();
-                $("#resultCont").show();
-                $("#passwordResult").append(result);
-                $("#lesson-continue-state").prop("disabled", false);
+                setTimeout(function () {
+                    $("#topCont").hide();
+                    $("#bottomCont").hide();
+                    $("#introCont").hide();
+                    $("#resultCont").show();
+                    $("#passwordResult").append(result);
+                    $("#lesson-continue-state").prop("disabled", false);
+                }, 3000);
             }
         };
     </script>
