@@ -1,0 +1,37 @@
+<style type="text/css">
+    .entry_text h1 {
+        font-size: 4rem;
+        font-weight: 300;
+        line-height: 1.2;
+        border-bottom: 1px solid #f8f9fa;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        text-transform: capitalize;
+
+    }
+
+    .entry_text p {
+        font-size: 1.5rem;
+        font-weight: 300;
+        line-height: 1.2;
+    }
+
+    .entry_text a {
+        color: #fa6b9f;
+        font-weight: 400;
+        font-style: italic;
+    }
+
+    .entry_text ol {
+        font-size: 1.5rem;
+    }
+
+    .entry_text li {
+        font-size: 1.5rem;
+        font-weight: 300;
+        line-height: 1.2;
+    }
+</style>
+<span class="text-light entry_text">
+    {{ entry | safe }}
+</span>

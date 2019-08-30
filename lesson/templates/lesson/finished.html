@@ -14,31 +14,29 @@
         }
     </style>
     <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
-    <div class="container-fluid pt-3 h-100">
-        <div class="row h-auto justify-content-center">
-            <div class="col-11 m-1 lesson-card-bg">
-                <div class="row m-1">
+    <div class="container-fluid pt-2 pb-2 h-100">
+        <div class="row h-100 justify-content-center overflow-auto">
+            <div class="col-11 bg-dark-st">
+                <div class="row h-auto">
                     <div class="col h1 text-light">
                         Du hast das Modul <span class="text-dk-primary">{{ lesson_title }} </span> erfolgreich
                         abgeschlossen!
                     </div>
                 </div>
-                <div class="row m-1">
-                    <div class="col h1 text-dk-primary text-right">
-                        Warte auf Mitschüler*innen..
+                <div class="row h-auto">
+                    <div class="col h1 text-warning text-right">
+                        Warte auf Mitschüler*innen
+                        <div class="spinner-border h2" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
                 </div>
-                <div class="row m-1">
+                <div class="row h-auto pt-4">
                     <div class="col text-light">
-                        <a class="position-absolute" style="top: 1.75rem; right: 1.5rem; color: #e14423" href="{% url 'lesson' %}"><i
+                        <a class="position-absolute" style="top: 0.75rem; right: 1.5rem; color: #e14423"
+                           href="{% url 'lesson' %}"><i
                                 class="fa fa-redo display-4 text-info"></i></a>
-                        <span class="text-danger display-3"> {{ entry.title }}</span>
-                        <hr class="border-light">
-                        <span class="display-4">
-                    {% for word in entry.description %}
-                        {{ word| cut:'#' }}
-                    {% endfor %}
-                </span>
+                        {% include "lexicon/entry_text.html" with entry=entry %}
                     </div>
                 </div>
             </div>
