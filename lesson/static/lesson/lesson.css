@@ -1,18 +1,16 @@
 .lesson-header {
     padding-top: 12px;
+    padding-bottom: 12px;
 }
 
 .lesson-footer {
+    padding-top: 12px;
     padding-bottom: 12px;
 }
 
 .lesson-content {
-    margin-bottom: 6px;
-    margin-top: 6px;
-    height: calc(100vh - (50px + 60px + 12px));
-    min-height: 394px;
+    height: calc(100vh - (72px + 62px));
     overflow: auto !important;
-    max-height: calc(100vh - (50px + 60px));
 }
 
 .row-v-h-centered {

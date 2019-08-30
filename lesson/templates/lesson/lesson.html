@@ -50,9 +50,9 @@
             </div>
         </div>
         <div id="lesson-content-container"
-             class="row lesson-content justify-content-center align-items-center">
+             class="row lesson-content justify-content-center">
             <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
-                <form id="card-form" action="{% url 'lesson_next' %}" method="post">
+                <form id="card-form" class="m-auto" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
                 </form>
