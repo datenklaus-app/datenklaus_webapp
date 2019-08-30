@@ -19,7 +19,8 @@
     <div id="lesson" class="container-fluid">
         <div class="row lesson-header">
             <div class="col align-self-center">
-                <h4><span class="text-info">Raum:</span><span class="text-light"> {{ rname }}</span></h4>
+                <h4><span class="text-info">Raum:</span><span class="text-light"> {{ rname }}</span>
+                </h4>
             </div>
             <div class="col text-right">
                 <button type="button" class="btn btn-light text-danger" data-toggle="modal"
@@ -32,10 +33,13 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Bist du dir sicher?</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Bist du dir
+                                    sicher?</h5>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zurück</button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Zurück
+                                </button>
                                 <button type="button" class="btn btn-danger"
                                         onClick="window.location.href = '{% url 'leave' %}'">Ja
                                 </button>
@@ -45,7 +49,8 @@
                 </div>
             </div>
         </div>
-        <div id="lesson-content-container"  class="row lesson-content justify-content-center align-items-center">
+        <div id="lesson-content-container"
+             class="row lesson-content justify-content-center align-items-center">
             <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
                 <form id="card-form" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
@@ -72,7 +77,6 @@
 
 {% block scripts %}
     <script>
-
         function check_room_status() {
             $.ajax({
                 method: "POST",
@@ -113,5 +117,5 @@
             setInterval(check_room_status, 5000);
         });
     </script>
-    {% block card_scripts %}{% endblock %}
+    {% block include_scripts %}{% endblock %}
 {% endblock %}

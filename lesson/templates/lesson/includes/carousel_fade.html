@@ -1,0 +1,57 @@
+<div id="carouselFade" class="carousel slide carousel-fade" data-interval="false"
+     data-wrap=false
+     data-touch=true>
+    <div class="carousel-inner">
+        {% for img in images %}
+            {% if forloop.first %}
+                <div class="carousel-item active ">
+                    <img class="img-fluid rounded" style="object-fit: contain"
+                         src="{% static img %}">
+                </div>
+            {% else %}
+                <div class="carousel-item h-100">
+                    <img class="img-fluid rounded image-card-img" style="object-fit: contain"
+                         src="{% static img %}">
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <a id="carousel_back" style="display: none" class="carousel-control-prev text-dark"
+       href="#carouselFade"
+       role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a id="carousel_next" class="carousel-control-next text-dark" href="#carouselFade" role="button"
+       data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+{% block include_scripts %}
+    <script>
+        $(document).ready(function () {
+                if (1 ===  {{ images|length }}) {
+                    $('#carousel_next').hide()
+                } else {
+                    $('#lesson-continue-state').css('visibility', 'hidden')
+                }
+
+                $('#carouselFade').on('slide.bs.carousel', function (event) {
+                    if (event.to === ({{ images|length }}-1)) {
+                        $('#lesson-continue-state').css('visibility', 'visible');
+                        $('#carousel_next').hide()
+                    } else
+                        $('#carousel_next').show();
+
+                    if (event.to !== 0)
+                        $('#carousel_back').show();
+                    else
+                        $('#carousel_back').hide()
+                })
+            }
+        );
+
+    </script>
+{% endblock %}

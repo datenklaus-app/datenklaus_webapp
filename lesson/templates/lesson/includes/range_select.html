@@ -1,0 +1,9 @@
+<div class="btn-group-toggle btn-group-lg lesson-card-body" data-toggle="buttons">
+{# Pass form ChoiceField variable as choices here  #}
+    {% for choice in choices %}
+        <label class="btn btn-info btn-block" for="{{ choice.for_id_label }}" onclick="void(0)">
+            {{ choice.tag }}
+            {{ choice.choice_label }}
+        </label>
+    {% endfor %}
+</div>
