@@ -69,7 +69,7 @@
                     </h4>
                 </div>
 
-                <div class="col text-right m-1">
+                <div class="col text-right m-1" id="controls">
                     <button class="btn state-btn-play" id="button-play">
                         <i class="fas fa-play"></i>
                     </button>
@@ -84,15 +84,14 @@
                         <i class="fas fa-question"></i>
                     </a>
                 </div>
-            </div>
-            <div class="row justify-content-center pt-2 bg-light">
-                <div class="col text-dark text-right" style="display: none" id="col-all-finished">
+                <div class="col text-dark text-righr" style="display: none" id="col-all-finished">
                     <h5 class="m-0 text-dark">Alle Schüler*innen haben das aktuelle Modul
                         abgeschlossen. Klicke <i class="text-warning" id="button-restart-lesson" onclick=""
                                                  style="cursor: pointer">hier</i> um ein
                         neues zu starten.
                     </h5>
                 </div>
+
             </div>
             <div class="row justify-content-end bg-light pb-2">
                 <div class="col text-right">
@@ -231,6 +230,7 @@
             $("#lesson-modal-dismiss").click(function () {
                 finishedModalDismissed = true;
                 $("#lessonFinishedModal").modal('hide');
+                $('#controls').hide();
                 $('#col-all-finished').show()
             });
 
@@ -239,6 +239,7 @@
                 startNewLesson(lesson);
                 finishedModalDismissed = true;
                 $("#lessonFinishedModal").modal('hide');
+                $('#controls').show();
                 $('#col-all-finished').hide()
             });
 
