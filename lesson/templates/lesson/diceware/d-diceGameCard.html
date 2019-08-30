@@ -48,36 +48,31 @@
                         </div>
                         <div class="row mt-2" id="result-2">
                             <div class="col-3 text-right align-self-start">
-                                <h4 class="font-weight-bold text-dk-primary">Runde 2</h4>
+                                <h4>Runde 2</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-3">
                             <div class="col-3 text-right align-self-start">
-                                <h4 class="text-dk-primary font-weight-bold">Runde 3</h4>
+                                <h4>Runde 3</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-4">
                             <div class="col-3 text-right align-self-start">
-                                <h4 class="font-weight-bold text-dk-primary">Runde 4</h4>
+                                <h4>Runde 4</h4>
                             </div>
                         </div>
                         <div class="row mt-2" id="result-5">
                             <div class="col-3 text-right align-self-start">
-                                <h4 class="font-weight-bold text-dk-primary">Runde 5</h4>
+                                <h4> Runde 5</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="lesson-card-body-light">Passwort: <span class="text-right text-capitalize text-dk-primary "
-                                                                    id="password-sentence"></span>
+                <div class="lesson-card-body-light"><span id="password-label">Passwort: </span><span
+                        class="text-right text-capitalize text-dk-primary "
+                        id="password-sentence"></span>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row row-v-h-centered flex-grow-1" id="resultCont" style="display: none">
-        <div class="col-auto lesson-card-bg lesson-card-subtitle-light text-center">
-            <div class="lesson-card-title-light text-light border-0">Dein neues Passwort lautet:</div>
-            <div class="text-dk-primary lesson-card-body-light text-center" id="passwordResult"></div>
         </div>
     </div>
 {% endblock %}
@@ -108,12 +103,10 @@
             dicePos++;
             const d = $(this).data("dice");
             dice += diceMap[d];
-            $(".clickable-dice").prop("disabled", false);
-            console.log("click")
             const template = Handlebars.compile(document.getElementById("resultDice").innerHTML);
             $('#result-' + rounds).append(template({'d1': d}));
             if (dicePos === 5) {
-                $(".clickable-dice").prop("disabled", true)
+                $(".clickable-dice").prop("disabled", true);
                 findWord();
                 dicePos = 0;
             }
@@ -123,18 +116,16 @@
             const word = getDiceword(dice).toUpperCase();
             result += " " + word;
             $("#password-sentence").append(" " + word);
+            // noinspection JSJQueryEfficiency
+            $('#result-' + rounds).find('h4').removeClass('text-dk-primary font-weight-bold');
             rounds++;
             dice = "";
-            $(".clickable-dice").prop("disabled", false);
             if (rounds >= 6) {
-                setTimeout(function () {
-                    $("#topCont").hide();
-                    $("#bottomCont").hide();
-                    $("#introCont").hide();
-                    $("#resultCont").show();
-                    $("#passwordResult").append(result);
-                    $("#lesson-continue-state").prop("disabled", false);
-                }, 1000);
+                $("#lesson-continue-state").prop("disabled", false);
+                $('#password-label').addClass('font-weight-bold')
+            } else {
+                $(".clickable-dice").prop("disabled", false);
+                $('#result-' + rounds).find('h4').addClass('text-dk-primary font-weight-bold')
             }
         };
     </script>
