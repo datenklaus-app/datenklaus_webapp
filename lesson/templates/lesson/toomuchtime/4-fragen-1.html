@@ -1,0 +1,12 @@
+{% extends 'lesson/lesson.html' %}
+{% block lesson_card %}
+    <div class="bg-dark-st p-4 rounded text-center">
+        <div class="display-5 text-light">
+            Wie häufig bist du online?
+        </div>
+        <div class="display-6 text-light border-bottom pb-2">
+            (am Smartphone, Tablet oder Rechner)
+        </div>
+        {% include "lesson/includes/range_select.html" with form=form %}
+    </div>
+{% endblock %}

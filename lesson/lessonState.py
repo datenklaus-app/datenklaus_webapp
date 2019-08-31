@@ -70,8 +70,7 @@ class LessonState:
         """
         raise NotImplementedError()
 
-    @staticmethod
-    def result(room: str, student: Student) -> []:
+    def result(self, room: str, student: Student) -> []:
         """
         :param room: Room to get results for
         :param student: Student for which to get results for
@@ -80,8 +79,7 @@ class LessonState:
         """
         pass
 
-    @staticmethod
-    def result_svg(room: Room) -> str:
+    def result_svg(self, room: Room) -> str:
         """
         Returns the results for the given room as svg string
         :param room: Room to get result

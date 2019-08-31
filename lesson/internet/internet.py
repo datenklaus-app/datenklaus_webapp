@@ -6,7 +6,7 @@ from lesson.templateState import TemplateState
 class Internet(Lesson):
     _lessonStates = {
         0: TemplateState("lesson/internet/0-intro.html", 0, 1,
-                         "Einleitung", is_first=True),
+                         "Modultitel", is_first=True),
         1: TemplateState("lesson/internet/1-Hinfuerung.html", 1, 2,
                          "Hinführung zum Thema"),
         2: TemplateState("lesson/internet/1-regel-1.html", 2, 3,

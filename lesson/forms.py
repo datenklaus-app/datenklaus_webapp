@@ -11,3 +11,7 @@ class RangeSelectForm(forms.Form):
     def __init__(self, choices, post=None):
         super(RangeSelectForm, self).__init__(post)
         self.fields["value"].choices = choices
+
+
+class FormError(Exception):
+    pass

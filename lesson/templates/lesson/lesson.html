@@ -76,7 +76,7 @@
                            onClick="window.location.href = '{% url 'lesson_previous' %}'">
 
                 </div>
-                {% if is_first %}
+                {% if is_last %}
                     <div class="col">
                         <button id="lesson-continue-state" type="submit" form="card-form"
                                 class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Fertig!
@@ -85,7 +85,7 @@
                 {% else %}
                     <div class="col">
                         <button id="lesson-continue-state" type="submit" form="card-form"
-                                class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter!
+                                class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter
                         </button>
                     </div>
                 {% endif %}
