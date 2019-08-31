@@ -60,7 +60,8 @@ def lesson(request):
 
     context = {"lname": student.room.lesson,
                "rname": student.room,
-               "is_first": current_state.is_first()}
+               "is_first": current_state.is_first(),
+               "is_last": current_state.is_final()}
 
     return current_state.render(request, student, context)
 

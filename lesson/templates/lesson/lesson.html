@@ -5,15 +5,17 @@
 {% load staticfiles %}
 
 {% block content %}
-    <style type="text/css">
-        body {
-            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-    </style>
+    {% block background_img %}
+        <style type="text/css">
+            body {
+                background: url('{% static "lesson/sternenhimmel.jpg" %}') no-repeat center center fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+        </style>
+    {% endblock %}
     <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
 
     <div id="lesson" class="container-fluid">
@@ -51,7 +53,7 @@
         </div>
         <div id="lesson-content-container"
              class="row lesson-content justify-content-center">
-            <div class="col-md-11 col-lg-10 col-xl-7 d-flex flex-column unselectable">
+            <div class="col-11 d-flex flex-column unselectable">
                 <form id="card-form" class="m-auto" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
@@ -74,11 +76,19 @@
                            onClick="window.location.href = '{% url 'lesson_previous' %}'">
 
                 </div>
-                <div class="col">
-                    <button id="lesson-continue-state" type="submit" form="card-form"
-                            class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter
-                    </button>
-                </div>
+                {% if is_first %}
+                    <div class="col">
+                        <button id="lesson-continue-state" type="submit" form="card-form"
+                                class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Fertig!
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="col">
+                        <button id="lesson-continue-state" type="submit" form="card-form"
+                                class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter!
+                        </button>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>
