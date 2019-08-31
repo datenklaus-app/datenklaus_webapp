@@ -2,19 +2,31 @@
 {% block title %}
     Gleich geht es los..
 {% endblock %}
-
+{% load staticfiles %}
 {% block content %}
-    <div class="container h-100">
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'lesson/lesson.css' %}">
+
+    <div class="container-fluid h-100 bg-dark-st">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-auto">
                 <div class="row">
                     <div class="col">
-                        <h1 class="text-danger">{{ sname }}</h1>
-                        <h4 class="text-info">
-                            Du bist dem Klassenraum <span class="text-warning">{{ rname }}</span> beigetreten!
+                        <div class="text-dk-primary display-3">{{ sname }}</div>
+                        <hr class="border-light">
+                        <div class="text-light display-5">
+                            Du bist dem Klassenraum <span class="text-info">{{ rname }}</span> beigetreten!
                             <br/>
                             Gleich geht es los...
-                        </h4>
+                        </div>
                     </div>
                 </div>
                 <div class="row m-2">
