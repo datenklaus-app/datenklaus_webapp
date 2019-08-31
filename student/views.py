@@ -46,7 +46,7 @@ def join_room(request):
 
     # Note: Maybe add notification if form was invalid
     if not form.is_valid():
-        return HttpResponseRedirect(reverse('student'))
+        return HttpResponseRedirect(reverse('select_room'))
 
     # Make sure we only have one existing student object per session
     for student in Student.objects.filter(session=request.session.session_key):
