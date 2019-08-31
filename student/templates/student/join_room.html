@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-
 {% block title %}
     DatenKLAUs
 {% endblock %}
@@ -32,7 +31,10 @@
             })
         }
 
-        setInterval(update, 5000)
+        $(document).ready(function () {
+            update();
+            setInterval(update, 5000)
+        });
     </script>
 {% endblock %}
 
