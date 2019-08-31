@@ -11,7 +11,7 @@
         function update() {
             $.ajax({
                 method: "POST",
-                url: "/",
+                url: "{% url "select_room" %}",
                 dataType: 'json',
                 contentType: 'json',
                 headers: {

@@ -24,7 +24,7 @@ def select_room(request):
         return JsonResponse({'rooms': room_names})
     try:
         student = Student.objects.get(session=request.session.session_key)
-        if student.room.state is not RoomStates.CLOSED.value:
+        if student.room.state is RoomStates.WAITING.value:
             return HttpResponseRedirect(reverse('lesson'))
     except ObjectDoesNotExist:
         # NOTE: we need to manually set this to ensure that the user's session
