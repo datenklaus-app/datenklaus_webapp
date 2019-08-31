@@ -26,7 +26,7 @@ def select_room(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
         if student.room.state is not RoomStates.CLOSED.value:
-            return HttpResponseRedirect('lesson')
+            return HttpResponseRedirect(reverse('lesson'))
     except ObjectDoesNotExist:
         # NOTE: we need to manually set this to ensure that the user's session
         # is saved on the first request
