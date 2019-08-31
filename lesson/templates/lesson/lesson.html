@@ -58,20 +58,29 @@
                 </form>
             </div>
         </div>
-        <div class="row lesson-footer">
-            <div class="col">
-                {% if has_previous %}
+        {% if is_first %}
+            <div class="row lesson-footer">
+                <div class="col">
+                    <button id="lesson-continue-state" type="submit" form="card-form"
+                            class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Los Geht's!
+                    </button>
+                </div>
+            </div>
+        {% else %}
+            <div class="row lesson-footer">
+                <div class="col">
                     <input type="button" class='btn btn-outline-warning bg-dark-st btn-block btn-lg'
                            value="Zurück"
                            onClick="window.location.href = '{% url 'lesson_previous' %}'">
-                {% endif %}
+
+                </div>
+                <div class="col">
+                    <button id="lesson-continue-state" type="submit" form="card-form"
+                            class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter
+                    </button>
+                </div>
             </div>
-            <div class="col">
-                <button id="lesson-continue-state" type="submit" form="card-form"
-                        class="btn btn-outline-success bg-dark-st btn-lg btn-block" disabled>Weiter
-                </button>
-            </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}
 

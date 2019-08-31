@@ -59,12 +59,9 @@ def lesson(request):
 
     current_state = current_lesson.state(student.current_state)
 
-    context = {"lname": student.room.lesson, "rname": student.room}
-
-    if current_state.previous_state(student) is None:
-        context["has_previous"] = False
-    else:
-        context["has_previous"] = True
+    context = {"lname": student.room.lesson,
+               "rname": student.room,
+               "is_first": current_state.is_first()}
 
     return current_state.render(request, student, context)
 

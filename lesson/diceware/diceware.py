@@ -6,7 +6,7 @@ from lesson.templateState import TemplateState
 class Diceware(Lesson):
     _lessonStates = {
         0: TemplateState("lesson/diceware/init-imageCard.html", 0, 1,
-                         "Einleitung"),
+                         "Einleitung", is_first=True),
         1: TemplateState("lesson/diceware/a-textCard.html", 1, 2,
                          "Hinführung zum Spiel"),
         2: TemplateState("lesson/diceware/b-textCard.html", 2, 3,
