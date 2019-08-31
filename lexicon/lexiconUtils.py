@@ -1,5 +1,6 @@
 import collections
 import random
+from string import ascii_uppercase
 
 from lexicon.models import LexiconEntry
 
@@ -7,15 +8,16 @@ from lexicon.models import LexiconEntry
 def entry_titles_ordered() -> {str: [str]}:
     all_entries = collections.OrderedDict()
 
+    for letter in ascii_uppercase:
+        all_entries[letter] = []
+
     for entry in LexiconEntry.objects.all():
-        letter = entry.title[0].upper()
+        all_entries[entry.title[0].upper()].append(entry.title)
 
-        if letter not in all_entries.keys():
-            all_entries[letter] = []
-
-        all_entries[letter].append(entry.title)
-
-    for letter in all_entries.keys():
+    for letter in ascii_uppercase:
+        if len(all_entries[letter]) == 0:
+            del(all_entries[letter])
+            continue
         all_entries[letter].sort()
 
     return all_entries
