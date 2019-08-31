@@ -8,7 +8,7 @@
     {% trans "Raum existiert bereits" as room_exists %}
     {% trans "Kein Modul verfügbar" as no_module %}
 
-    <div class="container-fluid h-100" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
+    <div class="container-fluid" style="flex: 1 0 auto;" xmlns="http://www.w3.org/1999/html">
         <form id="joinForm" method="post">
             <div class="row justify-content-center pt-3 text-center">
                 <div class="col-md-6">
@@ -103,7 +103,7 @@
         }
 
         validateRoomName = function () {
-            if (!showRoomWarnings()) return;
+            if (showRoomWarnings()) return;
             const room = $('#room_name');
             $.ajax({
                 url: "{% url 'validate_room' %}",
@@ -151,7 +151,8 @@
 
         function removeRoomWarnings() {
             $(".room-warning").parent().remove();
-            $('#warn-room').removeClass('text-danger').addClass('text-dark');
+            $("#room_name_exists").hide()
+            $('#warn_room').removeClass('text-danger').addClass('text-dark');
         }
 
         function removeLessonWarning() {
