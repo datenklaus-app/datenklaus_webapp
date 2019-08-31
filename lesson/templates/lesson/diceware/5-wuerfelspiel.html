@@ -31,7 +31,7 @@
             <div class="row display-6 text-light">
                 <div class="col" id="result-col">
                     <div class="row" id="result-1" style="height: 32px;">
-                        <div class="col-3 text-right align-self-start text-dk-primary">
+                        <div class="col-3 text-right align-self-start text-dk-primary font-weight-bold">
                             Runde 1
                         </div>
                     </div>
@@ -109,7 +109,7 @@
             result += " " + word;
             $("#password-sentence").append(" " + word);
             // noinspection JSJQueryEfficiency
-            $('#result-' + rounds).find('h4').removeClass('text-dk-primary font-weight-bold');
+            $('#result-' + rounds).find('.text-right').removeClass('text-dk-primary font-weight-bold');
             rounds++;
             dice = "";
             if (rounds >= 6) {
@@ -117,7 +117,7 @@
                 $('#password-label').addClass('font-weight-bold')
             } else {
                 $(".clickable-dice").prop("disabled", false);
-                $('#result-' + rounds).find('h4').addClass('text-dk-primary font-weight-bold')
+                $('#result-' + rounds).find('.text-right').addClass('text-dk-primary font-weight-bold')
             }
         };
     </script>
