@@ -33,7 +33,7 @@ def lesson(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse("index"))
 
     room_state = RoomStates(student.room.state)
     if room_state == RoomStates.PAUSED:
@@ -42,7 +42,7 @@ def lesson(request):
         return render(request, "lesson/waiting.html",
                       context={"sname": student.user_name, "rname": student.room.room_name})
     elif room_state == RoomStates.CLOSED:
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse("index"))
 
     current_lesson = get_lesson(student.room.lesson)
 
@@ -74,7 +74,7 @@ def lesson_previous(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse("index"))
 
     current_lesson = get_lesson(student.room.lesson)
     current_state = current_lesson.state(student.current_state)
@@ -94,7 +94,7 @@ def lesson_next(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse("index"))
 
     current_lesson = get_lesson(student.room.lesson)
     current_state = current_lesson.state(student.current_state)
