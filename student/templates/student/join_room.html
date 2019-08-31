@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block title %}
+    DatenKLAUs
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function update() {
+            $.ajax({
+                method: "POST",
+                url: "/",
+                dataType: 'json',
+                contentType: 'json',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    const $el = $("#rooms");
+                    const $selected = $el.val();
+                    $el.empty(); // remove old options
+                    $.each(data.rooms, function (index, value) {
+                        $el.append($("<option></option>")
+                            .attr("value", value).text(value));
+                        if (value === $selected) {
+                            $el.val($selected)
+                        }
+                    });
+                }
+            })
+        }
+
+        setInterval(update, 5000)
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        body {
+            background: url('{% static "lesson/diceware/sternenhimmel.jpg" %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+
+    {% load widget_tweaks %}
+    <div class="container-fluid h-100 overflow-auto">
+        <div class="row h-100">
+            <div class="col m-auto bg-dark-st col-md-11 col-lg-9 rounded p-5">
+                <div class="row">
+                    <div class="col display-3 text-info border-bottom border-light">
+                        Raum beitreten
+                    </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="col text-light display-5">
+                        Wähle deinen <strong>Alias</strong> nach folgendem Schema:
+                    </div>
+                </div>
+                <div class="row justify-content-center pb-5">
+                    <div class="col bg-light text-center text-dark display-6 rounded m-3 p-4">
+                        <strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
+                        geboren am <strong class="text-info">14</strong>.5
+                        wird zu: <strong class="text-danger">he</strong><strong class="text-warning">me</strong><strong
+                            class="text-info">14</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form action="{% url 'join' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                {% render_field form.username id="studentUsername" class+="form-control form-control-lg round" type="text" placeholder="Alias" %}
+                                {# Note: The room selector is only used for testing. #}
+                                {% render_field form.room id='rooms' class+="custom-select custom-select-lg" %}
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-danger btn-lg">Los geht's!</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

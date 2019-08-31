@@ -11,11 +11,15 @@ from .forms import JoinRoomForm
 
 
 def index(request):
+    return render(request, 'student/index.html')
+
+
+def select_room(request):
     if request.is_ajax():
         rooms = Room.objects.all()
         room_names = []
         for r in rooms:
-            if r.state is not RoomStates.CLOSED.value:
+            if r.state is RoomStates.WAITING.value:
                 room_names.append(r.room_name)
         return JsonResponse({'rooms': room_names})
 
@@ -31,7 +35,7 @@ def index(request):
 
     form = JoinRoomForm()
     context = {'form': form}
-    return render(request, 'student/index.html', context)
+    return render(request, 'student/join_room.html', context)
 
 
 def join_room(request):

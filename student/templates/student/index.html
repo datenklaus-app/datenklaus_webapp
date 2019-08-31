@@ -7,33 +7,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        function update() {
-            $.ajax({
-                method: "POST",
-                url: "/",
-                dataType: 'json',
-                contentType: 'json',
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                success: function (data) {
-                    const $el = $("#rooms");
-                    const $selected = $el.val();
-                    $el.empty(); // remove old options
-                    $.each(data.rooms, function (index, value) {
-                        $el.append($("<option></option>")
-                            .attr("value", value).text(value));
-                        if (value === $selected) {
-                            $el.val($selected)
-                        }
-                    });
-                }
-            })
-        }
-
-        setInterval(update, 5000)
-    </script>
 {% endblock %}
 
 {% block content %}
@@ -47,52 +20,22 @@
         }
     </style>
 
-    {% load widget_tweaks %}
-    <div class="container h-100">
-
-
-        <div class="row align-items-center justify-content-center h-100">
-            <div class="col col-sm-12 col-md-9 bg-dark-st col-lg-8 rounded p-4">
-
+    <div class="container-fluid h-100 overflow-auto">
+        <div class="row h-100">
+            <div class="m-auto col-9 ">
                 <div class="row">
-                    <div class="col rounded text-info">
-                        <h1>Raum beitreten </h1>
-                    </div>
+                    <img class="img-fluid" src="{% static "willkommenbeidk.gif" %}">
                 </div>
-                <div class="row">
-                    <div class="col text-light">
-                        <h4>Wähle deinen <strong>Alias</strong> nach folgendem Schema:</h4>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-auto bg-light text-left text-dark h4 rounded m-3 p-4">
-                        <strong class="text-danger">He</strong>nrietta <strong class="text-warning">Me</strong>ier
-                        geboren<br/>
-                        am <strong class="text-info">14</strong>.5
-                        wird zu: <strong class="text-danger">he</strong><strong class="text-warning">me</strong><strong
-                            class="text-info">14</strong>
-                    </div>
-                </div>
-                <div class="row">
+                <div class="row p-2 pt-4">
                     <div class="col">
-                        <form action="{% url 'join' %}" method="post">
-                            {% csrf_token %}
-                            <div class="input-group">
-                                {% render_field form.username id="studentUsername" class+="form-control form-control-lg round" type="text" placeholder="Alias" %}
-                                {# Note: The room selector is only used for testing. #}
-                                {% render_field form.room id='rooms' class+="custom-select custom-select-lg" %}
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-outline-info btn-lg">Los geht's!</button>
-                                </div>
-                            </div>
-                        </form>
+                        <button class="btn-dark btn-lg h1 btn-block" onclick="window.location.href='{% url 'lexicon_index' %}'">
+                            DatenKLAUs Lexikon
+                        </button>
                     </div>
-                </div>
-                <div class="row pt-5">
                     <div class="col">
-                        <a class="btn btn-lg btn-block btn-outline-light bg-dark" href="{% url 'lexicon_index' %}">
-                            Hier geht es zum DatenKLAUs Lexikon!
-                        </a>
+                        <button class="btn-success btn-lg h1 btn-block" onclick="window.location.href='{% url 'select_room' %}'">
+                            Hier geht es zur Raumwahl!
+                        </button>
                     </div>
                 </div>
             </div>
