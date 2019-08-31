@@ -213,6 +213,8 @@ def change_lesson(request):
     students = Student.objects.filter(room=r)
     for student in students:
         student.current_state = 0
+        student.is_finished = False
+        student.is_syncing = False
         student.save()
     return HttpResponseNoContent()
 
