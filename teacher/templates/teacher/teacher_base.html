@@ -79,6 +79,9 @@
                     <button class="btn state-btn-stop" id="button-stop">
                         <i class="fas fa-stop"></i>
                     </button>
+                    <button class="btn state-btn-remove" id="button-remove">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
                     <a tabindex="0" class="btn btn-sm text-secondary" style="cursor: pointer"
                        role="button" id="control-popover" title="Steuerung" data-trigger="hover">
                         <i class="fas fa-question"></i>
@@ -152,7 +155,28 @@
                 </div>
             </div>
         </div>
-
+        <!-- Modal -->
+        <div class="modal fade" id="removeRoomModal" tabindex="-1" role="dialog"
+             aria-labelledby="removeRoom" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h4 class="modal-title" id="exampleModalCenterTitle">Raum löschen</h4>
+                    </div>
+                    <div class="modal-body">
+                        Bist du dir sicher dass du diesen Raum löschen möchtest?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="button-next-session-dismiss" onclick=""
+                                ondata-dismiss="modal">Nein
+                        </button>
+                        <button type="button" id="button-next-section" onclick="removeRoom()" id="lesson-modal-start"
+                                class="btn btn-primary">Ja
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     {% block teacher_content %}
@@ -185,6 +209,14 @@
                 </div>
                 <div class="col text-left pl-1">
                     Beendet das Modul.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <i class="fas fa-times-circle text-danger"></i>
+                </div>
+                <div class="col text-left pl-1">
+                    Löscht den Raum.
                 </div>
             </div>
         </div>
@@ -254,6 +286,9 @@
             $("#button-stop").click(function () {
                 controlCommand($(this), cmds.STOP, states.CLOSED)
             });
+            $("#button-remove").click(function () {
+                $('#removeRoomModal').modal('show');
+            });
 
             $('.popover-dismiss').popover({
                 trigger: 'focus'
@@ -297,6 +332,22 @@
                 success: function () {
                     state = s;
                     setStates()
+                },
+                error: function (jqXHR) {
+                    // TODO: remove?
+                    console.log(jqXHR.responseJSON.err)
+                }
+            })
+        };
+
+        removeRoom = function () {
+            $.ajax({
+                url: "{% url 'remove_room' %}",
+                data: {'room_name': "{{ room_name }}"},
+                dataType: 'json',
+                success: function () {
+                    $('#removeRoomModal').modal('hide');
+                    window.location.href = "{% url "teacher_index" %}"
                 },
                 error: function (jqXHR) {
                     // TODO: remove?

@@ -162,6 +162,18 @@ def remove_student(request):
     return JsonResponse({'state': r.state})
 
 
+def remove_room(request):
+    if not request.is_ajax():
+        return HttpResponseBadRequest()
+    room_name = request.GET.get("room_name", None)
+    try:
+        r = Room.objects.get(room_name=room_name)
+        r.delete()
+        return HttpResponseNoContent()
+    except Room.DoesNotExist:
+        return ajax_bad_request("Room " + room_name + " not found")
+
+
 def get_students(request):
     if not request.is_ajax():
         return HttpResponseBadRequest()

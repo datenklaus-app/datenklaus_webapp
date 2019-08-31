@@ -64,4 +64,19 @@ body {
     pointer-events: none;
 }
 
+.state-btn-remove {
+    color: #6c757d;
+    font-size: 24px;
+}
+
+.state-btn-remove:hover {
+    color: #dc3545 !important;
+}
+
+.state-btn-remove:disabled {
+    opacity: 1 !important;
+    color: #dc3545 !important;
+    pointer-events: none;
+}
+
 
