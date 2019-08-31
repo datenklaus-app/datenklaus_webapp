@@ -1,4 +1,4 @@
-from lesson.models import LessonSateModel
+from lesson.models import LessonStateModel
 from student.models import Student
 from teacher.models import Room
 
@@ -11,9 +11,9 @@ class LessonState:
         :param state:
         :return:
         """
-        s, _ = LessonSateModel.objects.get_or_create(state=self.state_number(),
-                                                     student=student,
-                                                     room=student.room)
+        s, _ = LessonStateModel.objects.get_or_create(state=self.state_number(),
+                                                      student=student,
+                                                      room=student.room)
         s.previous_state = state
         s.save()
 
@@ -23,9 +23,9 @@ class LessonState:
         :param student:
         :return:
         """
-        s, _ = LessonSateModel.objects.get_or_create(state=self.state_number(),
-                                                     student=student,
-                                                     room=student.room)
+        s, _ = LessonStateModel.objects.get_or_create(state=self.state_number(),
+                                                      student=student,
+                                                      room=student.room)
         return s.previous_state
 
     def state_number(self):

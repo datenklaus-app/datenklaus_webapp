@@ -13,7 +13,7 @@ class SliderCardModel(models.Model):
     selected_value = models.IntegerField(null=True)
 
 
-class LessonSateModel(models.Model):
+class LessonStateModel(models.Model):
     student = models.ForeignKey(Student, on_delete=CASCADE)
     room = models.ForeignKey(Room, on_delete=CASCADE)
     state = models.IntegerField()

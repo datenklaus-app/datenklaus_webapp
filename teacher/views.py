@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from lesson.lessonUtil import get_lesson, all_lessons, all_synced, all_finished
-from lesson.models import LessonSateModel
+from lesson.models import LessonStateModel
 from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
@@ -116,7 +116,7 @@ def get_results(request, room_name):
     for state in states:
         r = state.result_svg(room_name)
         if r is not None:
-            completed = LessonSateModel.objects.filter(room=room, state=state.state_number()).count()
+            completed = LessonStateModel.objects.filter(room=room, state=state.state_number()).count()
             state_results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
     return JsonResponse({'results': state_results, 'no_students': num_students, 'current_lesson': room.lesson,
                          'prev_lessons': json.loads(room.previous_lessons)})

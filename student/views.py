@@ -22,7 +22,6 @@ def select_room(request):
             if r.state is RoomStates.WAITING.value:
                 room_names.append(r.room_name)
         return JsonResponse({'rooms': room_names})
-
     try:
         student = Student.objects.get(session=request.session.session_key)
         if student.room.state is not RoomStates.CLOSED.value:
