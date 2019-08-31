@@ -312,7 +312,7 @@
                 dataType: 'json',
                 success: function () {
                     $('#roomLesson').text(lesson);
-                    controlCommand($("#button-play"), cmds.PLAY, states.RUNNING);
+                    // controlCommand($("#button-play"), cmds.PLAY, states.RUNNING);
                     finishedModalDismissed = false
                 },
                 error: function (data) {
@@ -364,6 +364,11 @@
                             $('#lessonSyncedModal').modal('show')
                         }
                     } else {
+                        console.log(data.state)
+                        if (data.state !== state) {
+                            state = data.state;
+                            setStates()
+                        }
                         $("#state-text").text("");
                         $('#col-all-finished').hide()
                     }

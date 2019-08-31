@@ -156,7 +156,10 @@ def remove_student(request):
         return ajax_bad_request("Error: student not in room")
     for l in LessonStateModel.objects.filter(room=r, student=s):
         l.delete()
-    return HttpResponseNoContent()
+    if Student.objects.filter(room=r).count() == 0:
+        r.state = RoomStates.WAITING.value
+        r.save()
+    return JsonResponse({'state': r.state})
 
 
 def get_students(request):
@@ -175,10 +178,10 @@ def get_sync_state(request):
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
     try:
-        Room.objects.get(room_name=room_name)
+        r = Room.objects.get(room_name=room_name)
         synced = all_synced(room_name)
         finished = all_finished(room_name)
-        return JsonResponse({"finished": finished, "synced": synced})
+        return JsonResponse({"state": r.state, "finished": finished, "synced": synced})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
 
@@ -205,6 +208,7 @@ def change_lesson(request):
     prev_lessons.append(r.lesson)
     r.previous_lessons = json.dumps(prev_lessons)
     r.lesson = lesson
+    r.state = RoomStates.WAITING.value
     r.save()
     students = Student.objects.filter(room=r)
     for student in students:
