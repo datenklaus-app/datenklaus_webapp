@@ -1,9 +1,10 @@
 from lesson.diceware.diceware import Diceware
 from lesson.internet.internet import Internet
 from lesson.lesson import Lesson
+from lesson.toomuchtime.tooMuchTime import TooMuchTime
 from student.models import Student
 
-_lessons = {"Internet": Internet, "Diceware": Diceware}
+_lessons = {"Internet": Internet, "Diceware": Diceware, "Zeit im Internet": TooMuchTime}
 
 
 def all_lessons() -> {str: Lesson}:
