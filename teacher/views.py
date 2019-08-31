@@ -233,6 +233,8 @@ def control_cmd(request):
             student.save()
     elif cmd == Cmd.STOP:
         r.state = RoomStates.CLOSED.value
+        for student in Student.objects.filter(room=r):
+            student.delete()
     elif cmd == Cmd.PAUSE:
         r.state = RoomStates.PAUSED.value
     else:
