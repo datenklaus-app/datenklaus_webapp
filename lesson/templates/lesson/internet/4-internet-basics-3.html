@@ -1,0 +1,15 @@
+{% extends 'lesson/lesson.html' %}
+{% load static %}
+{% block lesson_card %}
+    <div class="row bg-dark-st pt-3 pb-3 rounded">
+        <div class="col align-self-center">
+            <img class="img-fluid  rounded"
+                 src="{% static "lesson/internet/Internet3.png" %}">
+        </div>
+        <div class="col align-self-center display-6 text-light">
+            Wichtig für einen Zugang ist die Verbindung deines Gerät mit dem Internet. Dies erfolgt in den
+            meisten Fällen über ein WLAN, genauer den WAP (Wireless Access Point) des Internerouters, oder
+            aber über das Mobilfunknetz, wenn du zum Beispiel unterwegs bist.
+        </div>
+    </div>
+{% endblock %}

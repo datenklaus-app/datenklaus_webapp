@@ -1,0 +1,35 @@
+{% extends 'lesson/lesson.html' %}
+{% load static %}
+{% block lesson_card %}
+    <div class="bg-dark-st p-4 rounded">
+        <div class="display-4 text-light border-bottom">
+            Daten
+        </div>
+        <div class="display-5 text-dk-primary pt-2">
+            Du erinnerst dich an die erste Regel des Internets: Bei der Internetnutzung werden Daten
+            verarbeitet. Immer!
+        </div>
+        <div class="display-6 text-light pt-2">
+            Für die Internetnutzung ist eine Verarbeitung von Daten notwendig: Mithilfe von Internetprotokollen
+            wird unter anderem eine korrekte Übermittlung und Darstellung der angeforderten Inhalte ermöglicht.
+            Dabei werden verschiedene Informationen zwischen deinem Gerät und dem Server ausgetauscht. Dazu
+            gehören unter anderem:
+            <br/>
+            <ul>
+                <li> Datum und Uhrzeit der Anfrage
+                <li> Deine IP-Adresse (sozusagen deine virtuelle Adresse)
+                <li> Geräteinformationen und Browserinformationen, damit sichergestellt werden kann, dass
+                    Inhalte korrekt angezeigt werden
+            </ul>
+
+            Diese Daten werden, gebündelt in sogenannten Datenpaketen, auf ihre Reise durch das Internet zum
+            Zielort geschickt. Jedes internetfähige Gerät, sowie Server oder Rechner hat eine ihm zugewiesene,
+            individuelle Adresse. So wird sichergestellt, dass die Pakete am richtigen Ort ankommen.
+
+            Wie aus diesen technischen Daten personalisierte Daten werden können, erfährst du im folgenden Modul
+            <i>"Trackingmethoden"</i>.
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -1,0 +1,18 @@
+{% extends 'lesson/lesson.html' %}
+{% load static %}
+{% block lesson_card %}
+    <div class="row bg-dark-st pt-3 pb-3 rounded">
+        <div class="col align-self-center">
+            <img class="img-fluid  rounded"
+                 src="{% static "lesson/internet/Internet2.png" %}">
+        </div>
+        <div class="col align-self-center display-6 text-light">
+            Um dieses Netzwerk nutzen zu können brauchst du ein Gerät, dass dir den
+            Zugang zum Internet ermöglicht und fähig ist, die empfangenen Daten
+            richtig anzuzeigen (so ermöglicht z.B. ein Webbrowser die Darstellung des
+            Quellcodes einer Website)??. Mit einem Smartphone, Rechner, Laptop oder
+            Tablet kannst du auf Inhalte, die im Internet zur Verfügung gestellt werden,
+            zugreifen.
+        </div>
+    </div>
+{% endblock %}
