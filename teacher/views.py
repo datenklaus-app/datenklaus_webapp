@@ -227,7 +227,7 @@ def control_cmd(request):
     cmd = Cmd(int(b))
     if cmd == Cmd.START:
         r.state = RoomStates.RUNNING.value
-        for student in Student.objects.all():
+        for student in Student.objects.filter(room=r):
             student.is_syncing = False
             student.is_finished = False
             student.save()
