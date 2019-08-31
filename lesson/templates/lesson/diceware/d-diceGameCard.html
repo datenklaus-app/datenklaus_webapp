@@ -108,7 +108,7 @@
         };
 
         findWord = function () {
-            const word = getDiceword(dice).toUpperCase();
+            const word = getDiceword(dice);
             result += " " + word;
             $("#password-sentence").append(" " + word);
             // noinspection JSJQueryEfficiency
