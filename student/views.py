@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from lesson.models import LessonStateModel
 from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
@@ -63,5 +64,6 @@ def join_room(request):
 
 def leave_room(request):
     for s in Student.objects.filter(session=request.session.session_key):
+        LessonStateModel.objects.filter(room=s.room, student=s).delete()
         s.delete()
     return HttpResponseRedirect(reverse("index"))

@@ -154,6 +154,8 @@ def remove_student(request):
         s.delete()
     except Student.DoesNotExist:
         return ajax_bad_request("Error: student not in room")
+    for l in LessonStateModel.objects.filter(room=r, student=s):
+        l.delete()
     return HttpResponseNoContent()
 
 

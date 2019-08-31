@@ -1,6 +1,6 @@
 from django.db import models
 # Create your models here.
-from django.db.models import CASCADE
+from django.db.models import CASCADE, SET_NULL
 
 from student.models import Student
 from teacher.models import Room
@@ -14,7 +14,7 @@ class SliderCardModel(models.Model):
 
 
 class LessonStateModel(models.Model):
-    student = models.ForeignKey(Student, on_delete=CASCADE)
+    student = models.ForeignKey(Student, on_delete=SET_NULL, null=True)
     room = models.ForeignKey(Room, on_delete=CASCADE)
     state = models.IntegerField()
     previous_state = models.IntegerField(null=True)
