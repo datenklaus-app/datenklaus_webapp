@@ -5,18 +5,20 @@ from lesson.templateState import TemplateState
 
 class Diceware(Lesson):
     _lessonStates = {
-        0: TemplateState("lesson/diceware/init-imageCard.html", 0, 1,
-                         "Einleitung", is_first=True),
-        1: TemplateState("lesson/diceware/a-textCard.html", 1, 2,
-                         "Hinführung zum Spiel"),
-        2: TemplateState("lesson/diceware/b-textCard.html", 2, 3,
-                         "Erklärung: Spielprinzip"),
-        3: TemplateState("lesson/diceware/c-textCard.html", 3, 4,
-                         "Erklärung: Spielt"),
-        4: TemplateState("lesson/diceware/d-diceGameCard.html", 4, 5,
-                         "Würfelspiel", is_sync=True),
-        5: TemplateState("lesson/diceware/e-textCard.html", 5, 6,
-                         "Abschluss",
+        0: TemplateState("lesson/diceware/0-intro.html", 0, 1,
+                         "Modultitel", is_first=True),
+        1: TemplateState("lesson/diceware/1-comic.html", 1, 2,
+                         "Comic"),
+        2: TemplateState("lesson/diceware/2-spielprinzip.html", 2, 3,
+                         "Spielprinzip"),
+        3: TemplateState("lesson/diceware/3-warum-diceware.html", 3, 4,
+                         "Warum Diceware"),
+        4: TemplateState("lesson/diceware/4-1-spiel-erklaerung.html", 4, 5,
+                         "Anleitung Teil 1"),
+        5: TemplateState("lesson/diceware/4-2-spiel-erklaerung.html", 5, 6,
+                         "Anleitung Teil 2"),
+        6: TemplateState("lesson/diceware/5-wuerfelspiel.html", 6, None,
+                         "Würfelspiel",
                          is_final=True),
     }
 

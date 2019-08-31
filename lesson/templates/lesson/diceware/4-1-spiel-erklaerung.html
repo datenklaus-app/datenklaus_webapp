@@ -1,0 +1,25 @@
+{% extends 'lesson/lesson.html' %}
+{% block lesson_card %}
+    <div class="bg-dark-st p-4 rounded">
+        <div class="display-4 text-light border-bottom">
+            Diceware - Wie du spielst:
+        </div>
+        <div class="text-light display-6 pt-4">
+            <ol>
+                <li>Stelle sicher, dass dir niemand bei der Erstellung eines Passworts zusehen kann.</li>
+                <hr class="border-dk-primary"/>
+                <li>Nimm fünf Würfel und werfe sie vorsichtig.</li>
+                <hr class="border-dk-primary"/>
+                <li>Übertrage die Zahlenkombination, die durch die Augenzahl der einzelnen Würfel angezeigt wird, durch
+                    einen Klick auf die entsprechenden Würfel.
+                </li>
+                <hr class="border-dk-primary"/>
+                <li>Diesen Vorgang wiederholst du fünfmal.</li>
+                <hr class="border-dk-primary"/>
+                <li>Mithilfe einer Eselsbrücke kannst du versuchen, einen merkbaren Satz
+                    zu bilden und dir dadurch dein neues Passwort besser merken.
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}

@@ -28,7 +28,7 @@
 }
 
 .border-dk-primary {
-    border: 1px solid #b8338a !important;
+    border-color: #b8338a !important;
     border-radius: 0.25rem;
 }
 

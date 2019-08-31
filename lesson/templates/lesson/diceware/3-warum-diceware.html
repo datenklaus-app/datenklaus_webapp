@@ -1,0 +1,27 @@
+{% extends 'lesson/lesson.html' %}
+{% block lesson_card %}
+    <div class="bg-dark-st p-4 rounded">
+        <div class="display-4 text-light border-bottom">
+            Warum Diceware?
+        </div>
+        <div class="text-dk-primary display-6-5 pt-3">
+            Durch das Zufallsprinzip der Methode und die Länge der Passphrase
+            wird sichergestellt, dass dein Passwort nicht leicht zu erraten oder (technisch) einfach zu knacken ist.
+        </div>
+        <div class="display-6 text-light pt-2">
+            Das Problem bei selbstgewählten Passwörtern ist zudem oft, dass sie aus persönlichen Informationen
+            zusammengesetzt sind, sei es dein Geburtsdatum, der Name deines Haustieres oder dein Lieblingsgericht. Diese
+            Informationen sind für Außenstehende, die dein Passwort wollen, leicht zugänglich und stellen im Bereich der
+            Datensicherheit ein großes Problem dar, siehe hierzu auch unseren Lexikoneintrag zum Thema Social
+            Engineering. Zusätzlich empfehlen wir dir die Nutzung eines Passwort-Managers. Die von dir gewürfelte
+            Passphrase kannst du als Masterpasswort verwenden. Mehr Hinweise und Empfehlungen zur Verwendung eines
+            Passwort-Managers findest du hier.Das Problem bei selbstgewählten Passwörtern ist zudem oft, dass sie aus
+            persönlichen Informationen zusammengesetzt sind, sei es dein Geburtsdatum, der Name deines Haustieres oder
+            dein Lieblingsgericht. Diese Informationen sind für Außenstehende, die dein Passwort wollen, leicht
+            zugänglich und stellen im Bereich der Datensicherheit ein großes Problem dar, siehe hierzu auch unseren
+            Lexikoneintrag zum Thema <a href="{% url "lex_entry" "Social Engineering" %}">Social Engineering</a>. Zusätzlich empfehlen wir dir die Nutzung eines
+            Passwort-Managers. Die von dir gewürfelte Passphrase kannst du als Masterpasswort verwenden. Mehr Hinweise
+            und Empfehlungen zur Verwendung eines Passwort-Managers findest du <a href="{% url "lex_entry" "passwort-manager" %}">hier</a>.
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'lesson/lesson.html' %}
+{% block lesson_card %}
+    <div class="bg-dark-st p-4 rounded">
+        <div class="display-4 text-light border-bottom">
+            Zufall und Diceware
+        </div>
+        <div class="text-dk-primary display-5 pt-3">Für das Erstellen eines sicheren Passworts ist <i>echter Zufall</i>
+            besonders wichtig.
+        </div>
+        <div class="display-6 text-light pt-2">
+            Und wie du vielleicht weißt, ist das Ergebnis eines nicht manipulierten Würfelwurfs immer zufällig - denn es
+            steht
+            nicht zu Beginn fest, wieviele Augen angezeigt werden. Diesen Zufall machen wir uns hier zunutze. Mithilfe
+            von
+            fünf Würfeln und einer langen Wortliste können wir uns ans Werk machen: In der Liste findest du alle
+            würfelbaren <a tabindex="0" class="text-dk-primary border-bottom border-dk-primary"
+                           data-trigger="hover"
+                           data-toggle="popover"
+                           data-content="wir haben nachgezählt: 7776">Zahlenkombinationen</a>. Du würfelst also fünf
+            Würfel - heraus kommt eine <i>echt zufällige</i> Zahlenkombination, die für ein bestimmtes Wort steht, das
+            du dir notierst. Das Ganze wiederholst du fünfmal
+            und
+            am Ende hast du fünf zufällig gewürfelte Wörter, eine sogenannte "Passphrase", die du als Passwort verwenden
+            kannst.
+        </div>
+    </div>
+{% endblock %}
+{% block card_scripts %}
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+        $('.popover-dismiss').popover({
+            trigger: 'focus'
+        })
+    </script>
+
+{% endblock %}
