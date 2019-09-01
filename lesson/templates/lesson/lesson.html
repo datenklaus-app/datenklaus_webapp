@@ -53,8 +53,8 @@
         </div>
         <div id="lesson-content-container"
              class="row lesson-content justify-content-center">
-            <div class="col-11 d-flex flex-column unselectable">
-                <form id="card-form" class="m-auto" action="{% url 'lesson_next' %}" method="post">
+            <div class="col-11 m-auto unselectable">
+                <form id="card-form" action="{% url 'lesson_next' %}" method="post">
                     {% csrf_token %}
                     {% block lesson_card %}{% endblock %}
                 </form>
@@ -119,7 +119,7 @@
             console.log(lCC.clientHeight);
             console.log(lCC.scrollTop);
             console.log(lCC.scrollHeight);
-            if (lCC.clientHeight + lCC.scrollTop >= lCC.scrollHeight) {
+            if (lCC.clientHeight + lCC.scrollTop + 16 >= lCC.scrollHeight) {
                 $("#lesson-continue-state").prop("disabled", false);
             }
         }
