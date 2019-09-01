@@ -88,18 +88,17 @@
                         <i class="fas fa-question"></i>
                     </a>
                 </div>
-                <div class="col text-dark text-righr" style="display: none" id="col-all-finished">
-                    <h5 class="m-0 text-dark">Alle Schüler*innen haben das aktuelle Modul
-                        abgeschlossen. Klicke <i class="text-warning" id="button-restart-lesson" onclick=""
-                                                 style="cursor: pointer">hier</i> um ein
-                        neues zu starten.
-                    </h5>
-                </div>
 
             </div>
             <div class="row justify-content-end bg-light pb-2">
                 <div class="col text-right">
-                    <span id="state-text" class="m-0 text-secondary"></span>
+                    <div class="col text-dark text-righr" style="display: none" id="col-all-finished">
+                        <h5 class="m-0 text-dark">Alle Schüler*innen haben das aktuelle Modul
+                            abgeschlossen. Klicke <i class="text-warning" id="button-restart-lesson" onclick=""
+                                                     style="cursor: pointer">hier</i> um ein
+                            neues zu starten.
+                        </h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -275,7 +274,6 @@
                 finishedModalDismissed = true;
                 $("#lessonFinishedModal").modal('hide');
                 if (!noNewLessons) {
-                    $('#controls').hide();
                     $('#col-all-finished').show()
                 }
             });
@@ -285,7 +283,6 @@
                 startNewLesson(lesson);
                 finishedModalDismissed = true;
                 $("#lessonFinishedModal").modal('hide');
-                $('#controls').show();
                 $('#col-all-finished').hide()
             });
 
@@ -435,7 +432,6 @@
                             state = data.state;
                             setStates()
                         }
-                        $("#state-text").text("");
                         $('#col-all-finished').hide()
                     }
                 },
