@@ -2,14 +2,13 @@
 {% load static %}
 {% block teacher_content %}
     <div id="auswertung" class="container-fluid">
-        <div id="lesson-list" class="row pt-2">
+        <div id="lesson-list" class="row pt-2 justify-content-center pb-4">
             <div class="col-auto">
                 <div class="btn-group btn-group-toggle" id="radioLessons" data-toggle="buttons">
-                    <label class="btn btn-secondary active">{{ lesson }}<input type="radio" name="options"
+                    <label class="btn btn-dark btn-lg active">{{ lesson }}<input type="radio" name="options"
                                                                                autocomplete="off" checked></label>
                     {% for prev_lesson in prev_lessons %}
-                        <label class="btn btn-secondary">{{ prev_lesson.name }}<input type="radio" name="options"
-                                                                                      autocomplete="off">
+                        <label class="btn btn-dark btn-lg" autocomplete="off">
                         </label>
                     {% endfor %}
                 </div>
@@ -28,7 +27,7 @@
 {% block teacher-content-scripts %}
     <script id="resultItem" type="text/x-handlebars-template">
         {% verbatim %}
-        <a class="list-group-item list-group-item-action flex-column align-items-start"
+        <a class="list-group-item list-group-item-action flex-column align-items-start mb-3"
            type="button">
             <div class="row">
                 <div class="col">
@@ -52,7 +51,7 @@
     <script id="lessonItem" type="text/x-handlebars-template">
         <!--suppress SyntaxError, HtmlUnknownAttribute -->
         {% verbatim %}
-        <label class="btn btn-secondary {{#if active  }}active {{/if }}">{{ name }}<input type="radio" name="options"
+        <label class="btn btn-lg {{#if active  }}btn-dark active {{ else }} btn-secondary {{/if }}">{{ name }}<input type="radio" name="options"
                                                                                           id="active-lesson"
                                                                                           autocomplete="off" {{#if
                                                                                           active
