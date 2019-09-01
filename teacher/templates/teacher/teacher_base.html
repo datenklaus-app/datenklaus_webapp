@@ -158,7 +158,7 @@
                         <button type="button" class="btn btn-secondary" id="button-next-session-dismiss" onclick=""
                                 ondata-dismiss="modal">Später
                         </button>
-                        <button type="button" id="button-next-section" onclick="" id="lesson-modal-start"
+                        <button type="button" id="button-next-section" onclick=""
                                 class="btn btn-primary">Starte nächsten Abschnitt
                         </button>
                     </div>
@@ -177,12 +177,9 @@
                         Bist du dir sicher dass du diesen Raum löschen möchtest?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="button-next-session-dismiss" onclick=""
-                                ondata-dismiss="modal">Nein
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nein
                         </button>
-                        <button type="button" id="button-next-section" onclick="removeRoom()" id="lesson-modal-start"
-                                class="btn btn-primary">Ja
-                        </button>
+                        <button type="button" onclick="removeRoom()" class="btn btn-primary">Ja</button>
                     </div>
                 </div>
             </div>
