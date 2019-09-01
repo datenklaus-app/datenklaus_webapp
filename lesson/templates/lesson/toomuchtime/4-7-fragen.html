@@ -1,9 +1,11 @@
 {% extends 'lesson/lesson.html' %}
 {% block lesson_card %}
     <div class="bg-dark-st p-4 rounded text-center">
-        <div class="display-5 text-light">
-           {{ question }}
+        <div class="display-5 text-light d-inline-block w-100">
+            {{ question }}
         </div>
         {% include "lesson/includes/range_select.html" with form=form %}
     </div>
+
+
 {% endblock %}
