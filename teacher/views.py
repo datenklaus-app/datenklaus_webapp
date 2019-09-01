@@ -4,6 +4,7 @@ import re
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import requires_csrf_token
 
 from lesson.lessonUtil import get_lesson, all_lessons, all_synced, all_finished
 from lesson.models import LessonStateModel
@@ -45,6 +46,7 @@ def overview(request, room_name=None):
         return HttpResponseRedirect(reverse("teacher_index"))
 
 
+@requires_csrf_token
 def create(request):
     lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
     context = {'lessons': lessons}
