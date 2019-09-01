@@ -54,14 +54,12 @@
     <script>
         function update(el) {
             const s = el.children[0];
-            console.log(s)
-            $(s).prop('checked', true)
+            $(s).prop('checked', true);
             updateResults()
         }
 
         updateResults = function () {
             const lesson = $('input:checked').parent().text();
-            console.log(lesson)
             $.ajax({
                 url: "{% url "get_results" room_name%}",
                 data: {'lesson': lesson},
