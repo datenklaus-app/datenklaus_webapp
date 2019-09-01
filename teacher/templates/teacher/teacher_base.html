@@ -184,6 +184,28 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="stopRoomModal" tabindex="-1" role="dialog"
+             aria-labelledby="removeRoom" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h4 class="modal-title" id="exampleModalCenterTitle">Raum beenden</h4>
+                    </div>
+                    <div class="modal-body">
+                        Bist du dir sicher dass du diesen Raum schließen möchtst? Der Raum kann nicht wieder gestartet
+                        werden und es werden alle Schüler*innen aus dem Raum entfernt.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nein
+                        </button>
+                        <button type="button" onclick="stopRoom()"
+                                class="btn btn-primary">Ja
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     {% block teacher_content %}
@@ -251,6 +273,9 @@
         $(document).ready(function () {
             getRooms();
             setInterval(getRooms, 2000);
+            $("#button-remove").click(function () {
+                $('#removeRoomModal').modal('show');
+            });
             if (state == null)
                 return;
 
@@ -292,10 +317,7 @@
                 controlCommand($(this), cmds.PAUSE, states.PAUSED)
             });
             $("#button-stop").click(function () {
-                controlCommand($(this), cmds.STOP, states.CLOSED)
-            });
-            $("#button-remove").click(function () {
-                $('#removeRoomModal').modal('show');
+                $('#stopRoomModal').modal('show');
             });
 
             $('.popover-dismiss').popover({
@@ -323,6 +345,11 @@
             $('.lesson-list-item').removeClass('active');
             item.toggleClass('active');
             $('#lesson-modal-start').prop('disabled', false)
+        };
+
+        function stopRoom() {
+            controlCommand($('#button-stop'), cmds.STOP, states.CLOSED);
+            $('#stopRoomModal').modal('hide');
         };
 
         setStates = function () {
