@@ -424,9 +424,9 @@
                         }
                         state = states.PAUSED;
                         setStates();
-                        if (data.finished && !finishedModalDismissed) {
+                        if (data.finished && data.show_modal) {
                             $('#lessonFinishedModal').modal('show')
-                        } else if (data.synced && !syncModalDismissed) {
+                        } else if (data.synced && data.show_modal) {
                             $('#col-all-finished').hide();
                             $('#lessonSyncedModal').modal('show')
                         }

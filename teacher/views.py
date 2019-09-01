@@ -188,10 +188,17 @@ def get_sync_state(request):
         r = Room.objects.get(room_name=room_name)
         synced = all_synced(r)
         finished = all_finished(r)
-        if finished:
+
+        show_modal = False
+        if finished and r.state != RoomStates.WAITING.value:
+            show_modal = True
             r.state = RoomStates.WAITING.value
             r.save()
-        return JsonResponse({"state": r.state, "finished": finished, "synced": synced})
+        elif synced and r.state != RoomStates.PAUSED.value:
+            show_modal = True
+            r.state = RoomStates.PAUSED.value
+            r.save()
+        return JsonResponse({"state": r.state, "finished": finished, "synced": synced, "show_modal": show_modal})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
 
