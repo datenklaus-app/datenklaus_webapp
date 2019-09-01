@@ -11,7 +11,7 @@ from student.models import Student
 from teacher.constants import RoomStates
 from teacher.models import Room
 from teacher.random_word_chain import random_word
-from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent
+from teacher.utils import get_students_for_room, ajax_bad_request, Cmd, HttpResponseNoContent, get_room_and_lessons
 
 
 # Regular requests
@@ -35,8 +35,7 @@ def overview(request, room_name=None):
         request.session["room"] = room_name
 
     try:
-        room = Room.objects.get(room_name=room_name)
-        lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
+        room, lessons, prev_lessons = get_room_and_lessons(room_name)
         context = {'room_name': room_name, 'lessons': lessons, 'lesson': room.lesson, 'state': room.state,
                    "is_overview": True}
         return render(request, 'teacher/overview.html', context=context)
@@ -53,14 +52,7 @@ def create(request):
 
 def results(request, room_name):
     try:
-        room = Room.objects.get(room_name=room_name)
-        lessons = [{'name': n, 'description': l.description()} for n, l in all_lessons().items()]
-        prev_string = room.previous_lessons
-        if prev_string:
-            tmp = json.loads(room.previous_lessons)
-            prev_lessons = [{'name': l} for l in tmp]
-        else:
-            prev_lessons = []
+        room, lessons, prev_lessons = get_room_and_lessons(room_name)
     except Room.DoesNotExist:
         del request.session["room"]
         return HttpResponseRedirect(reverse("teacher_index"))

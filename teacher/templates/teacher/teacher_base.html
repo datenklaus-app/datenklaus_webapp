@@ -23,6 +23,7 @@
     {% trans "Modul abgeschlossen" as lesson_finished %}
     {% trans "Alle haben den nächsten Abschnitt erreicht" as section_synced %}
     {% trans "Um ein weiteres Modul zu starten, wähle eines aus der folgenden Liste" as choose_module %}
+    {% trans "Es wurden bereits alle verfügbaren Module bearbeitet." as no_module %}
     {# Teacher navbar #}    {% trans "Modul abgeschlossen" as lesson_finished %}
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Datenklaus</span>
@@ -124,14 +125,24 @@
                                     <h6 class="mb-1 text-center">{{ m.description }}</h6>
                                     <p class="mb-1"></p>
                                 </div>
+                            {% empty %}
+                                <a href="#"
+                                   class="list-group-item list-group-item-action flex-column align-items-start active">
+                                    <div class="d-flex w-100 justify-content-center">
+                                        <h5 class="mb-1">{{ no_module }}</h5>
+                                    </div>
+                                </a>
                             {% endfor %}
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="lesson-modal-dismiss" onclick=""
-                                data-dismiss="modal">Später
+                                data-dismiss="modal">{% if lessons %} Später {% else %} Fertig {% endif %}
                         </button>
-                        <button type="button" id="lesson-modal-start" disabled class="btn btn-primary">Start</button>
+                        {% if lessons %}
+                            <button type="button" id="lesson-modal-start" disabled class="btn btn-primary">Start
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -237,6 +248,7 @@
         };
         let syncModalDismissed = false;
         let finishedModalDismissed = false;
+        let noNewLessons = {% if lessons %} false {% else %} true {% endif %}
 
         let state = {% if state %}{{ state }} {% else %} null {% endif %};
 
@@ -262,8 +274,10 @@
             $("#lesson-modal-dismiss").click(function () {
                 finishedModalDismissed = true;
                 $("#lessonFinishedModal").modal('hide');
-                $('#controls').hide();
-                $('#col-all-finished').show()
+                if (!noNewLessons) {
+                    $('#controls').hide();
+                    $('#col-all-finished').show()
+                }
             });
 
             $("#lesson-modal-start").click(function () {
@@ -362,9 +376,10 @@
                 data: {'room_name': "{{ room_name }}", 'lesson': lesson},
                 dataType: 'json',
                 success: function () {
-                    $('#roomLesson').text(lesson);
+                    location.reload()
+                    //$('#roomLesson').text(lesson);
                     // controlCommand($("#button-play"), cmds.PLAY, states.RUNNING);
-                    finishedModalDismissed = false
+                    //finishedModalDismissed = false
                 },
                 error: function (data) {
                     // TODO: remove?
@@ -405,7 +420,7 @@
                 /** @namespace data.finished **/
                 /** @namespace data.stateName **/
                 success: function (data) {
-                    if (data.synced || data.finished) {
+                    if ((data.synced || data.finished) && data.state != states.WAITING) {
                         state = states.PAUSED;
                         setStates();
                         if (data.finished && !finishedModalDismissed) {
