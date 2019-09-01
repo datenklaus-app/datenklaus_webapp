@@ -47,7 +47,7 @@
                         <div class="card-body text-monospace text-left">
                             <i type="button" id="removeButton" onclick="removeButtonClicked('{{ name }}','{{ id }}')"
                                class="fas fa-user-times position-absolute"
-                               style="top: 0.75rem; right: 0.75rem; color: #e14423"></i>
+                               style="top: 0.75rem; right: 0.75rem; color: #e14423; visibility: {{#if finished }} hidden {{ else }} visible {{/if}} "></i>
                             <h2 class="mb-1 text-info">{{ name }}</h2>
                             <h6 class="text-light">{{ progress }}</h6>
                         </div>
@@ -94,6 +94,7 @@
                     const template = Handlebars.compile(source);
                     /** @namespace data.students **/
                     $.each(data.students, function (index, value) {
+                        value.finished = data.finished
                         students.append(template(value));
                     },);
                 },

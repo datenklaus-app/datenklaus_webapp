@@ -28,13 +28,12 @@ def get_room_and_lessons(room_name):
     return room, lessons, prev_lessons
 
 
-def get_students_for_room(room_name):
+def get_students_for_room(room):
     try:
-        room = Room.objects.get(room_name=room_name)
         lesson = get_lesson(room.lesson)
-    except Room.DoesNotExist as e:
+    except KeyError as e:
         raise e
-    students = Student.objects.filter(room=room_name)
+    students = Student.objects.filter(room=room)
     student_info = []
     for student in students:
         lesson_state = lesson.state(student.current_state).name()

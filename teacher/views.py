@@ -172,8 +172,10 @@ def get_students(request):
         return HttpResponseBadRequest()
     room_name = request.GET.get("room_name", None)
     try:
-        students = get_students_for_room(room_name)
-        return JsonResponse({"students": students})
+        room = Room.objects.get(room_name=room_name)
+        students = get_students_for_room(room)
+        finished = all_finished(room)
+        return JsonResponse({"students": students, 'finished': finished})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
 
