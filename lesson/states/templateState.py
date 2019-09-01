@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from lesson.forms import TemplateCardForm
-from lesson.lessonState import LessonState
+from lesson.states.lessonState import LessonState
 from student.models import Student
 
 

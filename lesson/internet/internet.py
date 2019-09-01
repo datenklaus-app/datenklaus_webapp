@@ -1,6 +1,6 @@
 from lesson.lesson import Lesson
-from lesson.lessonState import LessonState
-from lesson.templateState import TemplateState
+from lesson.states.lessonState import LessonState
+from lesson.states.templateState import TemplateState
 
 
 class Internet(Lesson):
