@@ -129,6 +129,11 @@
             check_scroll_height();
             check_room_status();
             setInterval(check_room_status, 5000);
+            let images = ['{% static "lesson/sternenhimmel.jpg" %}',
+                '{% static "lesson/sternenhimmel2.png" %}',
+                '{% static "lesson/sternenhimmel3.png" %}',
+                '{% static "lesson/sternenhimmel4.png" %}',];
+            $('body').css('background', 'url(' + images[Math.floor(Math.random() * images.length)] + ')');
         });
     </script>
     {% block card_scripts %}{% endblock %}
