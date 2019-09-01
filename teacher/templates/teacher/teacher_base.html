@@ -417,7 +417,6 @@
                     if (data.synced || data.finished) {
                         if (data.state == states.WAITING && !noNewLessons) {
                             $('#col-all-finished').show();
-                            return;
                         }
                         state = states.PAUSED;
                         setStates();
