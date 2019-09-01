@@ -11,7 +11,7 @@ class Internet(Lesson):
                          "Hinführung zum Thema"),
         2: TemplateState("lesson/internet/1-regel-1.html", 2, 3,
                          "1. Regel des Internets"),
-        3: TemplateState("lesson/internet/2-internet-basics-1.html", 4, 5,
+        3: TemplateState("lesson/internet/2-internet-basics-1.html", 3, 4,
                          "Internet Basics 1 / INTERNET"),
         4: TemplateState("lesson/internet/2-regel-2.html", 4, 5,
                          "2. Regel des Internets"),
