@@ -9,12 +9,12 @@ class DKBarChart(pygal.Pie):
     def __init__(self, dataset, labels, title=None):
         style = pygal.style.DefaultStyle()
         style.label_font_size = 16
-        
+
         super().__init__(show_legend=True, show_y_labels=False,
                          classes=(..., "chart-card-chart", "img-fluid", "w-100", "rounded"), height=400,
                          style=style, half_pie=True, legend_at_bottom=True)
 
-        self.title=title
+        self.title = title
 
         for i in range(len(labels)):
             self.add(labels[i], dataset[i])
