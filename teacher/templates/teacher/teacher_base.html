@@ -417,7 +417,11 @@
                 /** @namespace data.finished **/
                 /** @namespace data.stateName **/
                 success: function (data) {
-                    if ((data.synced || data.finished) && data.state != states.WAITING) {
+                    if (data.synced || data.finished) {
+                        if (data.state == states.WAITING && !noNewLessons) {
+                            $('#col-all-finished').show();
+                            return;
+                        }
                         state = states.PAUSED;
                         setStates();
                         if (data.finished && !finishedModalDismissed) {
@@ -427,7 +431,6 @@
                             $('#lessonSyncedModal').modal('show')
                         }
                     } else {
-                        console.log(data.state)
                         if (data.state !== state) {
                             state = data.state;
                             setStates()

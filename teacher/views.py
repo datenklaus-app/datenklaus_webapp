@@ -184,8 +184,11 @@ def get_sync_state(request):
     room_name = request.GET.get("room_name", None)
     try:
         r = Room.objects.get(room_name=room_name)
-        synced = all_synced(room_name)
-        finished = all_finished(room_name)
+        synced = all_synced(r)
+        finished = all_finished(r)
+        if finished:
+            r.state = RoomStates.WAITING.value
+            r.save()
         return JsonResponse({"state": r.state, "finished": finished, "synced": synced})
     except Room.DoesNotExist:
         return ajax_bad_request("Room " + room_name + " not found")
@@ -210,7 +213,6 @@ def change_lesson(request):
     prev_lessons.append(r.lesson)
     r.previous_lessons = json.dumps(prev_lessons)
     r.lesson = lesson
-    r.state = RoomStates.WAITING.value
     r.save()
     students = Student.objects.filter(room=r)
     for student in students:
