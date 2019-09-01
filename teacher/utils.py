@@ -13,14 +13,14 @@ def get_previous_lessons(room):
     if not room.previous_lessons:
         return []
     try:
-        json.loads(room.previous_lessons)
+        return json.loads(room.previous_lessons)
     except json.decoder.JSONDecodeError:
         return []
 
 
 def get_room_and_lessons(room_name):
     room = Room.objects.get(room_name=room_name)
-    prev_lessons = [l for l in get_previous_lessons(room)]
+    prev_lessons = get_previous_lessons(room)
     lessons = []
     for n, l in all_lessons().items():
         if n not in prev_lessons and n != room.lesson:
