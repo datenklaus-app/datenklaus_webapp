@@ -111,7 +111,7 @@ def get_results(request, room_name):
     for state in states:
         r = state.result_svg(room_name)
         if r is not None:
-            completed = LessonStateModel.objects.filter(room=room, state=state.state_number()).count()
+            completed = LessonStateModel.objects.filter(room=room, state=state.state_number(), choice__isnull=False).count()
             state_results.append({'state_name': state.name(), 'completed': completed, 'svg': r})
     return JsonResponse({'results': state_results, 'no_students': num_students, 'current_lesson': room.lesson,
                          'prev_lessons': get_previous_lessons(room)})
