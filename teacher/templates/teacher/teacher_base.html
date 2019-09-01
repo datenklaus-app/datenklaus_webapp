@@ -418,11 +418,15 @@
                         if (data.state == states.WAITING && !noNewLessons) {
                             $('#col-all-finished').show();
                         }
-                        state = states.PAUSED;
-                        setStates();
-                        if (data.finished && data.show_modal) {
-                            $('#lessonFinishedModal').modal('show')
+                        if (data.finished) {
+                            $('#button-play').prop('disabled', true)
+                            $('#button-pause').prop('disabled', true)
+                            if (data.show_modal) {
+                                $('#lessonFinishedModal').modal('show')
+                            }
                         } else if (data.synced && data.show_modal) {
+                            state = states.PAUSED;
+                            setStates();
                             $('#col-all-finished').hide();
                             $('#lessonSyncedModal').modal('show')
                         }
