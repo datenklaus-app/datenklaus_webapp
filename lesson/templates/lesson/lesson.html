@@ -110,10 +110,6 @@
                         // data.redirect contains the string URL to redirect to
                         window.location.href = data.redirect;
                     }
-                    if (!data.running) {
-                        // data.redirect contains the string URL to redirect to
-                        window.location.href = {% url 'lesson' %};
-                    }
                 }
             })
         }

@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
 
-from lesson.lessonState import LessonState
 from lesson.lessonUtil import get_lesson
+from lesson.states.lessonState import LessonState
 from lexicon import lexiconUtils
 from student.models import Student
 from teacher.constants import RoomStates
@@ -18,14 +18,15 @@ def room_status(request):
     try:
         student = Student.objects.get(session=request.session.session_key)
     except ObjectDoesNotExist:
-        return JsonResponse({"running": False, "redirect": "/"})
+        return JsonResponse({"redirect": reverse("index")})
 
     if student.room.state == RoomStates.CLOSED.value:
-        return JsonResponse({"running": False, "redirect": "/", "syncing": student.is_syncing, })
+        return JsonResponse({"redirect": reverse("index")})
 
-    return JsonResponse({"running": student.room.state == RoomStates.RUNNING.value,
-                         "syncing": student.is_syncing or student.is_finished,
-                         "redirect": None})
+    if student.current_room_state != student.room.state:
+        return JsonResponse({"redirect": reverse("lesson")})
+
+    return JsonResponse({"redirect": None})
 
 
 def lesson(request):
@@ -34,13 +35,17 @@ def lesson(request):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("index"))
 
-    room_state = RoomStates(student.room.state)
-    if room_state == RoomStates.PAUSED:
+    # Check if room state has changed
+    if student.current_room_state != student.room.state:
+        student.current_room_state = student.room.state
+        student.save()
+
+    if student.current_room_state == RoomStates.PAUSED.value:
         return render(request, "lesson/pause.html")
-    elif room_state == RoomStates.WAITING:
+    elif student.current_room_state == RoomStates.WAITING.value:
         return render(request, "lesson/waiting.html",
                       context={"sname": student.user_name, "rname": student.room.room_name})
-    elif room_state == RoomStates.CLOSED:
+    elif student.current_room_state == RoomStates.CLOSED.value:
         return HttpResponseRedirect(reverse("index"))
 
     current_lesson = get_lesson(student.room.lesson)
@@ -99,11 +104,6 @@ def lesson_next(request):
     current_lesson = get_lesson(student.room.lesson)
     current_state = current_lesson.state(student.current_state)
 
-    if current_state.is_final():
-        student.is_finished = True
-        student.save()
-        return HttpResponseRedirect(reverse("lesson"))
-
     # Handle post received from current state
     try:
         current_state.post(request.POST, student)
@@ -111,6 +111,11 @@ def lesson_next(request):
         if e.fallback_state is None:
             return HttpResponseNotFound()
         student.current_state = e.fallback_state
+        return HttpResponseRedirect(reverse("lesson"))
+
+    if current_state.is_final():
+        student.is_finished = True
+        student.save()
         return HttpResponseRedirect(reverse("lesson"))
 
     # Transition to next state

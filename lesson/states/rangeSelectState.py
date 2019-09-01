@@ -3,14 +3,13 @@ from django.shortcuts import render
 
 from lesson.charts import DKBarChart
 from lesson.forms import RangeSelectForm
-from lesson.lessonState import LessonState
+from lesson.states.lessonState import LessonState
 from lesson.models import LessonStateModel
-from lesson.templateState import TemplateState
 from student.models import Student
 
 
 class RangeSelectState(LessonState):
-    def __init__(self, template, state, next_state, description, choices, is_first=False, is_final=False,
+    def __init__(self, template, state, next_state, description, question, choices, is_first=False, is_final=False,
                  is_sync=False):
         self.__template = template
         self.__description = description
@@ -20,6 +19,7 @@ class RangeSelectState(LessonState):
         self.__is_sync = is_sync
         self.__is_final = is_final
         self.__choices = []
+        self.__question = question
         for i in range(len(choices)):
             self.__choices.append((i, choices[i]))
 
@@ -47,6 +47,7 @@ class RangeSelectState(LessonState):
 
         form = RangeSelectForm(self.__choices)
         context["form"] = form
+        context["question"] = self.__question
         return render(request, self.__template, context=context)
 
     def post(self, post, student):
@@ -75,5 +76,5 @@ class RangeSelectState(LessonState):
                 continue
             data[int(o.choice)] += 1
 
-        return DKBarChart(dataset=data, labels=list(map(lambda x: x[1], self.__choices))).render(
+        return DKBarChart(dataset=data, title=self.__question, labels=list(map(lambda x: x[1], self.__choices))).render(
             disable_xml_declaration=True)

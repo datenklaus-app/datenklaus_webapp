@@ -1,4 +1,4 @@
-from lesson.lessonState import LessonState
+from lesson.states.lessonState import LessonState
 
 
 class Lesson:
