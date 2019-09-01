@@ -5,11 +5,15 @@
         <div id="lesson-list" class="row pt-2 justify-content-center pb-4">
             <div class="col-auto">
                 <div class="btn-group btn-group-toggle" id="radioLessons" data-toggle="buttons">
-                    <label class="btn btn-dark btn-lg active">{{ lesson }}<input type="radio" name="options"
-                                                                               autocomplete="off" checked></label>
+                    <label class="btn btn-dark btn-lg active" onclick="update(this)">{{ lesson }}<input type="radio"
+                                                                                                        name="options"
+                                                                                                        autocomplete="off"
+                                                                                                        checked></label>
                     {% for prev_lesson in prev_lessons %}
-                        <label class="btn btn-dark btn-lg" autocomplete="off">
-                        </label>
+                        <label class="btn btn-dark btn-lg" onclick="update(this)">{{ prev_lesson.name }}<input
+                                type="radio"
+                                name="options"
+                                autocomplete="off"></label>
                     {% endfor %}
                 </div>
             </div>
@@ -47,22 +51,17 @@
         </a>
         {% endverbatim %}
     </script>
-
-    <script id="lessonItem" type="text/x-handlebars-template">
-        <!--suppress SyntaxError, HtmlUnknownAttribute -->
-        {% verbatim %}
-        <label class="btn btn-lg {{#if active  }}btn-dark active {{ else }} btn-secondary {{/if }}">{{ name }}<input type="radio" name="options"
-                                                                                          id="active-lesson"
-                                                                                          autocomplete="off" {{#if
-                                                                                          active
-                                                                                          }} checked
-                                                                                          {{/if}}></label>
-        {% endverbatim %}
-    </script>
-
     <script>
+        function update(el) {
+            const s = el.children[0];
+            console.log(s)
+            $(s).prop('checked', true)
+            updateResults()
+        }
+
         updateResults = function () {
             const lesson = $('input:checked').parent().text();
+            console.log(lesson)
             $.ajax({
                 url: "{% url "get_results" room_name%}",
                 data: {'lesson': lesson},
@@ -70,18 +69,6 @@
                 /** @namespace data.current_lesson **/
                 /** @namespace data.prev_lessons **/
                 success: function (data) {
-                    const radioSource = document.getElementById('lessonItem').innerHTML;
-                    const radioTemplate = Handlebars.compile(radioSource);
-                    const radioLessons = $('#radioLessons');
-                    const activeRadio = $('input:checked').parent().text();
-                    radioLessons.empty();
-                    radioLessons.append(radioTemplate({
-                        name: data.current_lesson,
-                        active: activeRadio === data.current_lesson
-                    }));
-                    $.each(data.prev_lessons, function (_, value) {
-                        radioLessons.append(radioTemplate({name: value, active: activeRadio === value}))
-                    });
                     const results = $("#state_results");
                     results.empty(); // remove old options
                     const source = document.getElementById("resultItem").innerHTML;
